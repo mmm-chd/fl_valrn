@@ -111,26 +111,31 @@ class LoginPage extends GetView<LoginController> {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Center(
         child: Container(
-          width: 360,
           height: 53,
           padding: const EdgeInsets.all(4),
+          constraints: const BoxConstraints(maxWidth: 420), // opsional
           decoration: BoxDecoration(
             color: const Color(0xffECECEC),
             borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
             children: [
-              CustomTabbar(
-                text: 'Login',
-                tabIndex: 0,
-                currentIndex: controller.currentTabIndex,
-                onTap: controller.selectTab,
+              Expanded(
+                child: CustomTabbar(
+                  text: 'Login',
+                  tabIndex: 0,
+                  currentIndex: controller.currentTabIndex,
+                  onTap: (i) => controller.selectTab(i),
+                ),
               ),
-              CustomTabbar(
-                text: 'Register',
-                tabIndex: 1,
-                currentIndex: controller.currentTabIndex,
-                onTap: controller.selectTab,
+              const CustomSpacing(width: 4),
+              Expanded(
+                child: CustomTabbar(
+                  text: 'Register',
+                  tabIndex: 1,
+                  currentIndex: controller.currentTabIndex,
+                  onTap: (i) => controller.selectTab(i),
+                ),
               ),
             ],
           ),

@@ -19,44 +19,41 @@ class CustomTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onTap(tabIndex),
-      child: Obx(
-        () => Container(
-          width: 170,
-          height: 45,
-          margin: EdgeInsets.only(bottom: 0),
-          padding: EdgeInsets.all(0),
-          decoration: currentIndex.value == tabIndex
-              ? BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(34),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                      offset: Offset(0, 2), // changes position of shadow
-                    ),
-                  ],
-                )
-              : BoxDecoration(),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: currentIndex.value == tabIndex
-                      ? textColor ?? Colors.black
-                      : Colors.grey,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(34),
+        onTap: () => onTap(tabIndex),
+        child: Obx(
+          () => AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            height: 45,
+            decoration: currentIndex.value == tabIndex
+                ? BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(34),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 6,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  )
+                : BoxDecoration(borderRadius: BorderRadius.circular(34)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: currentIndex.value == tabIndex
+                    ? textColor ?? Colors.black
+                    : Colors.grey,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
-            ],
+            ),
           ),
         ),
       ),
