@@ -1,7 +1,5 @@
 import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_checkBox.dart';
-import 'package:fl_valrn/components/widgets/custom_iconButton.dart';
-import 'package:fl_valrn/components/widgets/custom_iconButtonCircle.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -17,236 +15,181 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: AlignmentGeometry.xy(-1, 1),
-              end: AlignmentGeometry.xy(1, 1),
-              colors: [Colors.lightGreen, Colors.green],
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment(-1, 1),
+            end: Alignment(1, 1),
+            colors: [Colors.lightGreen, Colors.green],
           ),
-          child: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: 14,
-                        top: 70,
-                        left: 14,
-                      ),
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CustomText(
-                                text: 'PlantApp',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 44,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const CustomSpacing(height: 10),
-                              CustomText(
-                                text:
-                                    'This application was created to help farmers out there.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.grey.shade100,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const CustomSpacing(height: 34),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
+        ),
+        child: CustomScrollView(
+          slivers: [
+            // =========================
+            // HEADER
+            // =========================
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              expandedHeight: 240,
+              pinned: false,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 70, 14, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CustomText(
+                        text: 'PlantApp',
+                        style: TextStyle(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            topRight: Radius.circular(24),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Obx(
-                            () => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // TABBAR
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: Center(
-                                    child: Container(
-                                      width: 360,
-                                      height: 53,
-                                      margin: EdgeInsets.only(bottom: 0),
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffECECEC),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(30),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CustomTabbar(
-                                            text: 'Login',
-                                            onTap: (index) =>
-                                                controller.selectTab(index),
-                                            currentIndex:
-                                                controller.currentTabIndex,
-                                            tabIndex: 0,
-                                          ),
-                                          CustomTabbar(
-                                            text: 'Register',
-                                            onTap: (index) =>
-                                                controller.selectTab(index),
-                                            currentIndex:
-                                                controller.currentTabIndex,
-                                            tabIndex: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                controller.currentTabIndex.value == 0
-                                    ? _loginForm()
-                                    : _registerForm(),
-                                const CustomSpacing(height: 34.0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: 1,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: CustomText(
-                                        text: 'Or sign in with',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        height: 1,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const CustomSpacing(height: 32),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Material(
-                                        child: InkWell(
-                                          onTap: () {},
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                          child: Ink(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.grey.shade300,
-                                                width: 1.5,
-                                              ),
-                                            ),
-                                            padding: EdgeInsets.all(12),
-                                            child: SvgPicture.asset(
-                                              'assets/socialIcons/facebook_icon.svg',
-                                              width: 44,
-                                              height: 44,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    CustomSpacing(width: 16),
-                                    Expanded(
-                                      child: Material(
-                                        child: InkWell(
-                                          onTap: () {},
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                          child: Ink(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.grey.shade300,
-                                                width: 1.5,
-                                              ),
-                                            ),
-                                            padding: EdgeInsets.all(12),
-                                            child: SvgPicture.asset(
-                                              'assets/socialIcons/google_icon.svg',
-                                              width: 44,
-                                              height: 44,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const CustomSpacing(height: 32),
-                              ],
-                            ),
-                          ),
+                          fontSize: 44,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                  ],
+                      const CustomSpacing(height: 10),
+                      CustomText(
+                        text:
+                            'This application was created to help farmers out there.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey.shade100,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+
+            // =========================
+            // FORM CONTAINER
+            // =========================
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(18),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                child: Obx(
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _tabBar(),
+                      controller.currentTabIndex.value == 0
+                          ? _loginForm()
+                          : _registerForm(),
+                      const CustomSpacing(height: 34),
+                      _socialDivider(),
+                      const CustomSpacing(height: 32),
+                      _socialButtons(),
+                      const CustomSpacing(height: 32),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // =========================
+            // FILL SPACE (AVOID WHITE GAP)
+            // =========================
+            const SliverFillRemaining(hasScrollBody: false, child: SizedBox()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // =========================
+  // TAB BAR
+  // =========================
+  Widget _tabBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Center(
+        child: Container(
+          width: 360,
+          height: 53,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: const Color(0xffECECEC),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Row(
+            children: [
+              CustomTabbar(
+                text: 'Login',
+                tabIndex: 0,
+                currentIndex: controller.currentTabIndex,
+                onTap: controller.selectTab,
+              ),
+              CustomTabbar(
+                text: 'Register',
+                tabIndex: 1,
+                currentIndex: controller.currentTabIndex,
+                onTap: controller.selectTab,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // =========================
+  // SOCIAL
+  // =========================
+  Widget _socialDivider() {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Colors.grey)),
+        Expanded(
+          flex: 2,
+          child: CustomText(
+            text: 'Or sign in with',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ),
+        Expanded(child: Divider(color: Colors.grey)),
+      ],
+    );
+  }
+
+  Widget _socialButtons() {
+    return Row(
+      children: [
+        Expanded(child: _socialButton('facebook')),
+        const CustomSpacing(width: 16),
+        Expanded(child: _socialButton('google')),
+      ],
+    );
+  }
+
+  Widget _socialButton(String type) {
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {},
+        child: Ink(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade300, width: 1.5),
+          ),
+          child: SvgPicture.asset(
+            'assets/socialIcons/${type}_icon.svg',
+            width: 44,
+            height: 44,
           ),
         ),
       ),
@@ -323,7 +266,7 @@ class LoginPage extends GetView<LoginController> {
             label: 'Enter your password..',
             obscureText: controller.isObsecurePass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.tooglePasswordPass,
+            onTapIcon: controller.togglePassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecurePass.value
@@ -346,14 +289,14 @@ class LoginPage extends GetView<LoginController> {
             label: 'Confirm your password..',
             obscureText: controller.isObsecureCPass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.tooglePasswordCPass,
+            onTapIcon: controller.toggleConfirmPassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecureCPass.value
                   ? Icons.visibility_rounded
                   : Icons.visibility_off_rounded,
             ),
-            controller: controller.passwordController,
+            controller: controller.confirmPasswordController,
           ),
         ),
         const CustomSpacing(height: 32.0),
@@ -397,7 +340,7 @@ class LoginPage extends GetView<LoginController> {
             label: 'Enter your password..',
             obscureText: controller.isObsecurePass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.tooglePasswordPass,
+            onTapIcon: controller.togglePassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecurePass.value
@@ -415,7 +358,7 @@ class LoginPage extends GetView<LoginController> {
                 () => CustomCheckbox(
                   value: controller.isCheckedRememberMe.value,
                   onChanged: (value) {
-                    controller.toogleRememberMe();
+                    controller.toggleRememberMe();
                   },
                   label: 'Remember me',
                   padding: EdgeInsets.all(0),
@@ -434,7 +377,7 @@ class LoginPage extends GetView<LoginController> {
             ),
           ],
         ),
-        const CustomSpacing(height: 32.0),
+        const CustomSpacing(height: 16.0),
         Obx(
           () => CustomButton(
             onPressed: () {},
