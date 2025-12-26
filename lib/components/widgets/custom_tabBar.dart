@@ -1,9 +1,9 @@
+import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 
 class CustomTabbar extends StatelessWidget {
   final String text;
-  final Color? textColor;
   final RxInt currentIndex;
   final int tabIndex;
   final Function(int) onTap;
@@ -11,52 +11,42 @@ class CustomTabbar extends StatelessWidget {
   const CustomTabbar({
     super.key,
     required this.text,
-    required this.onTap,
-    this.textColor,
     required this.currentIndex,
     required this.tabIndex,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(34),
-        onTap: () => onTap(tabIndex),
-        child: Obx(
-          () => AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeInOut,
-            height: 45,
-            decoration: currentIndex.value == tabIndex
-                ? BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(34),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
-                        blurRadius: 6,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  )
-                : BoxDecoration(borderRadius: BorderRadius.circular(34)),
+    return Obx(() {
+      final isActive = currentIndex.value == tabIndex;
+
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(30),
+          onTap: () => onTap(tabIndex),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOut,
+            height: double.infinity,
             alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isActive ? Colors.white : Colors.transparent,
+              borderRadius: BorderRadius.circular(30),
+            ),
             child: Text(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: currentIndex.value == tabIndex
-                    ? textColor ?? Colors.black
-                    : Colors.grey,
-                fontWeight: FontWeight.w600,
                 fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: isActive ? PColor.primGreen : Colors.grey.shade600,
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
