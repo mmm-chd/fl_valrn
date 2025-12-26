@@ -1,12 +1,13 @@
 import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_checkBox.dart';
+import 'package:fl_valrn/components/widgets/custom_socialButton.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
+import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
@@ -21,7 +22,7 @@ class LoginPage extends GetView<LoginController> {
           gradient: LinearGradient(
             begin: Alignment(-1, 1),
             end: Alignment(1, 1),
-            colors: [Colors.lightGreen, Colors.green],
+            colors: [Colors.lightGreen, PColor.primGreen],
           ),
         ),
         child: CustomScrollView(
@@ -96,7 +97,10 @@ class LoginPage extends GetView<LoginController> {
             // =========================
             // FILL SPACE (AVOID WHITE GAP)
             // =========================
-            const SliverFillRemaining(hasScrollBody: false, child: SizedBox()),
+            const SliverFillRemaining(
+              hasScrollBody: false,
+              child: CustomSpacing(),
+            ),
           ],
         ),
       ),
@@ -113,7 +117,7 @@ class LoginPage extends GetView<LoginController> {
         child: Container(
           height: 53,
           padding: const EdgeInsets.all(4),
-          constraints: const BoxConstraints(maxWidth: 420), // opsional
+          constraints: const BoxConstraints(maxWidth: 420),
           decoration: BoxDecoration(
             color: const Color(0xffECECEC),
             borderRadius: BorderRadius.circular(30),
@@ -170,34 +174,14 @@ class LoginPage extends GetView<LoginController> {
   Widget _socialButtons() {
     return Row(
       children: [
-        Expanded(child: _socialButton('facebook')),
-        const CustomSpacing(width: 16),
-        Expanded(child: _socialButton('google')),
-      ],
-    );
-  }
-
-  Widget _socialButton(String type) {
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {},
-        child: Ink(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300, width: 1.5),
-          ),
-          child: SvgPicture.asset(
-            'assets/socialIcons/${type}_icon.svg',
-            width: 44,
-            height: 44,
-          ),
+        Expanded(
+          child: CustomSocialbutton(type: 'facebook', onTap: () {}),
         ),
-      ),
+        const CustomSpacing(width: 16),
+        Expanded(
+          child: CustomSocialbutton(type: 'google', onTap: () {}),
+        ),
+      ],
     );
   }
 
@@ -271,7 +255,7 @@ class LoginPage extends GetView<LoginController> {
             label: 'Enter your password..',
             obscureText: controller.isObsecurePass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.togglePassword,
+            onTapSuffixIcon: controller.togglePassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecurePass.value
@@ -294,7 +278,7 @@ class LoginPage extends GetView<LoginController> {
             label: 'Confirm your password..',
             obscureText: controller.isObsecureCPass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.toggleConfirmPassword,
+            onTapSuffixIcon: controller.toggleConfirmPassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecureCPass.value
@@ -309,7 +293,7 @@ class LoginPage extends GetView<LoginController> {
           () => CustomButton(
             onPressed: () {},
             text: controller.isLoading.value ? 'Loading..' : 'Register',
-            backgroundColor: Colors.lightGreen,
+            backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
           ),
         ),
@@ -345,7 +329,7 @@ class LoginPage extends GetView<LoginController> {
             label: 'Enter your password..',
             obscureText: controller.isObsecurePass.value,
             enableInteractiveSelection: false,
-            onTapIcon: controller.togglePassword,
+            onTapSuffixIcon: controller.togglePassword,
             useSuffixIcon: true,
             suffixIcon: Icon(
               controller.isObsecurePass.value
@@ -377,7 +361,7 @@ class LoginPage extends GetView<LoginController> {
               onTap: () {},
               child: CustomText(
                 text: 'Forgot Password?',
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: PColor.primGreen),
               ),
             ),
           ],
@@ -387,7 +371,7 @@ class LoginPage extends GetView<LoginController> {
           () => CustomButton(
             onPressed: () {},
             text: controller.isLoading.value ? 'Loading..' : 'Log In',
-            backgroundColor: Colors.lightGreen,
+            backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
           ),
         ),

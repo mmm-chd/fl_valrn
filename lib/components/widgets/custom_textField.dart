@@ -1,8 +1,9 @@
+import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomTextfield extends StatelessWidget {
-  final Color? fillColor;
+  final Color? fillColor, borderColor;
   final bool isNumber;
   final String label, hint;
   final double? marginTop;
@@ -12,10 +13,11 @@ class CustomTextfield extends StatelessWidget {
       enableSuggestion,
       isShow,
       enableInteractiveSelection,
-      useSuffixIcon;
-  final GestureTapCallback? onTap, onTapIcon;
+      useSuffixIcon,
+      usePrefixIcon;
+  final GestureTapCallback? onTap, onTapSuffixIcon, onTapPrefixIcon;
   final ValueChanged<String>? onChanged;
-  final Widget? suffixIcon;
+  final Widget? suffixIcon, prefixIcon;
   final FocusNode? focusNode;
 
   const CustomTextfield({
@@ -31,12 +33,16 @@ class CustomTextfield extends StatelessWidget {
     this.isShow,
     this.enableInteractiveSelection,
     this.onTap,
-    this.onTapIcon,
+    this.onTapSuffixIcon,
+    this.onTapPrefixIcon,
     this.suffixIcon,
+    this.prefixIcon,
     this.focusNode,
     this.onChanged,
     this.useSuffixIcon = false,
+    this.usePrefixIcon = false,
     this.fillColor,
+    this.borderColor,
   });
 
   @override
@@ -52,25 +58,51 @@ class CustomTextfield extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           fillColor: fillColor,
+          labelStyle: TextStyle(color: Colors.grey.shade700),
+          hintStyle: TextStyle(color: SColor.secGrey.withValues(alpha: 0.7)),
           labelText: label,
           alignLabelWithHint: false,
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.grey.shade100),
-          labelStyle: TextStyle(color: Colors.grey),
           floatingLabelBehavior: FloatingLabelBehavior.never,
           hintFadeDuration: Duration(milliseconds: 500),
+
           errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green),
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color:Colors.red),
           ),
-          suffixIcon: useSuffixIcon!
-              ? GestureDetector(onTap: onTapIcon, child: suffixIcon)
-              : null,
+
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: Colors.green),
+            borderSide: BorderSide(color: PColor.primGreen),
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-          contentPadding: EdgeInsets.all(8),
+
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey.shade400),
+          ),
+
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Colors.grey.shade200),
+          ),
+
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey.shade400),
+          ),
+
+          prefixIcon: usePrefixIcon!
+              ? GestureDetector(onTap: onTapPrefixIcon, child: prefixIcon)
+              : null,
+          suffixIcon: useSuffixIcon!
+              ? GestureDetector(onTap: onTapSuffixIcon, child: suffixIcon)
+              : null,
+          contentPadding: EdgeInsets.all(16),
         ),
         enableInteractiveSelection: enableInteractiveSelection ?? true,
         enableSuggestions: enableSuggestion ?? false,
