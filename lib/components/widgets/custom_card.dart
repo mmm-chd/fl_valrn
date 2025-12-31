@@ -47,17 +47,45 @@ Widget build(BuildContext context) {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        child: imageOnly
-          ? _buildImage()
-          : isImageLeft
-              ? _buildImageLeftLayout()
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 100, child: _buildImage()),
-                    _buildContent(),
-                  ],
+        child: Stack(
+          children: [
+            imageOnly
+                ? _buildImage()
+                : isImageLeft
+                    ? _buildImageLeftLayout()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 100, child: _buildImage()),
+                          _buildContent(),
+                        ],
+                      ),
+
+            if (isExtendable) ...[
+              // TITIK 3 - KANAN ATAS
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Icon(
+                  Icons.more_vert,
+                  size: 20,
+                  color: Colors.grey.shade700,
                 ),
+              ),
+
+              // PANAH - KANAN BAWAH
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: Icon(
+                  Icons.chevron_right,
+                  size: 24,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     ),
   );
@@ -79,6 +107,8 @@ Widget _buildContent() {
         const SizedBox(height: 4),
         Text(
           subtitle,
+          maxLines: 2, // batasi jumlah baris
+          overflow: TextOverflow.ellipsis, // otomatis "...”
           style: TextStyle(
             fontSize: 13,
             color: Colors.grey.shade600,
