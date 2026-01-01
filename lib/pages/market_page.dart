@@ -2,7 +2,9 @@ import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
+import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/market_controller.dart';
+import 'package:fl_valrn/pages/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -142,6 +144,12 @@ class MarketPage extends GetView<MarketController> {
                           textSize: 20,
                           height: 240,
                           width: 260, isImageLeft: false,
+                          onTap: (){
+                            Get.to(
+                              ()=>ProductPage(),
+                              arguments: controller.productCard[index],
+                            );
+                          },
                         );
                       },
                     ),

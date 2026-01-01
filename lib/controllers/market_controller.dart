@@ -12,6 +12,12 @@ class MarketController extends GetxController{
   var trendingCard = <TrendingItem>[].obs;
   var productCard = <ProductItem>[].obs;
 
+  final currentIndex = 0.obs;
+
+  void onPageChanged(int index){
+    currentIndex.value= index;
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
