@@ -1,3 +1,4 @@
+import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
@@ -9,6 +10,7 @@ class CustomCard extends StatelessWidget {
   final double? width;
   final double? height;
   final double? radius;
+  final double? textSize;
   final VoidCallback? onTap;
   final bool isExtendable;
   final bool isEcommerce;
@@ -29,7 +31,8 @@ class CustomCard extends StatelessWidget {
     this.isExtendable = false,
     this.isEcommerce = false,
     this.isDescription = false,
-    this.isImageLeft = false,
+    this.isImageLeft = false, 
+    this.textSize,
   });
 
   
@@ -77,10 +80,18 @@ Widget build(BuildContext context) {
               Positioned(
                 bottom: 8,
                 right: 8,
-                child: Icon(
-                  Icons.chevron_right,
-                  size: 24,
-                  color: Colors.grey.shade700,
+                child: Container(
+                  width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xff2A9134),
+                    ),
+                  child: Icon(
+                    Icons.chevron_right,
+                    size: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -97,33 +108,42 @@ Widget _buildContent() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: textSize ?? 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+
+            if (isEcommerce && rate != null) ...[
+              const SizedBox(width: 8),
+              const Icon(Icons.star, size: 16, color: Colors.black),
+              const SizedBox(width: 4),
+              Text(
+                rate!.toStringAsFixed(1),
+                style: const TextStyle(fontSize: 13),
+              ),
+            ],
+          ],
         ),
+
         const SizedBox(height: 4),
+
         Text(
           subtitle,
-          maxLines: 2, // batasi jumlah baris
-          overflow: TextOverflow.ellipsis, // otomatis "...”
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: 13,
             color: Colors.grey.shade600,
           ),
         ),
-        if (isEcommerce && rate != null) ...[
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.star, size: 16, color: Colors.amber),
-              const SizedBox(width: 4),
-              Text(rate!.toStringAsFixed(1)),
-            ],
-          ),
-        ],
       ],
     ),
   );
@@ -140,6 +160,29 @@ Widget _buildImage() {
         ),
       ),
 
+      // PRICE BADGE (ECOMMERCE)
+      if (isEcommerce && price != null)
+        Positioned(
+          top: 8,
+          left: 8,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(175, 109, 109, 109),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: CustomText(
+              text: price!,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.white
+              )
+              )
+          ),
+        ),
+
+      // IMAGE ONLY TEXT OVERLAY
       if (imageOnly)
         Positioned(
           left: 0,
@@ -158,8 +201,8 @@ Widget _buildImage() {
               ),
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   title,
