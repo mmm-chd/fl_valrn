@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      initialRoute: AppRoutes.fieldsPage,
+      initialRoute: AppRoutes.navbarPage,
       getPages: AppPages.pages,
     );
   }
