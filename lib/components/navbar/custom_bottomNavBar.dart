@@ -4,53 +4,27 @@ import 'package:fl_valrn/components/navbar/notch/notch_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
-  /// Index item yang sedang dipilih
   final int currentIndex;
-
-  /// Callback ketika item di-tap
   final Function(int) onTap;
-
-  /// List item navigasi
   final List<CustomBottomnavitem> items;
-
-  /// Index item yang akan dijadikan floating button (null jika tidak ada)
   final int? centerItemIndex;
-
-  /// Tinggi bottom bar
   final double height;
-
-  /// Warna background
   final Color backgroundColor;
-
-  /// Warna item yang dipilih
   final Color selectedColor;
-
-  /// Warna item yang tidak dipilih
   final Color unselectedColor;
-
-  /// Warna floating button
   final Color floatingButtonColor;
-
-  /// Ukuran floating button
   final double floatingButtonSize;
-
-  /// Ukuran ikon
   final double iconSize;
-
-  /// Tampilkan label atau tidak
+  final double textSize;
   final bool showLabels;
-
-  /// Tampilkan indicator dot atau tidak
   final bool showIndicatorDot;
-
-  /// Style notch untuk floating button
   final NotchStyle notchStyle;
-
-  /// Aktifkan animasi atau tidak
   final bool enableAnimation;
-
-  /// Durasi animasi
   final Duration animationDuration;
+  final double floatingButtonHeight;
+  final double notchSpacing;
+  final double? notchRadius;
+  final double notchCornerRadius;
 
   const CustomBottomNavBar({
     super.key,
@@ -58,53 +32,61 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.onTap,
     required this.items,
     this.centerItemIndex,
-    this.height = 80,
+    this.height = 65,
     this.backgroundColor = Colors.white,
     this.selectedColor = Colors.blue,
     this.unselectedColor = Colors.grey,
     this.floatingButtonColor = Colors.blue,
-    this.floatingButtonSize = 70,
-    this.iconSize = 28,
+    this.floatingButtonSize = 58,
+    this.iconSize = 24,
     this.showLabels = false,
     this.showIndicatorDot = true,
     this.notchStyle = NotchStyle.circular,
     this.enableAnimation = true,
     this.animationDuration = const Duration(milliseconds: 300),
+    this.floatingButtonHeight = -4,
+    this.notchSpacing = 8,
+    this.notchRadius,
+    this.notchCornerRadius = 22,
+    this.textSize = 11,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Jika ada notch, gunakan custom shape
     if (centerItemIndex != null && notchStyle != NotchStyle.none) {
       return _buildWithNotch(context);
     }
-
     return _buildWithoutNotch(context);
   }
 
   Widget _buildWithNotch(BuildContext context) {
+    final calculatedNotchRadius =
+        notchRadius ?? (floatingButtonSize / 2 + notchSpacing);
+
     return SizedBox(
       height: height,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Background dengan notch
           CustomPaint(
             size: Size(MediaQuery.of(context).size.width, height),
             painter: NotchPainter(
               notchStyle: notchStyle,
               backgroundColor: backgroundColor,
-              notchRadius: floatingButtonSize / 2 + 10,
+              notchRadius: calculatedNotchRadius,
+              notchSpacing: notchSpacing,
+              notchCornerRadius: notchCornerRadius,
+              notchVerticalOffset: floatingButtonHeight,
             ),
           ),
-          // Bottom navigation items
+
           Positioned.fill(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _buildNavItems(context),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Row(children: _buildNavItems(context)),
             ),
           ),
-          // Floating button
+
           if (centerItemIndex != null) _buildFloatingButton(context),
         ],
       ),
@@ -118,7 +100,7 @@ class CustomBottomNavBar extends StatelessWidget {
         color: backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -127,10 +109,7 @@ class CustomBottomNavBar extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _buildNavItems(context),
-          ),
+          Row(children: _buildNavItems(context)),
           if (centerItemIndex != null) _buildFloatingButton(context),
         ],
       ),
@@ -141,17 +120,12 @@ class CustomBottomNavBar extends StatelessWidget {
     List<Widget> navItems = [];
 
     for (int i = 0; i < items.length; i++) {
-      // Skip atau tambah space untuk floating button
       if (centerItemIndex != null && i == centerItemIndex) {
-        if (notchStyle == NotchStyle.none) {
-          navItems.add(SizedBox(width: floatingButtonSize));
-        } else {
-          navItems.add(SizedBox(width: floatingButtonSize + 20));
-        }
+        navItems.add(Expanded(child: SizedBox.shrink()));
         continue;
       }
 
-      navItems.add(_buildNavItem(items[i], i));
+      navItems.add(Expanded(child: _buildNavItem(items[i], i)));
     }
 
     return navItems;
@@ -164,9 +138,10 @@ class CustomBottomNavBar extends StatelessWidget {
       onTap: () => onTap(index),
       child: AnimatedContainer(
         duration: enableAnimation ? animationDuration : Duration.zero,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
               clipBehavior: Clip.none,
@@ -184,14 +159,14 @@ class CustomBottomNavBar extends StatelessWidget {
                 ),
                 if (item.hasIndicator)
                   Positioned(
-                    right: -8,
-                    top: -4,
+                    right: -6,
+                    top: -3,
                     child: AnimatedScale(
                       scale: isSelected && enableAnimation ? 1.2 : 1.0,
                       duration: animationDuration,
                       child: Container(
-                        width: 12,
-                        height: 12,
+                        width: 10,
+                        height: 10,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: selectedColor,
@@ -207,18 +182,23 @@ class CustomBottomNavBar extends StatelessWidget {
               AnimatedDefaultTextStyle(
                 duration: enableAnimation ? animationDuration : Duration.zero,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: textSize,
                   color: isSelected ? selectedColor : unselectedColor,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
-                child: Text(item.label),
+                child: Text(
+                  item.label,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ] else if (showIndicatorDot) ...[
               const SizedBox(height: 4),
               AnimatedContainer(
                 duration: enableAnimation ? animationDuration : Duration.zero,
-                width: isSelected ? 6 : 0,
-                height: isSelected ? 6 : 0,
+                width: isSelected ? 5 : 0,
+                height: isSelected ? 5 : 0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: selectedColor,
@@ -241,15 +221,14 @@ class CustomBottomNavBar extends StatelessWidget {
     return Positioned(
       left: screenWidth / 2 - (floatingButtonSize / 2),
       top: notchStyle != NotchStyle.none
-          ? -(floatingButtonSize / 2) + 10
+          ? -(floatingButtonSize / 2) + floatingButtonHeight
           : -(floatingButtonSize / 2) + 15,
       child: GestureDetector(
         onTap: () => onTap(centerItemIndex!),
         child: AnimatedScale(
-          scale: isSelected && enableAnimation ? 1.15 : 1.0,
+          scale: isSelected && enableAnimation ? 1.08 : 1.0,
           duration: animationDuration,
-          child: AnimatedContainer(
-            duration: enableAnimation ? animationDuration : Duration.zero,
+          child: Container(
             width: floatingButtonSize,
             height: floatingButtonSize,
             decoration: BoxDecoration(
@@ -257,9 +236,9 @@ class CustomBottomNavBar extends StatelessWidget {
               color: floatingButtonColor,
               boxShadow: [
                 BoxShadow(
-                  color: floatingButtonColor.withValues(alpha: 0.3),
-                  blurRadius: isSelected ? 20 : 15,
-                  spreadRadius: isSelected ? 3 : 2,
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -268,7 +247,7 @@ class CustomBottomNavBar extends StatelessWidget {
               duration: animationDuration,
               child:
                   item.customIcon ??
-                  Icon(item.icon, color: Colors.white, size: iconSize + 7),
+                  Icon(item.icon, color: Colors.white, size: iconSize + 4),
             ),
           ),
         ),

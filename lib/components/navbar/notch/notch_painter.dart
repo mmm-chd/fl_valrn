@@ -2,87 +2,75 @@ import 'package:fl_valrn/components/navbar/notch/notch_style.dart';
 import 'package:flutter/material.dart';
 
 class NotchPainter extends CustomPainter {
-  final NotchStyle notchStyle;
   final Color backgroundColor;
   final double notchRadius;
+  final double notchSpacing;
+  final double notchCornerRadius;
+  final double notchVerticalOffset;
+  final NotchStyle notchStyle;
 
   NotchPainter({
-    required this.notchStyle,
     required this.backgroundColor,
     required this.notchRadius,
+    required this.notchSpacing,
+    required this.notchCornerRadius,
+    required this.notchStyle,
+    required this.notchVerticalOffset,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = backgroundColor
-      ..style = PaintingStyle.fill;
-
-    final shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.1)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true;
 
     final path = Path();
-
-    // Posisi tengah
     final centerX = size.width / 2;
-    final notchWidth = notchRadius * 2;
 
-    if (notchStyle == NotchStyle.circular) {
-      // Notch melingkar
-      path.moveTo(0, 0);
-      path.lineTo(centerX - notchWidth / 2 - 10, 0);
-      
-      // Kurva kiri
-      path.quadraticBezierTo(
-        centerX - notchWidth / 2,
-        0,
-        centerX - notchWidth / 2,
-        10,
-      );
-      
-      // Lengkungan atas (notch)
-      path.arcToPoint(
-        Offset(centerX + notchWidth / 2, 10),
-        radius: Radius.circular(notchRadius),
-        clockwise: false,
-      );
-      
-      // Kurva kanan
-      path.quadraticBezierTo(
-        centerX + notchWidth / 2,
-        0,
-        centerX + notchWidth / 2 + 10,
-        0,
-      );
-      
-      path.lineTo(size.width, 0);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-      path.close();
-    } else if (notchStyle == NotchStyle.square) {
-      // Notch kotak
-      path.moveTo(0, 0);
-      path.lineTo(centerX - notchWidth / 2 - 10, 0);
-      path.lineTo(centerX - notchWidth / 2 - 10, 20);
-      path.lineTo(centerX + notchWidth / 2 + 10, 20);
-      path.lineTo(centerX + notchWidth / 2 + 10, 0);
-      path.lineTo(size.width, 0);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-      path.close();
-    }
+    // Radius total untuk notch
+    final totalRadius = notchRadius + notchSpacing;
 
-    // Gambar shadow
-    canvas.drawPath(path, shadowPaint);
-    // Gambar background
+    // Titik kiri dan kanan
+    final leftX = centerX - totalRadius;
+    final rightX = centerX + totalRadius;
+
+    // Mulai dari kiri atas
+    path.moveTo(0, 0);
+
+    // Garis lurus sampai sebelum notch
+    path.lineTo(leftX - notchCornerRadius, 0);
+
+    // Kurva smooth di sudut kiri
+    path.quadraticBezierTo(leftX, 0, leftX, notchCornerRadius);
+
+    // Arc lingkaran sempurna untuk notch
+    path.arcToPoint(
+      Offset(rightX, notchCornerRadius),
+      radius: Radius.circular(totalRadius),
+      clockwise: false,
+    );
+
+    // Kurva smooth di sudut kanan
+    path.quadraticBezierTo(rightX, 0, rightX + notchCornerRadius, 0);
+
+    // Garis lurus sampai ujung kanan
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    // Draw main path
     canvas.drawPath(path, paint);
   }
 
   @override
-  bool shouldRepaint(NotchPainter oldDelegate) {
-    return oldDelegate.notchStyle != notchStyle ||
-        oldDelegate.backgroundColor != backgroundColor ||
-        oldDelegate.notchRadius != notchRadius;
+  bool shouldRepaint(covariant NotchPainter oldDelegate) {
+    return oldDelegate.backgroundColor != backgroundColor ||
+        oldDelegate.notchRadius != notchRadius ||
+        oldDelegate.notchSpacing != notchSpacing ||
+        oldDelegate.notchCornerRadius != notchCornerRadius ||
+        oldDelegate.notchVerticalOffset != notchVerticalOffset ||
+        oldDelegate.notchStyle != notchStyle;
   }
 }

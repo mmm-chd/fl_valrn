@@ -6,7 +6,6 @@ import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
 import 'package:fl_valrn/bindings/init_binding.dart';
-import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/navigation/navBar_page.dart';
 import 'package:fl_valrn/pages/login_page.dart';
 import 'package:fl_valrn/pages/market_page.dart';
