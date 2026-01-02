@@ -17,7 +17,6 @@ class NavbarPage extends GetView<NavbarController> {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            // 🔹 PAGE CONTENT
             Positioned.fill(
               child: controller.pages[controller.currentIndex.value],
             ),
@@ -42,16 +41,17 @@ class NavbarPage extends GetView<NavbarController> {
                 unselectedColor: Colors.grey.shade400,
                 floatingButtonColor: PColor.primGreen,
                 notchStyle: NotchStyle.circular,
-                height: 84,
+                height: 68,
                 showLabels: true,
                 enableAnimation: true,
-                floatingButtonSize: 72,
+                floatingButtonSize: 64,
                 iconSize: 28,
                 textSize: 12,
-                notchRadius: 38,
+                notchRadius: 32,
                 notchSpacing: 4,
                 notchCornerRadius: 6,
                 floatingButtonHeight: 6,
+                bottomPadding: 12,
                 animationDuration: const Duration(milliseconds: 300),
               ),
             ),
