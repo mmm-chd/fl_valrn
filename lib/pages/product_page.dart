@@ -1,4 +1,5 @@
 import 'package:fl_valrn/components/widgets/custom_button.dart';
+import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_product_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -190,9 +191,87 @@ class ProductPage extends GetView<MarketController> {
               const CustomSpacing(height: 10, ),
               Divider(
                 thickness: 25,
-                color: Colors.grey[300],
-                ),
+                color: Colors.grey[400],
+              ),
                 const CustomSpacing(height: 10, ),
+              
+              Container(
+                margin: EdgeInsets.only(left: 16, right: 16, top: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: CustomText(
+                        text: "Mungkin Anda Tertarik",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              CustomSpacing(height: 10,),
+              
+              Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 40),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.productCard.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, 
+                        mainAxisSpacing: 12,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 180 / 244, 
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = controller.productCard[index];
+
+                        return CustomCard(
+                          title: item.title,
+                          subtitle: item.subtitle,
+                          imageUrl: item.imageUrl,
+                          rate: item.rate,
+                          price: item.price,
+                          isEcommerce: true,
+                          isDescription: true,
+                          height: 244,
+                          width: 184,
+                          isImageLeft: false,
+                          textSize: 14,
+                          onTap: (){
+                            Get.offNamed(
+                              AppRoutes.productPage,
+                              arguments: controller.productCard[index],
+                              preventDuplicates: false,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }),
             ],
           ),
         ),

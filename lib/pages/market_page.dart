@@ -190,6 +190,12 @@ class MarketPage extends GetView<MarketController> {
                           width: 184,
                           isImageLeft: false,
                           textSize: 14,
+                          onTap: (){
+                            Get.to(
+                              ()=>ProductPage(),
+                              arguments: controller.productCard[index],
+                            );
+                          },
                         );
                       },
                     );
