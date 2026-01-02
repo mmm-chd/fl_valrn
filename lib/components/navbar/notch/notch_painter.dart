@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:fl_valrn/components/navbar/notch/notch_style.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class NotchPainter extends CustomPainter {
   final double notchCornerRadius;
   final double notchVerticalOffset;
   final NotchStyle notchStyle;
+  final double bottomPadding; // 🆕 Bottom padding support
 
   NotchPainter({
     required this.backgroundColor,
@@ -16,6 +18,7 @@ class NotchPainter extends CustomPainter {
     required this.notchCornerRadius,
     required this.notchStyle,
     required this.notchVerticalOffset,
+    this.bottomPadding = 0.0, // Default 0
   });
 
   @override
@@ -28,12 +31,15 @@ class NotchPainter extends CustomPainter {
     final path = Path();
     final centerX = size.width / 2;
 
-    // Radius total untuk notch
+    // Total radius untuk notch
     final totalRadius = notchRadius + notchSpacing;
 
     // Titik kiri dan kanan
     final leftX = centerX - totalRadius;
     final rightX = centerX + totalRadius;
+
+    // ✅ Adjust height untuk bottom padding
+    final navbarHeight = size.height - bottomPadding;
 
     // Mulai dari kiri atas
     path.moveTo(0, 0);
@@ -56,8 +62,19 @@ class NotchPainter extends CustomPainter {
 
     // Garis lurus sampai ujung kanan
     path.lineTo(size.width, 0);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
+
+    // ✅ Turun ke bottom (dengan padding)
+    path.lineTo(size.width, navbarHeight);
+
+    // ✅ Bottom padding area (solid color)
+    if (bottomPadding > 0) {
+      path.lineTo(size.width, size.height);
+      path.lineTo(0, size.height);
+      path.lineTo(0, navbarHeight);
+    } else {
+      path.lineTo(0, navbarHeight);
+    }
+
     path.close();
 
     // Draw main path
@@ -71,6 +88,7 @@ class NotchPainter extends CustomPainter {
         oldDelegate.notchSpacing != notchSpacing ||
         oldDelegate.notchCornerRadius != notchCornerRadius ||
         oldDelegate.notchVerticalOffset != notchVerticalOffset ||
-        oldDelegate.notchStyle != notchStyle;
+        oldDelegate.notchStyle != notchStyle ||
+        oldDelegate.bottomPadding != bottomPadding;
   }
 }
