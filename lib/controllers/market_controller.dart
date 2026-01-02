@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 class MarketController extends GetxController{
   final searchController= TextEditingController();
+  final chatController= TextEditingController();
 
   var isLoading= true.obs;
   var trendingCard = <TrendingItem>[].obs;

@@ -1,3 +1,4 @@
+import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:flutter/material.dart';
 
 class CustomProductCard extends StatelessWidget {
@@ -44,7 +45,7 @@ class CustomProductCard extends StatelessWidget {
               right: 16,
               child: Row(
                 children: [
-                  _circleIcon(Icons.arrow_back, onBack),
+                  _circleIcon(Icons.arrow_back, onBack,),
                   const Spacer(),
                   _circleIcon(Icons.share, onShare),
                   const SizedBox(width: 8),
@@ -81,16 +82,14 @@ class CustomProductCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           color: const Color(0xFF2A9134),
           child: Row(
-            children: [
-              Expanded(
-                child: Column(
+            children: [ Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -99,12 +98,15 @@ class CustomProductCard extends StatelessWidget {
                       subtitle,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 20,
                       ),
                     ),
                   ],
                 ),
-              ),
+              const Spacer(),
+              _circleIcon(Icons.handshake, onBack,),
+              CustomSpacing(width: 20,),
+              _circleIcon(Icons.bookmark_add, onBookmark,),
               if (trailing != null) trailing!,
             ],
           ),
@@ -117,13 +119,13 @@ class CustomProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 36,
-        height: 36,
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white.withOpacity(0.9),
         ),
-        child: Icon(icon, size: 20),
+        child: Icon(icon, size: 24, color: Color(0xff2A9134)),
       ),
     );
   }
