@@ -25,11 +25,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final double? notchSpacing;
   final double? notchRadius;
   final double? notchCornerRadius;
-  
-  /// 🆕 Padding bottom untuk navbar (respects safe area)
   final double? bottomPadding;
-  
-  /// 🆕 Otomatis gunakan MediaQuery bottom padding (untuk iPhone notch, dll)
   final bool useSystemBottomPadding;
 
   const CustomBottomNavBar({
@@ -56,7 +52,7 @@ class CustomBottomNavBar extends StatelessWidget {
     this.notchCornerRadius,
     this.textSize,
     this.bottomPadding,
-    this.useSystemBottomPadding = true, // Default true untuk support iPhone notch
+    this.useSystemBottomPadding = true,
   });
 
   _ResponsiveSizes _calculateSizes(BuildContext context) {
@@ -64,7 +60,6 @@ class CustomBottomNavBar extends StatelessWidget {
     final constrainedWidth = screenWidth.clamp(320.0, 428.0);
     final scaleFactor = ((constrainedWidth - 320) / 108 * 0.2 + 0.8).clamp(0.8, 1.0);
 
-    // ✅ Calculate bottom padding
     final systemBottomPadding = useSystemBottomPadding 
         ? MediaQuery.of(context).padding.bottom 
         : 0.0;
@@ -109,7 +104,6 @@ class CustomBottomNavBar extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // ✅ CustomPaint dengan padding
           CustomPaint(
             size: Size(MediaQuery.of(context).size.width, totalHeight),
             painter: NotchPainter(
@@ -123,7 +117,6 @@ class CustomBottomNavBar extends StatelessWidget {
             ),
           ),
 
-          // ✅ Nav items dengan padding bottom
           Positioned(
             left: 0,
             right: 0,

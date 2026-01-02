@@ -7,7 +7,7 @@ class CustomNavbarsafepadding extends StatelessWidget {
   const CustomNavbarsafepadding({
     super.key,
     required this.child,
-    this.navbarHeight = 84.0,
+    this.navbarHeight = 100.0,
   });
 
   @override
