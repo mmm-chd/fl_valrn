@@ -7,3 +7,7 @@ class PColor {
 class SColor {
   static const Color secGrey = Color(0xff808083);
 }
+
+class HColor {
+  static const Color bgWhite = Color(0xffF9FAFB);
+}

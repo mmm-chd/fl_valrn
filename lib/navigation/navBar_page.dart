@@ -4,6 +4,7 @@ import 'package:fl_valrn/components/navbar/notch/notch_style.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/navigation/navBar_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class NavbarPage extends GetView<NavbarController> {
@@ -17,7 +18,6 @@ class NavbarPage extends GetView<NavbarController> {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            // 🔹 PAGE CONTENT
             Positioned.fill(
               child: controller.pages[controller.currentIndex.value],
             ),
@@ -30,11 +30,55 @@ class NavbarPage extends GetView<NavbarController> {
                 currentIndex: controller.currentIndex.value,
                 onTap: controller.changeIndex,
                 items: [
-                  CustomBottomnavitem(icon: Icons.home, label: 'Beranda'),
-                  CustomBottomnavitem(icon: Icons.explore, label: 'Fields'),
-                  CustomBottomnavitem(icon: Icons.add, label: 'Add'),
-                  CustomBottomnavitem(icon: Icons.history, label: 'History'),
-                  CustomBottomnavitem(icon: Icons.person, label: 'Profile'),
+                  CustomBottomnavitem(
+                    label: 'Beranda',
+                    customIconUnselectedBuilder: (size) =>
+                        navSvgIcon('assets/icons/unselected/home.svg', size),
+                    customIconSelectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/selected/home_selected.svg',
+                      size,
+                    ),
+                  ),
+                  CustomBottomnavitem(
+                    label: 'Fields',
+                    customIconUnselectedBuilder: (size) =>
+                        navSvgIcon('assets/icons/unselected/fields.svg', size),
+                    customIconSelectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/selected/field_selected.svg',
+                      size,
+                    ),
+                  ),
+                  CustomBottomnavitem(
+                    label: 'Identifier',
+                    customIconUnselectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/unselected/identifier.svg',
+                      size,
+                    ),
+                    customIconSelectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/unselected/identifier.svg',
+                      size,
+                    ),
+                  ),
+                  CustomBottomnavitem(
+                    label: 'Ecommerce',
+                    customIconUnselectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/unselected/ecommerce.svg',
+                      size,
+                    ),
+                    customIconSelectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/selected/ecommerce_selected.svg',
+                      size,
+                    ),
+                  ),
+                  CustomBottomnavitem(
+                    label: 'Profile',
+                    customIconUnselectedBuilder: (size) =>
+                        navSvgIcon('assets/icons/unselected/profile.svg', size),
+                    customIconSelectedBuilder: (size) => navSvgIcon(
+                      'assets/icons/selected/profile_selected.svg',
+                      size,
+                    ),
+                  ),
                 ],
                 centerItemIndex: 2,
                 backgroundColor: Colors.white,
@@ -42,21 +86,39 @@ class NavbarPage extends GetView<NavbarController> {
                 unselectedColor: Colors.grey.shade400,
                 floatingButtonColor: PColor.primGreen,
                 notchStyle: NotchStyle.circular,
-                height: 84,
-                showLabels: true,
-                enableAnimation: true,
-                floatingButtonSize: 72,
-                iconSize: 28,
+                height: 68,
+                showIndicatorDot: true,
+                floatingButtonSize: 64,
+                iconSize: 32,
+                floatingButtonIconSize:
+                    48, // Separate size for floating button icon
                 textSize: 12,
-                notchRadius: 38,
+                notchRadius: 32,
                 notchSpacing: 4,
                 notchCornerRadius: 6,
                 floatingButtonHeight: 6,
+                bottomPadding: 12,
                 animationDuration: const Duration(milliseconds: 300),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget navSvgIcon(String path, double size, {Color? color}) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: SvgPicture.asset(
+        path,
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.center,
+        allowDrawingOutsideViewBox: true,
+        colorFilter: color != null
+            ? ColorFilter.mode(color, BlendMode.srcIn)
+            : null,
       ),
     );
   }
