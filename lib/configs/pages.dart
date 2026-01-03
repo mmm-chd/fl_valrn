@@ -2,7 +2,6 @@ import 'package:fl_valrn/bindings/fields_binding.dart';
 import 'package:fl_valrn/bindings/home_binding.dart';
 import 'package:fl_valrn/bindings/login_binding.dart';
 import 'package:fl_valrn/bindings/market_binding.dart';
-import 'package:fl_valrn/bindings/product_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
