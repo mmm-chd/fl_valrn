@@ -1,4 +1,3 @@
-import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_product_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
@@ -6,7 +5,6 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/market_controller.dart';
-import 'package:fl_valrn/controllers/product_controller.dart';
 import 'package:fl_valrn/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

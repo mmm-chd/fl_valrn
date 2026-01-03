@@ -1,11 +1,17 @@
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
+import 'package:fl_valrn/pages/market_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NavbarController extends GetxController {
   var currentIndex = 0.obs;
-  final List<Widget> pages = [HomePage(), FieldsPage()];
+  final List<Widget> pages = [
+    HomePage(),
+    FieldsPage(),
+    HomePage(),
+    MarketPage(),
+  ];
 
   void changeIndex(int index) {
     currentIndex.value = index;

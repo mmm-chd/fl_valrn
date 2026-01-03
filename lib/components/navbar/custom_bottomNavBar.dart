@@ -15,6 +15,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final Color floatingButtonColor;
   final double? floatingButtonSize;
   final double? iconSize;
+  final double? floatingButtonIconSize;
   final double? textSize;
   final bool showLabels;
   final bool showIndicatorDot;
@@ -41,6 +42,7 @@ class CustomBottomNavBar extends StatelessWidget {
     this.floatingButtonColor = Colors.blue,
     this.floatingButtonSize,
     this.iconSize,
+    this.floatingButtonIconSize,
     this.showLabels = false,
     this.showIndicatorDot = true,
     this.notchStyle = NotchStyle.circular,
@@ -58,21 +60,27 @@ class CustomBottomNavBar extends StatelessWidget {
   _ResponsiveSizes _calculateSizes(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final constrainedWidth = screenWidth.clamp(320.0, 428.0);
-    final scaleFactor = ((constrainedWidth - 320) / 108 * 0.2 + 0.8).clamp(0.8, 1.0);
+    final scaleFactor = ((constrainedWidth - 320) / 108 * 0.2 + 0.8).clamp(
+      0.8,
+      1.0,
+    );
 
-    final systemBottomPadding = useSystemBottomPadding 
-        ? MediaQuery.of(context).padding.bottom 
+    final systemBottomPadding = useSystemBottomPadding
+        ? MediaQuery.of(context).padding.bottom
         : 0.0;
     final finalBottomPadding = bottomPadding ?? systemBottomPadding;
 
     return _ResponsiveSizes(
       height: height ?? (60 + (scaleFactor - 0.8) * 25).clamp(60, 70),
-      buttonSize: floatingButtonSize ?? (52 + (scaleFactor - 0.8) * 20).clamp(52, 64),
+      buttonSize:
+          floatingButtonSize ?? (52 + (scaleFactor - 0.8) * 20).clamp(52, 64),
       iconSize: iconSize ?? (22 + (scaleFactor - 0.8) * 6).clamp(22, 26),
       textSize: textSize ?? (10 + (scaleFactor - 0.8) * 2).clamp(10, 12),
       spacing: notchSpacing ?? (6 + (scaleFactor - 0.8) * 4).clamp(6, 8),
-      cornerRadius: notchCornerRadius ?? (18 + (scaleFactor - 0.8) * 8).clamp(18, 24),
-      buttonHeight: floatingButtonHeight ?? (-5 + (scaleFactor - 0.8) * 2).clamp(-5, -3),
+      cornerRadius:
+          notchCornerRadius ?? (18 + (scaleFactor - 0.8) * 8).clamp(18, 24),
+      buttonHeight:
+          floatingButtonHeight ?? (-5 + (scaleFactor - 0.8) * 2).clamp(-5, -3),
       bottomPadding: finalBottomPadding,
     );
   }
@@ -87,7 +95,8 @@ class CustomBottomNavBar extends StatelessWidget {
 
   Widget _buildWithNotch(BuildContext context) {
     final sizes = _calculateSizes(context);
-    final calculatedNotchRadius = notchRadius ?? (sizes.buttonSize / 2 + sizes.spacing);
+    final calculatedNotchRadius =
+        notchRadius ?? (sizes.buttonSize / 2 + sizes.spacing);
     final totalHeight = sizes.height + sizes.bottomPadding;
 
     return Container(
@@ -181,7 +190,11 @@ class CustomBottomNavBar extends StatelessWidget {
     return navItems;
   }
 
-  Widget _buildNavItem(CustomBottomnavitem item, int index, _ResponsiveSizes sizes) {
+  Widget _buildNavItem(
+    CustomBottomnavitem item,
+    int index,
+    _ResponsiveSizes sizes,
+  ) {
     final isSelected = currentIndex == index;
 
     return GestureDetector(
@@ -199,12 +212,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 AnimatedScale(
                   scale: isSelected && enableAnimation ? 1.1 : 1.0,
                   duration: animationDuration,
-                  child: item.customIcon ??
-                      Icon(
-                        item.icon,
-                        color: isSelected ? selectedColor : unselectedColor,
-                        size: sizes.iconSize,
-                      ),
+                  child: _buildIcon(item, isSelected, sizes),
                 ),
                 if (item.hasIndicator)
                   Positioned(
@@ -219,7 +227,10 @@ class CustomBottomNavBar extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: selectedColor,
-                          border: Border.all(color: backgroundColor, width: 1.5),
+                          border: Border.all(
+                            color: backgroundColor,
+                            width: 1.5,
+                          ),
                         ),
                       ),
                     ),
@@ -260,12 +271,44 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
+  Widget _buildIcon(
+    CustomBottomnavitem item,
+    bool isSelected,
+    _ResponsiveSizes sizes,
+  ) {
+    // Prioritize builders for proper sizing
+    if (isSelected && item.customIconSelectedBuilder != null) {
+      return item.customIconSelectedBuilder!(sizes.iconSize);
+    }
+    if (!isSelected && item.customIconUnselectedBuilder != null) {
+      return item.customIconUnselectedBuilder!(sizes.iconSize);
+    }
+
+    // Fallback to deprecated direct widgets
+    if (isSelected && item.customIconSelected != null) {
+      return item.customIconSelected!;
+    }
+    if (!isSelected && item.customIconUnselected != null) {
+      return item.customIconUnselected!;
+    }
+
+    // Final fallback to icon
+    return Icon(
+      item.icon,
+      color: isSelected ? selectedColor : unselectedColor,
+      size: sizes.iconSize,
+    );
+  }
+
   Widget _buildFloatingButton(BuildContext context, _ResponsiveSizes sizes) {
     if (centerItemIndex == null) return const SizedBox.shrink();
 
     final item = items[centerItemIndex!];
     final screenWidth = MediaQuery.of(context).size.width;
     final isSelected = currentIndex == centerItemIndex;
+
+    final floatingIconSize =
+        floatingButtonIconSize ?? iconSize ?? (sizes.iconSize + 4);
 
     return Positioned(
       left: screenWidth / 2 - (sizes.buttonSize / 2),
@@ -274,36 +317,45 @@ class CustomBottomNavBar extends StatelessWidget {
           : -(sizes.buttonSize / 2) + 15,
       child: GestureDetector(
         onTap: () => onTap(centerItemIndex!),
-        child: AnimatedScale(
-          scale: isSelected && enableAnimation ? 1.08 : 1.0,
-          duration: animationDuration,
-          child: Container(
-            width: sizes.buttonSize,
-            height: sizes.buttonSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: floatingButtonColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: AnimatedRotation(
-              turns: isSelected && enableAnimation ? 0.125 : 0,
-              duration: animationDuration,
-              child: item.customIcon ??
-                  Icon(
-                    item.icon,
-                    color: Colors.white,
-                    size: sizes.iconSize + 4,
-                  ),
-            ),
+        child: Container(
+          width: sizes.buttonSize,
+          height: sizes.buttonSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: floatingButtonColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
+          child: _buildFloatingIcon(item, isSelected, floatingIconSize),
         ),
       ),
+    );
+  }
+
+  Widget _buildFloatingIcon(
+    CustomBottomnavitem item,
+    bool isSelected,
+    double size,
+  ) {
+    Widget icon;
+
+    if (isSelected && item.customIconSelectedBuilder != null) {
+      icon = item.customIconSelectedBuilder!(size);
+    } else if (!isSelected && item.customIconUnselectedBuilder != null) {
+      icon = item.customIconUnselectedBuilder!(size);
+    } else {
+      icon = Icon(item.icon, color: Colors.white, size: size);
+    }
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Center(child: icon),
     );
   }
 }
@@ -316,7 +368,7 @@ class _ResponsiveSizes {
   final double spacing;
   final double cornerRadius;
   final double buttonHeight;
-  final double bottomPadding; // 🆕
+  final double bottomPadding;
 
   _ResponsiveSizes({
     required this.height,
