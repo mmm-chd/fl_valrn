@@ -1,5 +1,7 @@
 import 'package:fl_valrn/bindings/login_binding.dart';
+import 'package:fl_valrn/bindings/profile_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
 import 'package:fl_valrn/pages/login_page.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +11,11 @@ class AppPages {
       name: AppRoutes.loginPage,
       page: () => LoginPage(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profilePage,
+      page: () => ProfilePage(),
+      binding: ProfileBinding(),
     ),
   ];
 }
