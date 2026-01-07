@@ -30,6 +30,5 @@ class AppPages {
     GetPage(name: AppRoutes.fieldsPage, page: ()=>FieldsPage(), binding: FieldsBinding()),
     GetPage(name: AppRoutes.marketPage, page: ()=>MarketPage(), binding: MarketBinding()),
     GetPage(name: AppRoutes.productPage, page: ()=>ProductPage(), binding: MarketBinding()),
-    GetPage(name: AppRoutes.profilePage, page: ()=>ProfilePage(), binding: ProfileBinding()),
   ];
 }
