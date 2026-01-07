@@ -2,8 +2,9 @@ import 'package:fl_valrn/bindings/fields_binding.dart';
 import 'package:fl_valrn/bindings/home_binding.dart';
 import 'package:fl_valrn/bindings/login_binding.dart';
 import 'package:fl_valrn/bindings/market_binding.dart';
-import 'package:fl_valrn/bindings/product_binding.dart';
+import 'package:fl_valrn/bindings/profile_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
 import 'package:fl_valrn/bindings/init_binding.dart';
@@ -29,5 +30,6 @@ class AppPages {
     GetPage(name: AppRoutes.fieldsPage, page: ()=>FieldsPage(), binding: FieldsBinding()),
     GetPage(name: AppRoutes.marketPage, page: ()=>MarketPage(), binding: MarketBinding()),
     GetPage(name: AppRoutes.productPage, page: ()=>ProductPage(), binding: MarketBinding()),
+    GetPage(name: AppRoutes.profilePage, page: ()=>ProfilePage(), binding: ProfileBinding()),
   ];
 }

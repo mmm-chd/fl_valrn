@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:fl_valrn/components/navbar/notch/notch_style.dart';
 import 'package:flutter/material.dart';
 
