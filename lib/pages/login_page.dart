@@ -73,7 +73,7 @@ class LoginPage extends GetView<LoginController> {
                 padding: const EdgeInsets.all(18),
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                 ),
                 child: Obx(
                   () => Column(

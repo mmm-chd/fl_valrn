@@ -67,32 +67,32 @@ class CustomTextfield extends StatelessWidget {
           hintFadeDuration: Duration(milliseconds: 500),
 
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color:Colors.red),
           ),
 
           focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: Colors.red),
           ),
 
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: PColor.primGreen),
           ),
 
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: borderColor ?? Colors.grey.shade400),
           ),
 
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: Colors.grey.shade200),
           ),
 
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: borderColor ?? Colors.grey.shade400),
           ),
 
