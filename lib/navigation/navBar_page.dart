@@ -86,7 +86,7 @@ class NavbarPage extends GetView<NavbarController> {
                 unselectedColor: Colors.grey.shade400,
                 floatingButtonColor: PColor.primGreen,
                 notchStyle: NotchStyle.circular,
-                height: 68,
+                height: 56,
                 showIndicatorDot: true,
                 floatingButtonSize: 64,
                 iconSize: 32,
