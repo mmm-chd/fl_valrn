@@ -1,22 +1,21 @@
-import 'package:fl_valrn/controllers/camera_controller.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class PreviewPage extends GetView<CameraController> {
+class PreviewPage extends StatelessWidget {
   const PreviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String imagePath = Get.arguments;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Ngetes muncul kaga"),),
-      body: Obx((){
-        final image= controller.image.value;
-        if (image == null) {
-          return const Center(child: Text("gada foto"),);
-        }
-        return Image.file(image, fit: BoxFit.cover);
-      }),
+      appBar: AppBar(title: const Text('Preview')),
+      body: Image.file(
+        File(imagePath),
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

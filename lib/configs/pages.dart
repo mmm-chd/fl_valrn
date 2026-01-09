@@ -1,4 +1,4 @@
-import 'package:fl_valrn/bindings/camera_binding.dart';
+
 import 'package:fl_valrn/bindings/fields_binding.dart';
 import 'package:fl_valrn/bindings/home_binding.dart';
 import 'package:fl_valrn/bindings/login_binding.dart';
@@ -34,7 +34,10 @@ class AppPages {
     GetPage(name: AppRoutes.marketPage, page: ()=>MarketPage(), binding: MarketBinding()),
     GetPage(name: AppRoutes.productPage, page: ()=>ProductPage(), binding: MarketBinding()),
     GetPage(name: AppRoutes.profilePage, page: ()=>ProfilePage(), binding: ProfileBinding()),
-    GetPage(name: AppRoutes.cameraPage, page: ()=>CameraPage(), binding: CameraBinding()),
-    GetPage(name: AppRoutes.previewPage, page: ()=>PreviewPage(), binding: CameraBinding())
+    GetPage(name: AppRoutes.cameraPage, page: ()=>CameraPage()),
+    GetPage(
+      name: AppRoutes.previewPage,
+      page: () => PreviewPage(),
+    ),
   ];
 }

@@ -1,20 +1,44 @@
-import 'dart:io';
 
+
+import 'package:camera/camera.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
-class CameraController extends GetxController {
-  final ImagePicker picker = ImagePicker();
-  Rx<File?> image= Rx<File?>(null);  
-  RxBool isLoading = false.obs;
+class CameraPageController extends GetxController {
+  late CameraController cameraController;
+  late Future<void> initializeFuture;
 
-  Future<void> takePhoto() async {
-    final XFile? photo = await picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 80);
+  RxBool isReady= false.obs;
+  XFile? image;
 
-    if (photo != null) {
-      image.value= File(photo.path);
-    }
+  final CameraDescription camera;
+
+  CameraPageController(this.camera);
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    cameraController= CameraController(
+      camera, 
+      ResolutionPreset.high,
+      enableAudio: false);
+
+    initializeFuture= cameraController.initialize().then((_){
+      isReady.value=true;
+    });
   }
+
+  Future<void> takePicture() async {
+    if (!cameraController.value.isInitialized) return;
+    image= await cameraController.takePicture();
+  }
+
+  @override
+  void onClose() {
+    cameraController.dispose();
+    super.onClose();
+  }
+
+
+
 }
