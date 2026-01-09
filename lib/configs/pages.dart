@@ -35,6 +35,6 @@ class AppPages {
     GetPage(name: AppRoutes.productPage, page: ()=>ProductPage(), binding: MarketBinding()),
     GetPage(name: AppRoutes.profilePage, page: ()=>ProfilePage(), binding: ProfileBinding()),
     GetPage(name: AppRoutes.cameraPage, page: ()=>CameraPage(), binding: CameraBinding()),
-    GetPage(name: AppRoutes.previewPage, page: ()=>PreviewPage(), binding: CameraBinding())
+    GetPage(name: AppRoutes.previewPage, page: ()=>PreviewPage(imagePath: '',), binding: CameraBinding())
   ];
 }

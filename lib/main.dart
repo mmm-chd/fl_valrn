@@ -1,12 +1,20 @@
+import 'package:camera/camera.dart';
 import 'package:fl_valrn/configs/pages.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+
+late List<CameraDescription> cameras;
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   runApp(const MyApp());
 }
+// void main() {
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
