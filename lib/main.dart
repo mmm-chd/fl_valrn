@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
         ),
       ),
-      initialRoute: AppRoutes.cameraPage,
+      initialRoute: AppRoutes.overviewPage,
       getPages: AppPages.pages,
     );
   }
