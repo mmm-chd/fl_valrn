@@ -1,17 +1,13 @@
-import 'package:camera/camera.dart';
-import 'package:fl_valrn/controllers/camera_controller.dart';
 import 'package:get/get.dart';
+import 'package:camera/camera.dart';
+import '../controllers/camera_controller.dart';
+import '../main.dart';
 
 class CameraBinding extends Bindings {
-  final CameraDescription camera;
-
-  CameraBinding(this.camera);
-
   @override
   void dependencies() {
     Get.lazyPut<CameraPageController>(
-      ()=> CameraPageController(camera)
+      () => CameraPageController(cameras.first),
     );
   }
-  
 }
