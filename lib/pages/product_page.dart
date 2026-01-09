@@ -30,7 +30,7 @@ class ProductPage extends GetView<MarketController> {
                   onPageChanged: controller.onPageChanged, 
                   title: item.title, 
                   subtitle: item.price,
-                  onBack: (){Get.toNamed(AppRoutes.navbarPage);},
+                  onBack: (){Get.back();},
                   onBookmark: (){},
                   onMore: (){},
                   onShare: (){},);
