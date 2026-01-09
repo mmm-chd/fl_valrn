@@ -1,20 +1,14 @@
 import 'dart:io';
-
-import 'package:fl_valrn/controllers/camera_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class PreviewPage extends GetView<CameraPageController> {
-
-  final String imagePath;
-  
-  const PreviewPage({super.key, required this.imagePath});
-
-  
+class PreviewPage extends StatelessWidget {
+  const PreviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String imagePath = Get.arguments;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Preview')),
       body: Image.file(
