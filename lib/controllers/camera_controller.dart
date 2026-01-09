@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:fl_valrn/configs/routes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class CameraPageController extends GetxController {
   late CameraController cameraController;
@@ -10,7 +14,7 @@ class CameraPageController extends GetxController {
   RxBool isFlashOn= false.obs;
   RxBool isReady= false.obs;
   XFile? image;
-  final RxString latestImagePath = ''.obs;
+  final Rx<File?> recentImage = Rx<File?>(null);
 
   final CameraDescription camera;
 
@@ -28,19 +32,33 @@ class CameraPageController extends GetxController {
     initializeFuture= cameraController.initialize().then((_){
       isReady.value=true;
     });
-    loadLatestImage();
+    loadRecentImage();
   }
 
-    Future<void> loadLatestImage() async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.gallery,
-      );
+  Future<void> loadRecentImage() async {
+    final PermissionState ps = await PhotoManager.requestPermissionExtend();
+    if (!ps.isAuth) return;
 
-      if (image != null) {
-        latestImagePath.value = image.path;
+    final List<AssetEntity> assets =
+        await PhotoManager.getAssetListPaged(
+      page: 0,
+      type: RequestType.image,
+      filterOption: FilterOptionGroup(
+        orders: [
+          const OrderOption(
+            type: OrderOptionType.createDate,
+            asc: false, 
+          ),
+        ],
+      ), pageCount: 1,
+    );
+
+    if (assets.isNotEmpty) {
+      final file = await assets.first.file;
+      if (file != null) {
+        recentImage.value = file;
       }
-    } catch (_) {}
+    }
   }
 
     Future<void> takePicture() async {
@@ -65,7 +83,7 @@ class CameraPageController extends GetxController {
     );
     if (image != null) {
       Get.toNamed(
-        '/preview',
+        AppRoutes.previewPage,
         arguments: image.path,
       );
     }

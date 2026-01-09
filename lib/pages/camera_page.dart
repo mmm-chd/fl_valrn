@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_cornerFrame.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
@@ -34,7 +33,7 @@ class CameraPage extends GetView<CameraPageController> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Icon(Icons.close, size: 35, color: Colors.white),
+                      IconButton(icon: const Icon(Icons.close, size: 35, color: Colors.white), onPressed: () { Get.back(); },),
                       Expanded(
                         child: Center(
                           child: CustomText(
@@ -55,7 +54,11 @@ class CameraPage extends GetView<CameraPageController> {
               ),
             ),
             const Center(
-              child: CornerFrame(),
+              child: CornerFrame(
+                radius: 25,
+                cornerLength: 70,
+                strokeWidth: 5,
+              ),
             ),
             Positioned(
               bottom: 24,
@@ -65,29 +68,42 @@ class CameraPage extends GetView<CameraPageController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Obx(() => ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(18),
-                      backgroundColor: const Color(0xFF2A9134),
-                      elevation: 0,
-                    ),
-                    onPressed: controller.pickFromGallery,
-                    child: controller.latestImagePath.isEmpty
-                        ? const Icon(
-                            Icons.photo_library,
-                            size: 28,
-                            color: Colors.white,
-                          )
-                        : ClipOval(
-                            child: Image.file(
-                              File(controller.latestImagePath.value),
-                              width: 32,
-                              height: 32,
-                              fit: BoxFit.cover,
-                            ),
+                   Obx(() {
+                      if (controller.recentImage.value == null) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(18),
+                            backgroundColor: Colors.white.withOpacity(0.25),
+                            elevation: 0,
                           ),
-                  )),
+                          onPressed: controller.pickFromGallery,
+                          child: const Icon(
+                            Icons.photo_library,
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(5),
+                          backgroundColor: Colors.white.withOpacity(0.25),
+                          elevation: 0,
+                        ),
+                        onPressed: controller.pickFromGallery,
+                        child: ClipOval(
+                          child: Image.file(
+                            controller.recentImage.value!,
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }),
+
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
