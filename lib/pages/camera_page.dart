@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:fl_valrn/components/widgets/custom_cornerFrame.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -41,7 +39,7 @@ class CameraPage extends GetView<CameraPageController> {
                             maxLines: 1,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize: 30,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -74,7 +72,7 @@ class CameraPage extends GetView<CameraPageController> {
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(18),
-                            backgroundColor: Colors.white.withOpacity(0.25),
+                            backgroundColor: const Color(0xFF2A9134),
                             elevation: 0,
                           ),
                           onPressed: controller.pickFromGallery,
@@ -91,6 +89,7 @@ class CameraPage extends GetView<CameraPageController> {
                           padding: const EdgeInsets.all(5),
                           backgroundColor: Colors.white.withOpacity(0.25),
                           elevation: 0,
+                          iconSize: 20,
                         ),
                         onPressed: controller.pickFromGallery,
                         child: ClipOval(
@@ -138,7 +137,7 @@ class CameraPage extends GetView<CameraPageController> {
                         controller.isFlashOn.value
                             ? Icons.flash_on
                             : Icons.flash_off,
-                        size: 28,
+                        size: 20,
                         color: Colors.white,
                       ),
                     )),
