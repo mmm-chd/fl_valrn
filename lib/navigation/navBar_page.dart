@@ -8,7 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class NavbarPage extends GetView<NavbarController> {
-  const NavbarPage({super.key});
+  NavbarPage({super.key});
+  final int initialIndex = Get.arguments ?? 0;
 
   @override
   Widget build(BuildContext context) {

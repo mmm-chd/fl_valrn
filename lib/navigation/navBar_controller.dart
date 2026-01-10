@@ -1,5 +1,4 @@
 import 'package:fl_valrn/configs/routes.dart';
-import 'package:fl_valrn/pages/camera_page.dart';
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
 import 'package:fl_valrn/pages/market_page.dart';
@@ -22,5 +21,14 @@ class NavbarController extends GetxController {
   }
     currentIndex.value = index;
     Get.back();
+  }
+  
+  @override
+  void onInit() {
+    super.onInit();
+    final index = Get.arguments;
+    if (index is int) {
+      currentIndex.value = index;
+    }
   }
 }
