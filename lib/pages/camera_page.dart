@@ -3,6 +3,7 @@ import 'package:fl_valrn/components/widgets/custom_cornerFrame.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/camera_controller.dart';
+import 'package:fl_valrn/services/ai_detection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,16 +13,14 @@ class CameraPage extends GetView<CameraPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx((){
+      body: Obx(() {
         if (!controller.isReady.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
         return Stack(
           children: [
-            Positioned.fill(
-              child: CameraPreview(controller.cameraController),
-            ),
+            Positioned.fill(child: CameraPreview(controller.cameraController)),
             Positioned(
               top: 0,
               left: 0,
@@ -31,7 +30,16 @@ class CameraPage extends GetView<CameraPageController> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      IconButton(icon: const Icon(Icons.close, size: 35, color: Colors.white), onPressed: () { Get.back(); },),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
                       Expanded(
                         child: Center(
                           child: CustomText(
@@ -52,11 +60,7 @@ class CameraPage extends GetView<CameraPageController> {
               ),
             ),
             const Center(
-              child: CornerFrame(
-                radius: 25,
-                cornerLength: 70,
-                strokeWidth: 5,
-              ),
+              child: CornerFrame(radius: 25, cornerLength: 70, strokeWidth: 5),
             ),
             Positioned(
               bottom: 24,
@@ -66,7 +70,7 @@ class CameraPage extends GetView<CameraPageController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                   Obx(() {
+                    Obx(() {
                       if (controller.recentImage.value == null) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -75,7 +79,7 @@ class CameraPage extends GetView<CameraPageController> {
                             backgroundColor: const Color(0xFF2A9134),
                             elevation: 0,
                           ),
-                          onPressed: controller.pickFromGallery,
+                          onPressed: () => _pickFromGallery(),
                           child: const Icon(
                             Icons.photo_library,
                             color: Colors.white,
@@ -91,7 +95,7 @@ class CameraPage extends GetView<CameraPageController> {
                           elevation: 0,
                           iconSize: 20,
                         ),
-                        onPressed: controller.pickFromGallery,
+                        onPressed: () => _pickFromGallery(),
                         child: ClipOval(
                           child: Image.file(
                             controller.recentImage.value!,
@@ -102,20 +106,16 @@ class CameraPage extends GetView<CameraPageController> {
                         ),
                       );
                     }),
-
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(18),
-                        backgroundColor: const Color(0xFF2A9134)
+                        backgroundColor: const Color(0xFF2A9134),
                       ),
                       onPressed: () async {
                         await controller.takePicture();
                         if (controller.image != null) {
-                          Get.toNamed(
-                            AppRoutes.previewPage,
-                            arguments: controller.image!.path,
-                          );
+                          _detectAndNavigate(controller.image!.path);
                         }
                       },
                       child: const Icon(
@@ -147,7 +147,49 @@ class CameraPage extends GetView<CameraPageController> {
             ),
           ],
         );
-      })
+      }),
     );
+  }
+
+  // Pick dari gallery
+  void _pickFromGallery() async {
+    await controller.pickFromGallery();
+    if (controller.lastPickedImage != null) {
+      print('Gallery image picked: ${controller.lastPickedImage}');
+      _detectAndNavigate(controller.lastPickedImage!);
+    } else {
+      print('No image picked from gallery');
+    }
+  }
+
+  // Detect AI dan navigate
+  void _detectAndNavigate(String imagePath) async {
+    Get.dialog(
+      const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Color(0xff52A068)),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    try {
+      final apiResponse = await PlantAIService.analyzePlant(
+        imagePath: imagePath,
+      );
+
+      apiResponse['imagePath'] = imagePath;
+
+      Get.back();
+
+      Get.toNamed(AppRoutes.overviewPage, arguments: apiResponse);
+    } catch (e) {
+      Get.back();
+      Get.snackbar(
+        'Gagal',
+        'Deteksi AI gagal: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
