@@ -22,9 +22,10 @@ class CustomMonthSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.only(top: 25, right: 25, left: 25,),
+      
       child: SizedBox(
-        height: 48,
+        height: 30,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: months.length,
