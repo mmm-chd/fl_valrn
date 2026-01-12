@@ -18,6 +18,7 @@ class CustomJourneycard extends StatelessWidget {
     required this.height, 
     required this.radius,
     required this.onTap, 
+    this.trailing
     });
   final String title;
   final String latinTitle;
@@ -30,6 +31,7 @@ class CustomJourneycard extends StatelessWidget {
   final double? width;
   final double? height;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
 
   @override
@@ -49,26 +51,63 @@ class CustomJourneycard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: title, style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: titleColor,
-                ),),
-                CustomText(text: latinTitle, style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 16,
-                  color: latinTitleColor
-                ),),
-                Spacer(),
                 Row(
-                  children: [ 
-                    Expanded(child: CustomText(text: status, maxLines: 3, style: TextStyle(
-                      color: statusColor
-                    ),)),
-                    CustomSpacing(width: 8,),
-                    Icon(Icons.sunny, size: 50, color: statusColor,)
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // 🔹 TEKS KIRI (VERTIKAL KE BAWAH)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: titleColor,
+                            ),
+                          ),
+                          CustomText(
+                            text: latinTitle,
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 16,
+                              color: latinTitleColor,
+                            ),
+                          ),
+                          const CustomSpacing(height: 6),
+                          CustomText(
+                            text: status,
+                            maxLines: 3,
+                            style: TextStyle(
+                              color: statusColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const CustomSpacing(width: 16),
+
+                    // 🔹 FOTO KANAN (CENTER)
+                    SizedBox(
+                      width: 60,
+                      height: 50,
+                      child: Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: trailing ??
+                              Icon(
+                                Icons.sunny,
+                                size: 50,
+                                color: statusColor,
+                              ),
+                        ),
+                      ),
+                    ),
                   ],
-                )
+                ),
                 
               ],
             ),
