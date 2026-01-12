@@ -5,6 +5,7 @@ import 'package:fl_valrn/bindings/home_binding.dart';
 import 'package:fl_valrn/bindings/journey_binding.dart';
 import 'package:fl_valrn/bindings/login_binding.dart';
 import 'package:fl_valrn/bindings/market_binding.dart';
+import 'package:fl_valrn/bindings/overview_binding.dart';
 import 'package:fl_valrn/bindings/profile_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
@@ -16,6 +17,7 @@ import 'package:fl_valrn/navigation/navBar_page.dart';
 import 'package:fl_valrn/pages/journey_page.dart';
 import 'package:fl_valrn/pages/login_page.dart';
 import 'package:fl_valrn/pages/market_page.dart';
+import 'package:fl_valrn/pages/overview_page.dart';
 import 'package:fl_valrn/pages/preview_page.dart';
 import 'package:fl_valrn/pages/product_page.dart';
 import 'package:get/get.dart';
@@ -43,6 +45,7 @@ class AppPages {
       page: () => PreviewPage(),
       binding: CameraBinding()
     ),
-    GetPage(name: AppRoutes.journeyPage, page: ()=>JourneyPage(), binding: JourneyBinding())
+    GetPage(name: AppRoutes.journeyPage, page: ()=>JourneyPage(), binding: JourneyBinding()),
+    GetPage(name: AppRoutes.overviewPage, page: ()=>OverviewPage(), binding: OverviewBinding()),
   ];
 }

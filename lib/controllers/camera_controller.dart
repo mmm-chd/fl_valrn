@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:fl_valrn/configs/routes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -9,11 +7,12 @@ import 'package:photo_manager/photo_manager.dart';
 class CameraPageController extends GetxController {
   late CameraController cameraController;
   late Future<void> initializeFuture;
-  final ImagePicker _picker= ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
-  RxBool isFlashOn= false.obs;
-  RxBool isReady= false.obs;
+  RxBool isFlashOn = false.obs;
+  RxBool isReady = false.obs;
   XFile? image;
+  String? lastPickedImage; // Untuk simpan image path dari gallery
   final Rx<File?> recentImage = Rx<File?>(null);
 
   final CameraDescription camera;
@@ -24,13 +23,14 @@ class CameraPageController extends GetxController {
   void onInit() {
     super.onInit();
 
-    cameraController= CameraController(
-      camera, 
+    cameraController = CameraController(
+      camera,
       ResolutionPreset.high,
-      enableAudio: false);
+      enableAudio: false,
+    );
 
-    initializeFuture= cameraController.initialize().then((_){
-      isReady.value=true;
+    initializeFuture = cameraController.initialize().then((_) {
+      isReady.value = true;
     });
     loadRecentImage();
   }
@@ -39,18 +39,18 @@ class CameraPageController extends GetxController {
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
     if (!ps.isAuth) return;
 
-    final List<AssetEntity> assets =
-        await PhotoManager.getAssetListPaged(
+    final List<AssetEntity> assets = await PhotoManager.getAssetListPaged(
       page: 0,
       type: RequestType.image,
       filterOption: FilterOptionGroup(
         orders: [
           const OrderOption(
             type: OrderOptionType.createDate,
-            asc: false, 
+            asc: false,
           ),
         ],
-      ), pageCount: 1,
+      ),
+      pageCount: 1,
     );
 
     if (assets.isNotEmpty) {
@@ -61,39 +61,36 @@ class CameraPageController extends GetxController {
     }
   }
 
-    Future<void> takePicture() async {
-      if (!cameraController.value.isInitialized) return;
-      image= await cameraController.takePicture();
-    }
-    Future<void> toggleFlash() async {
-      if (!cameraController.value.isInitialized) return;
+  Future<void> takePicture() async {
+    if (!cameraController.value.isInitialized) return;
+    image = await cameraController.takePicture();
+  }
 
-      if (isFlashOn.value) {
-        await cameraController.setFlashMode(FlashMode.off);
-      } else {
-        await cameraController.setFlashMode(FlashMode.torch);
-      }
+  Future<void> toggleFlash() async {
+    if (!cameraController.value.isInitialized) return;
 
-      isFlashOn.value = !isFlashOn.value;
+    if (isFlashOn.value) {
+      await cameraController.setFlashMode(FlashMode.off);
+    } else {
+      await cameraController.setFlashMode(FlashMode.torch);
     }
-    Future<void> pickFromGallery() async {
-    final XFile? image = await _picker.pickImage(
+
+    isFlashOn.value = !isFlashOn.value;
+  }
+
+  Future<void> pickFromGallery() async {
+    final XFile? pickedImage = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 90,
     );
-    if (image != null) {
-      Get.toNamed(
-        AppRoutes.previewPage,
-        arguments: image.path,
-      );
+    if (pickedImage != null) {
+      lastPickedImage = pickedImage.path; // Simpan path
     }
+  }
 
   @override
   void onClose() {
     cameraController.dispose();
     super.onClose();
   }
-
-
-    }
 }
