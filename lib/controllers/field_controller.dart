@@ -11,6 +11,8 @@ class FieldsController extends GetxController {
   var fieldsCard = <FieldsItem>[].obs;
   var recentCard = <RecentItems>[].obs;
   var isLoading= true.obs;
+
+  final currentIndex = 0.obs;
   
   @override
   void onInit() {

@@ -47,7 +47,7 @@ class CameraPage extends GetView<CameraPageController> {
                             maxLines: 1,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 35,
+                              fontSize: 30,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -76,7 +76,7 @@ class CameraPage extends GetView<CameraPageController> {
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(18),
-                            backgroundColor: Colors.white.withOpacity(0.25),
+                            backgroundColor: const Color(0xFF2A9134),
                             elevation: 0,
                           ),
                           onPressed: () => _pickFromGallery(),
@@ -93,6 +93,7 @@ class CameraPage extends GetView<CameraPageController> {
                           padding: const EdgeInsets.all(5),
                           backgroundColor: Colors.white.withOpacity(0.25),
                           elevation: 0,
+                          iconSize: 20,
                         ),
                         onPressed: () => _pickFromGallery(),
                         child: ClipOval(
@@ -123,24 +124,23 @@ class CameraPage extends GetView<CameraPageController> {
                         color: Colors.white,
                       ),
                     ),
-                    Obx(
-                      () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(18),
-                          backgroundColor: const Color(0xFF2A9134),
-                          elevation: 0,
-                        ),
-                        onPressed: controller.toggleFlash,
-                        child: Icon(
-                          controller.isFlashOn.value
-                              ? Icons.flash_on
-                              : Icons.flash_off,
-                          size: 28,
-                          color: Colors.white,
-                        ),
+                    
+                    Obx(() => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(18),
+                        backgroundColor: const Color(0xFF2A9134),
+                        elevation: 0,
                       ),
-                    ),
+                      onPressed: controller.toggleFlash,
+                      child: Icon(
+                        controller.isFlashOn.value
+                            ? Icons.flash_on
+                            : Icons.flash_off,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    )),
                   ],
                 ),
               ),

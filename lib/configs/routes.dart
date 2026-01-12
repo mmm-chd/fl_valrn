@@ -8,5 +8,6 @@ class AppRoutes {
   static const String profilePage ='/profilePage';
   static const String cameraPage ='/cameraPage';
   static const String previewPage ='/previewPage';
+  static const String journeyPage ='/journeyPage';
   static const String overviewPage ='/overviewPage';
 }

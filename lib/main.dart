@@ -4,11 +4,13 @@ import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 
 late List<CameraDescription> cameras;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   cameras = await availableCameras();
   runApp(const MyApp());
 }
