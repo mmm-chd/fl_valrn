@@ -1,7 +1,7 @@
-import 'package:fl_valrn/components/widgets/custom_bulletlist.dart';
+import 'dart:io';
 import 'package:fl_valrn/components/widgets/custom_button.dart';
-import 'package:fl_valrn/components/widgets/custom_rowtext.dart';
-import 'package:fl_valrn/components/widgets/custom_section_title.dart';
+import 'package:fl_valrn/components/widgets/custom_detection_tab.dart';
+import 'package:fl_valrn/components/widgets/custom_disease_tab.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -14,104 +14,111 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OverviewController());
+    final OverviewController controller = Get.find();
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // =========================
-          // IMAGE GALLERY (tanpa AppBar)
-          // =========================
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 250,
-              child: Stack(
-                children: [
-                  // Main large image
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    right: 120,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        image: const DecorationImage(
-                          image: NetworkImage('https://via.placeholder.com/400'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+            child: Obx(() {
+              final imageCount = controller.images.length;
+
+              if (imageCount == 0) {
+                return SizedBox(
+                  height: 250,
+                  child: Container(
+                    color: Colors.grey[300],
+                    child: const Center(
+                      child: Icon(Icons.image, size: 80, color: Colors.grey),
                     ),
                   ),
-                  // Three small images on the right
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: 120,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              image: const DecorationImage(
-                                image: NetworkImage('https://via.placeholder.com/120'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              image: const DecorationImage(
-                                image: NetworkImage('https://via.placeholder.com/120'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              image: const DecorationImage(
-                                image: NetworkImage('https://via.placeholder.com/120'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Back button
-                  Positioned(
-                    top: 40,
-                    left: 16,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Get.back(),
+                );
+              }
+
+              Widget imageWidget;
+
+              if (imageCount == 1) {
+                imageWidget = Image.file(
+                  File(controller.images[0]),
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                      Container(color: Colors.grey[400]),
+                );
+              } else if (imageCount == 2) {
+                imageWidget = Row(
+                  children: [
+                    Expanded(
+                      child: Image.file(
+                        File(controller.images[0]),
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Container(color: Colors.grey[400]),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                    const SizedBox(width: 2),
+                    Expanded(
+                      child: Image.file(
+                        File(controller.images[1]),
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Container(color: Colors.grey[400]),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                imageWidget = Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Image.file(
+                        File(controller.images[0]),
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Container(color: Colors.grey[400]),
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    SizedBox(
+                      width: 120,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Image.file(
+                              File(controller.images[1]),
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  Container(color: Colors.grey[400]),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Expanded(
+                            child: Image.file(
+                              File(controller.images[2]),
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  Container(color: Colors.grey[400]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return SizedBox(
+                height: 250,
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: imageWidget),
+                    _buildBackButton(),
+                  ],
+                ),
+              );
+            }),
           ),
 
-          // =========================
-          // CONTENT SECTION
-          // =========================
           SliverToBoxAdapter(
             child: Container(
               decoration: const BoxDecoration(
@@ -121,7 +128,7 @@ class OverviewPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Plant name and scientific name
+                  /// Plant name
                   Padding(
                     padding: const EdgeInsets.all(18),
                     child: Column(
@@ -144,7 +151,7 @@ class OverviewPage extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 16,
                               fontStyle: FontStyle.italic,
-                              color: Color(0xff52A068),
+                              color: Color(0xff2A9134),
                             ),
                           ),
                         ),
@@ -152,29 +159,32 @@ class OverviewPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Tab Bar
+                  const Divider(
+                    indent: 20,
+                    endIndent: 20,
+                    thickness: 1.2,
+                    color: Color(0xffDCDCDC),
+                  ),
+
                   _tabBar(controller),
-                  
-                  // Tab Content
+
                   Obx(
                     () => controller.currentTabIndex.value == 0
-                        ? _diseaseTab(controller)
-                        : _detectionTab(controller),
+                        ? DiseaseTab(controller: controller)
+                        : DetectionTab(controller: controller),
                   ),
                 ],
               ),
             ),
           ),
 
-          // Fill remaining space
           const SliverFillRemaining(
             hasScrollBody: false,
             child: CustomSpacing(),
           ),
         ],
       ),
-      
-      // Save button - sticky at bottom
+
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(18),
@@ -199,9 +209,31 @@ class OverviewPage extends StatelessWidget {
     );
   }
 
-  // =========================
-  // TAB BAR
-  // =========================
+  static Widget _buildBackButton() {
+    return SafeArea(
+      child: Positioned(
+        top: 8,
+        left: 16,
+        child: GestureDetector(
+          onTap: () => Get.back(),
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Color(0xff52A068),
+              size: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _tabBar(OverviewController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
@@ -211,7 +243,7 @@ class OverviewPage extends StatelessWidget {
           height: 45,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: const Color(0xffECECEC),
+            color: const Color(0xffD0EAD4),
             borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
@@ -221,7 +253,7 @@ class OverviewPage extends StatelessWidget {
                   text: 'Penyakit',
                   tabIndex: 0,
                   currentIndex: controller.currentTabIndex,
-                  onTap: (i) => controller.selectTab(i),
+                  onTap: controller.selectTab,
                 ),
               ),
               const CustomSpacing(width: 4),
@@ -230,416 +262,12 @@ class OverviewPage extends StatelessWidget {
                   text: 'Deteksi',
                   tabIndex: 1,
                   currentIndex: controller.currentTabIndex,
-                  onTap: (i) => controller.selectTab(i),
+                  onTap: controller.selectTab,
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // =========================
-  // DISEASE TAB (PENYAKIT)
-  // =========================
-  Widget _diseaseTab(OverviewController controller) {
-    return Padding(
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Disease title with orange background
-          Obx(
-            () => SectionTitle(
-              title: 'Tanaman Kamu Terkena Penyakit!\n${controller.diseaseTitle.value}',
-              color: const Color(0xffFFF3E0),
-            ),
-          ),
-          const CustomSpacing(height: 20),
-
-          // Description Title
-          const CustomText(
-            text: 'Penjelasan Penyakit',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Description in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => CustomText(
-                text: controller.diseaseDescription.value,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Color(0xff666666),
-                  height: 1.6,
-                ),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Symptoms Title
-          const CustomText(
-            text: 'Gejala',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Symptoms in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.symptoms
-                    .map((symptom) => BulletListItem(text: symptom))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Impact Title
-          const CustomText(
-            text: 'Dampak',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Impact in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.impact
-                    .map((item) => BulletListItem(text: item))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Prevention Title
-          const CustomText(
-            text: 'Penanggunalangan',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Prevention in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.prevention
-                    .map((item) => BulletListItem(text: item))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 40),
-        ],
-      ),
-    );
-  }
-
-  // =========================
-  // DETECTION TAB (DETEKSI & HABITAT)
-  // =========================
-  Widget _detectionTab(OverviewController controller) {
-    return Padding(
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Nutrition title
-          const SectionTitle(
-            title: 'Distribusi & Habitat',
-            color: Color(0xffE8F5E9),
-          ),
-          const CustomSpacing(height: 16),
-
-          // Nutrition data in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.nutritionData.entries
-                    .map((entry) => InfoRow(
-                          leftText: entry.key,
-                          rightText: entry.value,
-                        ))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 20),
-
-          // Description in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => CustomText(
-                text: controller.descriptionText.value,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Color(0xff666666),
-                  height: 1.6,
-                ),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Habitat Title
-          Obx(
-            () => CustomText(
-              text: controller.habitatTitle.value,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff333333),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Habitat text in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => CustomText(
-                text: controller.habitatText.value,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Color(0xff666666),
-                  height: 1.6,
-                ),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Advantages Title
-          const CustomText(
-            text: 'Keunggulan (SBG Obat)',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Advantages in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.advantages
-                    .map((item) => BulletListItem(text: item))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Disadvantages Title
-          const CustomText(
-            text: 'Kekurangan (SBG Obat)',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Disadvantages in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.disadvantages
-                    .map((item) => BulletListItem(text: item))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Cultivation Title
-          const CustomText(
-            text: 'Cara Budidaya',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Cultivation in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => Column(
-                children: controller.cultivation
-                    .map((item) => BulletListItem(text: item))
-                    .toList(),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Fun Fact Title
-          const CustomText(
-            text: 'Keunikan Produk / Tanaman',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff333333),
-            ),
-          ),
-          const CustomSpacing(height: 12),
-          
-          // Fun Fact in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Obx(
-              () => CustomText(
-                text: controller.funFact.value,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Color(0xff666666),
-                  height: 1.6,
-                ),
-              ),
-            ),
-          ),
-          const CustomSpacing(height: 24),
-
-          // Fun Fact with icon in box
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xffFFF9E6),
-              border: Border.all(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.lightbulb_outline,
-                  color: Color(0xffFFA726),
-                  size: 24,
-                ),
-                const CustomSpacing(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomText(
-                        text: 'Fungsi Obat',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff333333),
-                        ),
-                      ),
-                      const CustomSpacing(height: 8),
-                      Obx(
-                        () => CustomText(
-                          text: controller.funFact.value,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Color(0xff666666),
-                            height: 1.6,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const CustomSpacing(height: 40),
-        ],
       ),
     );
   }

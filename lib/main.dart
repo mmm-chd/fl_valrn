@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
         ),
       ),
-      initialRoute: AppRoutes.overviewPage,
+      initialRoute: AppRoutes.navbarPage,
       getPages: AppPages.pages,
     );
   }
