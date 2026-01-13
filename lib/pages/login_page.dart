@@ -6,6 +6,7 @@ import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
+import 'package:fl_valrn/controllers/auth_controller.dart';
 import 'package:fl_valrn/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,9 +14,11 @@ import 'package:get/state_manager.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
+  AuthController get authController => Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -291,7 +294,14 @@ class LoginPage extends GetView<LoginController> {
         const CustomSpacing(height: 32.0),
         Obx(
           () => CustomButton(
-            onPressed: () {},
+            onPressed:authController.isLoading.value ? null : () {
+              authController.register(
+                email: controller.emailController.text.trim(), 
+                firstName: controller.firstNameController.text.trim(), 
+                lastname: controller.lastNameController.text.trim(), 
+                password: controller.passwordController.text.trim(), 
+                confirmPassword: controller.confirmPasswordController.text.trim());
+            },
             text: controller.isLoading.value ? 'Loading..' : 'Register',
             backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
@@ -369,7 +379,11 @@ class LoginPage extends GetView<LoginController> {
         const CustomSpacing(height: 16.0),
         Obx(
           () => CustomButton(
-            onPressed: () {},
+            onPressed: () {
+              authController.login(
+                email: controller.emailController.text.trim(), 
+                password: controller.passwordController.text.trim());
+            },
             text: controller.isLoading.value ? 'Loading..' : 'Log In',
             backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,

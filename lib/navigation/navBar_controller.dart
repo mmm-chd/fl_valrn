@@ -1,4 +1,5 @@
 import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
 import 'package:fl_valrn/pages/fields_page.dart';
 import 'package:fl_valrn/pages/home_page.dart';
 import 'package:fl_valrn/pages/market_page.dart';
@@ -11,7 +12,8 @@ class NavbarController extends GetxController {
     HomePage(),
     FieldsPage(),
     Container(),
-    MarketPage(),
+    MarketPage(),  
+    ProfilePage()
   ];
 
   void changeIndex(int index) {

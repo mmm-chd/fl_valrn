@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class PlantAIService {
-  static const String _endpoint = 'http://192.168.110.225:8000/api/v1/plant/analyze';
+  static const String _endpoint = 'http://10.10.13.60:8000/api/v1/plant/analyze';
 
   static Future<Map<String, dynamic>> analyzePlant({
     required String imagePath,
