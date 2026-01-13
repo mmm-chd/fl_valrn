@@ -1,8 +1,5 @@
-import 'package:easy_date_timeline/easy_date_timeline.dart';
-import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CustomMonthSelector extends StatelessWidget {
   final int selectedMonth; 

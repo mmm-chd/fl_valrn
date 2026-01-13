@@ -29,7 +29,7 @@ class LoginController extends GetxController {
     if (_hasAnyText()) {
       _showLeaveDialog(
         onConfirm: () {
-          _clearAll();
+          clearAll();
           currentTabIndex.value = index;
           Get.back();
         },
@@ -68,7 +68,7 @@ class LoginController extends GetxController {
         confirmPasswordController.text.isNotEmpty;
   }
 
-  void _clearAll() {
+  void clearAll() {
     emailController.clear();
     firstNameController.clear();
     lastNameController.clear();
