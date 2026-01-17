@@ -53,11 +53,11 @@ class AuthController extends GetxController{
 
       if (result['success'] == true || result['token'] != null) {
       Get.snackbar('Success', 'Register successful');
-      final loginController= Get.find<LoginController>();
-      loginController.clearAll;
-      Get.offAllNamed(
-        AppRoutes.loginPage
-      ); 
+      final loginController = Get.find<LoginController>();
+      loginController.clearAll();
+      loginController.currentTabIndex.value = 0;
+
+      Get.back();
         } else {
           Get.snackbar(
             'Register failed',

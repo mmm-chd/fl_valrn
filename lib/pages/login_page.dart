@@ -294,15 +294,19 @@ class LoginPage extends GetView<LoginController> {
         const CustomSpacing(height: 32.0),
         Obx(
           () => CustomButton(
-            onPressed:authController.isLoading.value ? null : () {
-              authController.register(
-                email: controller.emailController.text.trim(), 
-                firstName: controller.firstNameController.text.trim(), 
-                lastname: controller.lastNameController.text.trim(), 
-                password: controller.passwordController.text.trim(), 
-                confirmPassword: controller.confirmPasswordController.text.trim());
-            },
-            text: controller.isLoading.value ? 'Loading..' : 'Register',
+            onPressed: authController.isLoading.value
+                ? null
+                : () {
+                    authController.register(
+                      email: controller.emailController.text.trim(),
+                      firstName: controller.firstNameController.text.trim(),
+                      lastname: controller.lastNameController.text.trim(),
+                      password: controller.passwordController.text.trim(),
+                      confirmPassword:
+                          controller.confirmPasswordController.text.trim(),
+                    );
+                  },
+            text: authController.isLoading.value ? 'Loading..' : 'Log In',
             backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
           ),
