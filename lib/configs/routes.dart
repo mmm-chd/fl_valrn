@@ -10,4 +10,5 @@ class AppRoutes {
   static const String previewPage ='/previewPage';
   static const String journeyPage ='/journeyPage';
   static const String overviewPage ='/overviewPage';
+  static const String settingsPage='/settingsPage';
 }
