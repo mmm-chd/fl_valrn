@@ -10,6 +10,7 @@ class AuthController extends GetxController{
     required String email,
     required String password,
   }) async {
+    final loginController = Get.find<LoginController>();
     try{
       isLoading.value= true;
 
@@ -23,11 +24,12 @@ class AuthController extends GetxController{
           AppRoutes.navbarPage
         );
       }else {
-          Get.snackbar('Login Failed', 
-          result['message'] ?? 'Invalid credentials',);
+        loginController.passwordError.value =
+          result['message'] ?? 'Invalid credentials';
       } 
     }catch (e){
-      Get.snackbar('Error', e.toString());
+      loginController.passwordError.value =
+        'Unable to connect. Please try again.';
     } finally {
       isLoading.value= false;
     }
@@ -40,6 +42,7 @@ class AuthController extends GetxController{
     required String password,
     required String confirmPassword,
   }) async {
+    final loginController = Get.find<LoginController>();
     try{
       isLoading.value= true;
 
@@ -59,13 +62,13 @@ class AuthController extends GetxController{
 
       Get.back();
         } else {
-          Get.snackbar(
-            'Register failed',
-            result['message'] ?? 'Something went wrong',
-          );
+          loginController.registerGeneralError.value =
+            result['message'] ?? 'Register failed';
+        
         }
       } catch (e) {
-        Get.snackbar('Error', e.toString());
+        loginController.registerGeneralError.value =
+        'Unable to connect. Please try again.';
       } finally {
         isLoading.value = false;
       }
