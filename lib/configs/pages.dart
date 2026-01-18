@@ -7,6 +7,7 @@ import 'package:fl_valrn/bindings/login_binding.dart';
 import 'package:fl_valrn/bindings/market_binding.dart';
 import 'package:fl_valrn/bindings/overview_binding.dart';
 import 'package:fl_valrn/bindings/profile_binding.dart';
+import 'package:fl_valrn/bindings/settings_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
 import 'package:fl_valrn/pages/camera_page.dart';
@@ -20,6 +21,7 @@ import 'package:fl_valrn/pages/market_page.dart';
 import 'package:fl_valrn/pages/overview_page.dart';
 import 'package:fl_valrn/pages/preview_page.dart';
 import 'package:fl_valrn/pages/product_page.dart';
+import 'package:fl_valrn/pages/Profile%20Page/settings_page.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -47,5 +49,6 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.journeyPage, page: ()=>JourneyPage(), binding: JourneyBinding()),
     GetPage(name: AppRoutes.overviewPage, page: ()=>OverviewPage(), binding: OverviewBinding()),
+    GetPage(name: AppRoutes.settingsPage, page: ()=>SettingsPage(), binding: ProfileBinding())
   ];
 }

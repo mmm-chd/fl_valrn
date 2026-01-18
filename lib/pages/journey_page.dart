@@ -27,7 +27,6 @@ class JourneyPage extends GetView<JourneyController> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Tombol back (kiri)
                 Align(
                   alignment: Alignment.centerLeft,
                   child: IconButton(
@@ -39,8 +38,7 @@ class JourneyPage extends GetView<JourneyController> {
                     ),
                   ),
                 ),
-
-                // Title (benar-benar tengah layar)
+                
                 CustomText(
                   text: "Journey",
                   style: TextStyle(
