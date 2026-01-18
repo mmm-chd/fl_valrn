@@ -3,7 +3,6 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/controllers/profile_controller.dart';
-import 'package:fl_valrn/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -9,8 +9,8 @@ import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/controllers/auth_controller.dart';
 import 'package:fl_valrn/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
@@ -18,7 +18,6 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -43,14 +42,7 @@ class LoginPage extends GetView<LoginController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CustomText(
-                        text: 'PlantApp',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 44,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      SvgPicture.asset('assets/logo/white-waisya.svg'),
                       const CustomSpacing(height: 10),
                       CustomText(
                         text:
@@ -95,14 +87,6 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
               ),
-            ),
-
-            // =========================
-            // FILL SPACE (AVOID WHITE GAP)
-            // =========================
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: CustomSpacing(),
             ),
           ],
         ),
@@ -455,8 +439,9 @@ class LoginPage extends GetView<LoginController> {
             onPressed: () {
             if (!controller.validateLogin()) return;
               authController.login(
-                email: controller.emailController.text.trim(), 
-                password: controller.passwordController.text.trim());
+                email: controller.emailController.text.trim(),
+                password: controller.passwordController.text.trim(),
+              );
             },
             text: controller.isLoading.value ? 'Loading..' : 'Log In',
             backgroundColor: PColor.primGreen,

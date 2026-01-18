@@ -17,6 +17,16 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(":app")
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.concurrent:concurrent-futures:1.1.0")
+
+            force("androidx.camera:camera-core:1.3.4")
+            force("androidx.camera:camera-camera2:1.3.4")
+            force("androidx.camera:camera-lifecycle:1.3.4")
+            force("androidx.camera:camera-view:1.3.4")
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {
