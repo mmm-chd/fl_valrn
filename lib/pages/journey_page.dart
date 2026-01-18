@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class JourneyPage extends GetView<JourneyController> {
-  JourneyPage({super.key});
+  const JourneyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
