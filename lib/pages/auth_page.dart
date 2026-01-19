@@ -29,9 +29,7 @@ class AuthPage extends GetView<LoginController> {
         ),
         child: CustomScrollView(
           slivers: [
-            // =========================
             // HEADER
-            // =========================
             SliverAppBar(
               backgroundColor: Colors.transparent,
               expandedHeight: 240,
@@ -63,9 +61,7 @@ class AuthPage extends GetView<LoginController> {
               ),
             ),
 
-            // =========================
             // FORM CONTAINER
-            // =========================
             SliverToBoxAdapter(
               child: Container(
                 padding: const EdgeInsets.all(18),
@@ -97,9 +93,7 @@ class AuthPage extends GetView<LoginController> {
     );
   }
 
-  // =========================
   // TAB BAR
-  // =========================
   Widget _tabBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -138,9 +132,7 @@ class AuthPage extends GetView<LoginController> {
     );
   }
 
-  // =========================
   // SOCIAL
-  // =========================
   Widget _socialDivider() {
     return Row(
       children: [

@@ -3,29 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  // =========================
   // TEXT CONTROLLERS
-  // =========================
   final emailController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // =========================
   // STATES
-  // =========================
   final isLoading = false.obs;
   final isObsecurePass = true.obs;
   final isObsecureCPass = true.obs;
   final isCheckedRememberMe = false.obs;
   final currentTabIndex = 0.obs; // 0 = Login, 1 = Register
 
-  // ===== LOGIN ERRORS =====
+  // ERRORS HANDLING
   final emailError = ''.obs;
   final passwordError = ''.obs;
 
-  // ===== REGISTER ERRORS =====
   final firstNameError = ''.obs;
   final lastNameError = ''.obs;
   final confirmPasswordError = ''.obs;
@@ -109,9 +104,7 @@ class LoginController extends GetxController {
     return isValid;
   }
 
-  // =========================
   // TAB HANDLER
-  // =========================
   void selectTab(int index, BuildContext context) {
     if (currentTabIndex.value == index) return;
 
@@ -131,9 +124,7 @@ class LoginController extends GetxController {
     }
   }
 
-  // =========================
   // PASSWORD TOGGLE
-  // =========================
   void togglePassword() {
     isObsecurePass.toggle();
   }
@@ -142,16 +133,12 @@ class LoginController extends GetxController {
     isObsecureCPass.toggle();
   }
 
-  // =========================
   // REMEMBER ME
-  // =========================
   void toggleRememberMe() {
     isCheckedRememberMe.toggle();
   }
 
-  // =========================
   // HELPERS
-  // =========================
   bool _hasAnyText() {
     return emailController.text.isNotEmpty ||
         firstNameController.text.isNotEmpty ||
@@ -168,9 +155,7 @@ class LoginController extends GetxController {
     confirmPasswordController.clear();
   }
 
-  // =========================
   // DIALOG
-  // =========================
   void _showLeaveSheet({required VoidCallback onConfirm, context}) {
     CustomBottomsheetfix.show(
       context,
@@ -206,9 +191,7 @@ class LoginController extends GetxController {
     );
   }
 
-  // =========================
   // LIFECYCLE
-  // =========================
   @override
   void onClose() {
     emailController.dispose();
