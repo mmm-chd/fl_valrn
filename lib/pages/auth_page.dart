@@ -19,75 +19,80 @@ class AuthPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(-1, 1),
-            end: Alignment(1, 1),
-            colors: [Colors.lightGreen, PColor.primGreen],
+      body: SafeArea(
+        top: false,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(-1, 1),
+              end: Alignment(1, 1),
+              colors: [Colors.lightGreen, PColor.primGreen],
+            ),
           ),
-        ),
-        child: CustomScrollView(
-          slivers: [
-            // HEADER
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              expandedHeight: 240,
-              pinned: false,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/logo/white-waisya.svg',
-                        width: 180,
-                      ),
-                      const CustomSpacing(height: 10),
-                      CustomText(
-                        text:
-                            'This application was created to help farmers out there.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.grey.shade100,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+          child: CustomScrollView(
+            slivers: [
+              // HEADER
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                expandedHeight: 240,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/logo/white-waisya.svg',
+                          width: 180,
                         ),
-                      ),
-                    ],
+                        const CustomSpacing(height: 10),
+                        CustomText(
+                          text:
+                              'This application was created to help farmers out there.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey.shade100,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // FORM CONTAINER
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                ),
-                child: Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _tabBar(),
-                      controller.currentTabIndex.value == 0
-                          ? _loginForm()
-                          : _registerForm(),
-                      const CustomSpacing(height: 34),
-                      _socialDivider(),
-                      const CustomSpacing(height: 32),
-                      _socialButtons(),
-                      const CustomSpacing(height: 84),
-                    ],
+              // FORM CONTAINER
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                  ),
+                  child: Obx(
+                    () => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _tabBar(),
+                        controller.currentTabIndex.value == 0
+                            ? _loginForm()
+                            : _registerForm(),
+                        const CustomSpacing(height: 34),
+                        _socialDivider(),
+                        const CustomSpacing(height: 32),
+                        _socialButtons(),
+                        const CustomSpacing(height: 84),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
