@@ -1,3 +1,5 @@
+import 'package:fl_valrn/components/widgets/custom_bottomSheet.dart';
+import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +12,6 @@ class LoginController extends GetxController {
   final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  
 
   // =========================
   // STATES
@@ -20,7 +21,7 @@ class LoginController extends GetxController {
   final isObsecureCPass = true.obs;
   final isCheckedRememberMe = false.obs;
   final currentTabIndex = 0.obs; // 0 = Login, 1 = Register
-  
+
   // ===== LOGIN ERRORS =====
   final emailError = ''.obs;
   final passwordError = ''.obs;
@@ -109,22 +110,22 @@ class LoginController extends GetxController {
     return isValid;
   }
 
-
   // =========================
   // TAB HANDLER
   // =========================
-  void selectTab(int index) {
+  void selectTab(int index, BuildContext context) {
     if (currentTabIndex.value == index) return;
 
     clearAllErrors();
 
     if (_hasAnyText()) {
-      _showLeaveDialog(
+      _showLeaveSheet(
         onConfirm: () {
           clearAll();
           currentTabIndex.value = index;
           Get.back();
         },
+        context: context,
       );
     } else {
       currentTabIndex.value = index;
@@ -171,19 +172,28 @@ class LoginController extends GetxController {
   // =========================
   // DIALOG
   // =========================
-  void _showLeaveDialog({required VoidCallback onConfirm}) {
-    Get.dialog(
-      AlertDialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        contentPadding: const EdgeInsets.all(24),
-        content: Column(
+  void _showLeaveSheet({required VoidCallback onConfirm, context}) {
+    CustomBottomsheetfix.show(
+      context,
+      title: '',
+      hideHeader: true,
+      initialChildSize: 0.32,
+      onDismissed: () {},
+      onPressed: onConfirm,
+      onReset: () => Get.back(),
+      primaryButtonText: 'Yes',
+      secondaryButtonText: 'No',
+      pBackgroundColor: Colors.red,
+      sBorderColor: Colors.grey.shade300,
+      sForegroundColor: Colors.grey.shade400,
+      children: [
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               "Do you want to leave all the progress?",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 12),
             Text(
@@ -191,27 +201,9 @@ class LoginController extends GetxController {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: onConfirm,
-              child: const Text("Yes"),
-            ),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: Get.back,
-              child: Text("Cancel", style: TextStyle(color: Colors.grey[700])),
-            ),
           ],
         ),
-      ),
+      ],
     );
   }
 

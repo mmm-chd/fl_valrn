@@ -7,14 +7,21 @@ import 'package:get/get.dart';
 class CustomBottomsheet {
   static void show(
     BuildContext context, {
-    required String title,
-    required RxBool selected,
+    String? title,
+    RxBool? selected,
     required List<Widget> children,
-    required VoidCallback onPressed,
+    VoidCallback? onPressed,
     required VoidCallback onDismissed,
     VoidCallback? onReset,
     String? primaryButtonText,
-    String? secondaryButtonText,
+    secondaryButtonText,
+    Color? sBorderColor,
+    sForegroundColor,
+    sBackgroundColor,
+    Color? pForegroundColor,
+    pBackgroundColor,
+    double? initialChildSize,
+    bool? hideHeader,
   }) {
     final screen = MediaQuery.of(context).size;
 
@@ -28,16 +35,17 @@ class CustomBottomsheet {
       builder: (context) {
         return DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.65,
-          minChildSize: 0.35,
+          initialChildSize: initialChildSize ?? 0.65,
+          minChildSize: 0.0,
           maxChildSize: 0.95,
           builder: (context, scrollController) {
-            return Column(
-              children: [
-                // === FIXED HEADER ===
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                  child: Column(
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+
+              child: Column(
+                children: [
+                  // === FIXED HEADER ===
+                  Column(
                     children: [
                       Container(
                         width: screen.width / 6,
@@ -48,71 +56,93 @@ class CustomBottomsheet {
                         ),
                       ),
                       const CustomSpacing(height: 12),
-                      CustomText(
-                        text: title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Divider(height: 1, color: Colors.grey.shade400),
-                const CustomSpacing(height: 12),
-
-                // === SCROLLABLE CONTENT ===
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
-                    ),
-                  ),
-                ),
-
-                // === FIXED BUTTONS AT BOTTOM ===
-                Obx(
-                  () => AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
-                    child: selected.value
-                        ? const SizedBox.shrink()
-                        : Container(
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, -2),
+                      hideHeader != null && hideHeader == true
+                          ? const SizedBox.shrink()
+                          : Column(
+                              children: [
+                                CustomText(
+                                  text: title ?? '',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22,
+                                  ),
                                 ),
                               ],
                             ),
-                            child: onReset != null
-                                ? _buildTwoButtons(
-                                    context,
-                                    onPressed,
-                                    onReset,
-                                    primaryButtonText,
-                                    secondaryButtonText,
-                                  )
-                                : _buildOneButton(
-                                    context,
-                                    onPressed,
-                                    primaryButtonText,
-                                  ),
-                          ),
+                    ],
                   ),
-                ),
-              ],
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Divider(height: 1, color: Colors.grey.shade300),
+                  ),
+
+                  // === SCROLLABLE CONTENT ===
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children,
+                      ),
+                    ),
+                  ),
+
+                  // === FIXED BUTTONS AT BOTTOM ===
+                  Obx(
+                    () => AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                      child: selected != null && onPressed != null
+                          ? selected.value
+                                ? const SizedBox.shrink()
+                                : Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      0,
+                                      12,
+                                      0,
+                                      18,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.shade300,
+                                          blurRadius: 10,
+                                          offset: const Offset(0, -2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: onReset != null
+                                        ? _buildTwoButtons(
+                                            context,
+                                            onPressed,
+                                            onReset,
+                                            primaryButtonText,
+                                            secondaryButtonText,
+                                            sBorderColor,
+                                            sForegroundColor,
+                                            sBackgroundColor,
+                                            pForegroundColor,
+                                            pBackgroundColor,
+                                          )
+                                        : _buildOneButton(
+                                            context,
+                                            onPressed,
+                                            primaryButtonText,
+                                            pForegroundColor,
+                                            pBackgroundColor,
+                                          ),
+                                  )
+                          : const SizedBox.shrink(),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
@@ -131,7 +161,12 @@ class CustomBottomsheet {
     VoidCallback onPressed,
     VoidCallback onReset,
     String? primaryButtonText,
-    String? secondaryButtonText,
+    secondaryButtonText,
+    Color? sBorderColor,
+    sForegroundColor,
+    sBackgroundColor,
+    Color? pForegroundColor,
+    pBackgroundColor,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -139,12 +174,12 @@ class CustomBottomsheet {
         Expanded(
           child: CustomButton(
             text: secondaryButtonText ?? 'Reset',
-            backgroundColor: Colors.white,
+            backgroundColor: sBackgroundColor ?? Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(36.0),
-              side: BorderSide(color: Colors.amber),
+              side: BorderSide(color: sBorderColor ?? Colors.amber),
             ),
-            foregroundColor: Colors.amber,
+            foregroundColor: sForegroundColor ?? Colors.amber,
             onPressed: () {
               onReset();
               Get.back(result: false);
@@ -155,8 +190,8 @@ class CustomBottomsheet {
         Expanded(
           child: CustomButton(
             text: primaryButtonText ?? 'Tampilkan',
-            backgroundColor: Colors.amber,
-            foregroundColor: Colors.white,
+            backgroundColor: pBackgroundColor ?? Colors.amber,
+            foregroundColor: pForegroundColor ?? Colors.white,
             onPressed: () {
               onPressed();
               Get.back(result: true);
@@ -172,11 +207,13 @@ class CustomBottomsheet {
     BuildContext context,
     VoidCallback onPressed,
     String? primaryButtonText,
+    Color? pForegroundColor,
+    pBackgroundColor,
   ) {
     return CustomButton(
       text: primaryButtonText ?? 'Apply',
-      backgroundColor: Colors.amber,
-      foregroundColor: Colors.white,
+      backgroundColor: pBackgroundColor ?? Colors.amber,
+      foregroundColor: pForegroundColor ?? Colors.white,
       onPressed: () {
         onPressed();
         Get.back(result: true);
