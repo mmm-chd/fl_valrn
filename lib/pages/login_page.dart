@@ -38,11 +38,14 @@ class LoginPage extends GetView<LoginController> {
               pinned: false,
               flexibleSpace: FlexibleSpaceBar(
                 background: Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 70, 14, 0),
+                  padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset('assets/logo/white-waisya.svg'),
+                      SvgPicture.asset(
+                        'assets/logo/white-waisya.svg',
+                        width: 180,
+                      ),
                       const CustomSpacing(height: 10),
                       CustomText(
                         text:
@@ -82,7 +85,7 @@ class LoginPage extends GetView<LoginController> {
                       _socialDivider(),
                       const CustomSpacing(height: 32),
                       _socialButtons(),
-                      const CustomSpacing(height: 32),
+                      const CustomSpacing(height: 84),
                     ],
                   ),
                 ),
@@ -181,20 +184,20 @@ class LoginPage extends GetView<LoginController> {
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         CustomTextfield(
           isNumber: false,
           label: 'john@gmail.com',
           controller: controller.emailController,
-          onChanged: (_) => controller.emailError.value='',
+          onChanged: (_) => controller.emailError.value = '',
         ),
         Obx(() {
-                    if (controller.emailError.isEmpty) return const SizedBox();
-                    return Text(
-                      controller.emailError.value,
-                      style: const TextStyle(color: Colors.red, fontSize: 12),
-                    );
-                  }),
+          if (controller.emailError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.emailError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         const CustomSpacing(height: 16.0),
         Row(
           children: [
@@ -207,17 +210,18 @@ class LoginPage extends GetView<LoginController> {
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  const CustomSpacing(height: 10),
+                  const CustomSpacing(height: 8),
                   CustomTextfield(
                     isNumber: false,
                     label: 'John',
                     controller: controller.firstNameController,
-                    onChanged: (_) => controller.firstNameError.value='',
+                    onChanged: (_) => controller.firstNameError.value = '',
                   ),
                   Obx(() {
-                    if (controller.firstNameError.isEmpty) return const SizedBox();
-                    return Text(
-                      controller.firstNameError.value,
+                    if (controller.firstNameError.isEmpty)
+                      return const CustomSpacing();
+                    return CustomText(
+                      text: controller.firstNameError.value,
                       style: const TextStyle(color: Colors.red, fontSize: 12),
                     );
                   }),
@@ -234,17 +238,18 @@ class LoginPage extends GetView<LoginController> {
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  const CustomSpacing(height: 10),
+                  const CustomSpacing(height: 8),
                   CustomTextfield(
                     isNumber: false,
                     label: 'Doe',
                     controller: controller.lastNameController,
-                    onChanged: (_) => controller.lastNameError.value='',
+                    onChanged: (_) => controller.lastNameError.value = '',
                   ),
                   Obx(() {
-                    if (controller.lastNameError.isEmpty) return const SizedBox();
-                    return Text(
-                      controller.lastNameError.value,
+                    if (controller.lastNameError.isEmpty)
+                      return const CustomSpacing();
+                    return CustomText(
+                      text: controller.lastNameError.value,
                       style: const TextStyle(color: Colors.red, fontSize: 12),
                     );
                   }),
@@ -259,7 +264,7 @@ class LoginPage extends GetView<LoginController> {
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         Obx(
           () => CustomTextfield(
             isNumber: false,
@@ -274,13 +279,13 @@ class LoginPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.passwordController,
-            onChanged: (_) => controller.passwordError.value='',
+            onChanged: (_) => controller.passwordError.value = '',
           ),
         ),
         Obx(() {
-          if (controller.passwordError.isEmpty) return const SizedBox();
-          return Text(
-            controller.passwordError.value,
+          if (controller.passwordError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.passwordError.value,
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
@@ -290,7 +295,7 @@ class LoginPage extends GetView<LoginController> {
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         Obx(
           () => CustomTextfield(
             isNumber: false,
@@ -305,25 +310,26 @@ class LoginPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.confirmPasswordController,
-            onChanged: (_) => controller.confirmPasswordError.value='',
+            onChanged: (_) => controller.confirmPasswordError.value = '',
           ),
         ),
         Obx(() {
-          if (controller.confirmPasswordError.isEmpty) return const SizedBox();
-          return Text(
-            controller.confirmPasswordError.value,
+          if (controller.confirmPasswordError.isEmpty)
+            return const CustomSpacing();
+          return CustomText(
+            text: controller.confirmPasswordError.value,
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
         const CustomSpacing(height: 32.0),
         Obx(() {
           if (controller.registerGeneralError.isEmpty) {
-            return const SizedBox();
+            return const CustomSpacing();
           }
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: Text(
-              controller.registerGeneralError.value,
+            child: CustomText(
+              text: controller.registerGeneralError.value,
               style: const TextStyle(color: Colors.red, fontSize: 13),
             ),
           );
@@ -333,14 +339,14 @@ class LoginPage extends GetView<LoginController> {
             onPressed: authController.isLoading.value
                 ? null
                 : () {
-                  if (!controller.validateRegister()) return;
+                    if (!controller.validateRegister()) return;
                     authController.register(
                       email: controller.emailController.text.trim(),
                       firstName: controller.firstNameController.text.trim(),
                       lastname: controller.lastNameController.text.trim(),
                       password: controller.passwordController.text.trim(),
-                      confirmPassword:
-                          controller.confirmPasswordController.text.trim(),
+                      confirmPassword: controller.confirmPasswordController.text
+                          .trim(),
                     );
                   },
             text: authController.isLoading.value ? 'Loading..' : 'Register',
@@ -369,9 +375,9 @@ class LoginPage extends GetView<LoginController> {
           onChanged: (_) => controller.emailError.value = '',
         ),
         Obx(() {
-          if (controller.emailError.isEmpty) return const SizedBox();
-          return Text(
-            controller.emailError.value,
+          if (controller.emailError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.emailError.value,
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
@@ -398,12 +404,11 @@ class LoginPage extends GetView<LoginController> {
             controller: controller.passwordController,
             onChanged: (_) => controller.passwordError.value = '',
           ),
-          
         ),
         Obx(() {
-          if (controller.passwordError.isEmpty) return const SizedBox();
-          return Text(
-            controller.passwordError.value,
+          if (controller.passwordError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.passwordError.value,
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
@@ -437,7 +442,7 @@ class LoginPage extends GetView<LoginController> {
         Obx(
           () => CustomButton(
             onPressed: () {
-            if (!controller.validateLogin()) return;
+              if (!controller.validateLogin()) return;
               authController.login(
                 email: controller.emailController.text.trim(),
                 password: controller.passwordController.text.trim(),

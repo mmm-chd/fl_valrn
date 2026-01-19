@@ -4,7 +4,11 @@ import 'package:flutter_svg/svg.dart';
 class CustomSocialbutton extends StatelessWidget {
   final String type;
   final VoidCallback onTap;
-  const CustomSocialbutton({super.key, required this.type, required this.onTap});
+  const CustomSocialbutton({
+    super.key,
+    required this.type,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class CustomSocialbutton extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade300, width: 1.5),
           ),
           child: SvgPicture.asset(
-            'assets/socialIcons/${type}_icon.svg',
+            'assets/icons/socialIcons/${type}_icon.svg',
             width: 44,
             height: 44,
           ),
