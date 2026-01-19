@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+class AuthPage extends GetView<LoginController> {
+  const AuthPage({super.key});
   AuthController get authController => Get.find<AuthController>();
 
   @override

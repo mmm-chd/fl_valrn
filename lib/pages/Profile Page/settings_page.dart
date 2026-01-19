@@ -195,7 +195,7 @@ class SettingsPage extends GetView<ProfileController> {
             child: ElevatedButton(onPressed: 
             () async{
               await controller.logout();
-              Get.offAllNamed(AppRoutes.loginPage);
+              Get.offAllNamed(AppRoutes.authPage);
             }, child: Row(
               children: [
                 Icon(Icons.logout, color: Colors.red,),

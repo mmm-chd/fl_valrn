@@ -1,4 +1,3 @@
-import 'package:fl_valrn/components/widgets/custom_bottomSheet.dart';
 import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

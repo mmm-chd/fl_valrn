@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 late List<CameraDescription> cameras;
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('id_ID', null);
   cameras = await availableCameras();
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
         ),
       ),
-      initialRoute: AppRoutes.loginPage,
+      initialRoute: AppRoutes.splashPage,
       getPages: AppPages.pages,
     );
   }
