@@ -161,7 +161,7 @@ class LoginController extends GetxController {
       context,
       title: '',
       hideHeader: true,
-      initialChildSize: 0.32,
+      initialChildSize: 0.34,
       onDismissed: () {},
       onPressed: onConfirm,
       onReset: () => Get.back(),
