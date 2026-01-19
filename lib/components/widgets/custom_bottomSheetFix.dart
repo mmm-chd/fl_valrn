@@ -7,14 +7,20 @@ import 'package:get/get.dart';
 class CustomBottomsheetfix {
   static void show(
     BuildContext context, {
-    required String title,
-    required RxBool selected,
+    String? title,
     required List<Widget> children,
-    required VoidCallback onPressed,
+    VoidCallback? onPressed,
     required VoidCallback onDismissed,
     VoidCallback? onReset,
     String? primaryButtonText,
-    String? secondaryButtonText,
+    secondaryButtonText,
+    Color? sBorderColor,
+    sForegroundColor,
+    sBackgroundColor,
+    Color? pForegroundColor,
+    pBackgroundColor,
+    double? initialChildSize,
+    bool? hideHeader,
   }) {
     final screen = MediaQuery.of(context).size;
 
@@ -28,77 +34,86 @@ class CustomBottomsheetfix {
       builder: (context) {
         return DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.66,
-          minChildSize: 0.35,
+          initialChildSize: initialChildSize ?? 0.66,
+          minChildSize: 0.0,
           maxChildSize: 0.66,
           builder: (context, scrollController) {
-            return Column(
-              children: [
-                // === FIXED HEADER ===
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: screen.width / 6,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      const CustomSpacing(height: 12),
-                      CustomText(
-                        text: title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Divider(height: 1, color: Colors.grey.shade400),
-                const CustomSpacing(height: 12),
-
-                // === SCROLLABLE CONTENT ===
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 16,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+              child: Column(
+                children: [
+                  Container(
+                    width: screen.width / 6,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(24),
                     ),
                   ),
-                ),
-
-                // === FIXED BUTTONS AT BOTTOM ===
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: onReset != null
-                        ? _buildTwoButtons(
-                            context,
-                            onPressed,
-                            onReset,
-                            primaryButtonText,
-                            secondaryButtonText,
-                          )
-                        : _buildOneButton(
-                            context,
-                            onPressed,
-                            primaryButtonText,
-                          ),
+                  const CustomSpacing(height: 12),
+                  hideHeader != null && hideHeader == true
+                      ? const SizedBox.shrink()
+                      : Column(
+                          children: [
+                            CustomText(
+                              text: title ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Divider(height: 1, color: Colors.grey.shade300),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 16,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children,
+                      ),
+                    ),
+                  ),
+
+                  // === FIXED BUTTONS AT BOTTOM ===
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 18),
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: onPressed != null
+                          ? onReset != null
+                                ? _buildTwoButtons(
+                                    context,
+                                    onPressed,
+                                    onReset,
+                                    primaryButtonText,
+                                    secondaryButtonText,
+                                    sBorderColor,
+                                    sForegroundColor,
+                                    sBackgroundColor,
+                                    pForegroundColor,
+                                    pBackgroundColor,
+                                  )
+                                : _buildOneButton(
+                                    context,
+                                    onPressed,
+                                    primaryButtonText,
+                                    pForegroundColor,
+                                    pBackgroundColor,
+                                  )
+                          : const SizedBox.shrink(),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
@@ -117,7 +132,12 @@ class CustomBottomsheetfix {
     VoidCallback onPressed,
     VoidCallback onReset,
     String? primaryButtonText,
-    String? secondaryButtonText,
+    secondaryButtonText,
+    Color? sBorderColor,
+    sForegroundColor,
+    sBackgroundColor,
+    Color? pForegroundColor,
+    pBackgroundColor,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -125,12 +145,12 @@ class CustomBottomsheetfix {
         Expanded(
           child: CustomButton(
             text: secondaryButtonText ?? 'Reset',
-            backgroundColor: Colors.white,
+            backgroundColor: sBackgroundColor ?? Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(36.0),
-              side: BorderSide(color: Colors.amber),
+              side: BorderSide(color: sBorderColor ?? Colors.amber),
             ),
-            foregroundColor: Colors.amber,
+            foregroundColor: sForegroundColor ?? Colors.amber,
             onPressed: () {
               onReset();
               Get.back(result: false);
@@ -140,9 +160,9 @@ class CustomBottomsheetfix {
         const CustomSpacing(width: 16),
         Expanded(
           child: CustomButton(
-            text: primaryButtonText ?? 'Tampilkan',
-            backgroundColor: Colors.amber,
-            foregroundColor: Colors.white,
+            text: primaryButtonText ?? 'Apply',
+            backgroundColor: pBackgroundColor ?? Colors.amber,
+            foregroundColor: pForegroundColor ?? Colors.white,
             onPressed: () {
               onPressed();
               Get.back(result: true);
@@ -158,11 +178,13 @@ class CustomBottomsheetfix {
     BuildContext context,
     VoidCallback onPressed,
     String? primaryButtonText,
+    Color? pForegroundColor,
+    pBackgroundColor,
   ) {
     return CustomButton(
       text: primaryButtonText ?? 'Apply',
-      backgroundColor: Colors.amber,
-      foregroundColor: Colors.white,
+      backgroundColor: pBackgroundColor ?? Colors.amber,
+      foregroundColor: pForegroundColor ?? Colors.white,
       onPressed: () {
         onPressed();
         Get.back(result: true);
