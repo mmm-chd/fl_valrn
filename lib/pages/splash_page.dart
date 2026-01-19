@@ -19,7 +19,7 @@ class SplashPage extends GetView<SplashController> {
                 opacity: controller.fadeAnimation,
                 child: ScaleTransition(
                   scale: controller.scaleAnimation,
-                  child: SvgPicture.asset('assets/logo/logoW.svg', width: 140),
+                  child: SvgPicture.asset('assets/logo/logoW.svg', width: 100),
                 ),
               ),
             ),
