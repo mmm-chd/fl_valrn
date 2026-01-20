@@ -1,3 +1,4 @@
+import 'package:fl_valrn/controllers/addProduct_controller.dart';
 import 'package:fl_valrn/controllers/product_controller.dart';
 import 'package:get/get.dart';
 
@@ -6,6 +7,7 @@ class ProductBinding extends Bindings{
   void dependencies() {
     // TODO: implement dependencies
     Get.lazyPut<ProductController>(()=>ProductController());
+    Get.lazyPut<AddproductController>(()=>AddproductController());
   }
 
 }
