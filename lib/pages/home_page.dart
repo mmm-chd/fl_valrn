@@ -111,7 +111,7 @@ class HomePage extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "My Garden",
+                      text: "My Fields",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -121,15 +121,14 @@ class HomePage extends GetView<HomeController> {
                     InkWell(
                       child: CustomText(
                         text: "See More",
-                        style: TextStyle(fontSize: 12, color: Color(0xFF2A9134)),
-                        
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF2A9134),
+                        ),
                       ),
                       onTap: () {
-                            Get.offAllNamed(
-                              AppRoutes.navbarPage,
-                              arguments: 1
-                            );
-                          },
+                        Get.offAllNamed(AppRoutes.navbarPage, arguments: 1);
+                      },
                     ),
                   ],
                 ),

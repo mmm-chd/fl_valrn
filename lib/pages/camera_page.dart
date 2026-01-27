@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CameraPage extends GetView<CameraPageController> {
-  CameraPage({super.key});
+  const CameraPage({super.key});
 
   @override
   Widget build(BuildContext context) {
