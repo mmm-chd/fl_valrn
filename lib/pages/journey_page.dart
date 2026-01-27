@@ -43,7 +43,7 @@ class JourneyPage extends GetView<JourneyController> {
                   text: "Journey",
                   style: TextStyle(
                     color: PColor.primGreen,
-                    fontSize: 30,
+                    fontSize: 28,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

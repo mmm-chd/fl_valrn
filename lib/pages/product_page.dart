@@ -64,6 +64,7 @@ class ProductPage extends GetView<MarketController> {
                             controller: controller.chatController,
                             hint: "Apa ini masih ada?",
                             label: "Apa ini masih ada?",
+                            variant: TextFieldVariant.underline
                           ),
                         ),
 
@@ -105,13 +106,17 @@ class ProductPage extends GetView<MarketController> {
                     CustomText(
                       text: "Deskripsi",
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     CustomText(
                       text: item.desc, 
-                      maxLines: 3,),
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 14
+                      ),
+                      ),
 
                     const CustomSpacing(height: 10, ),
                     Divider(
@@ -124,7 +129,7 @@ class ProductPage extends GetView<MarketController> {
                         CustomText(
                           text: "Informasi Penjual",
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -139,6 +144,7 @@ class ProductPage extends GetView<MarketController> {
                         ),
                       ],
                     ),
+                    CustomSpacing(height: 12,),
                     
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,12 +192,12 @@ class ProductPage extends GetView<MarketController> {
 
                 ) ,
               ),
+              // const CustomSpacing(height: 10, ),
+              // Divider(
+              //   thickness: 25,
+              //   color: const Color.fromARGB(217, 188, 182, 182),
+              // ),
               const CustomSpacing(height: 10, ),
-              Divider(
-                thickness: 25,
-                color: Colors.grey[400],
-              ),
-                const CustomSpacing(height: 10, ),
               
               Container(
                 margin: EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -200,7 +206,7 @@ class ProductPage extends GetView<MarketController> {
                     Expanded(
                       child: Divider(
                         thickness: 1,
-                        color: Colors.grey[400],
+                        color: const Color.fromARGB(229, 226, 220, 220),
                       ),
                     ),
                 
@@ -218,13 +224,12 @@ class ProductPage extends GetView<MarketController> {
                     Expanded(
                       child: Divider(
                         thickness: 1,
-                        color: Colors.grey[400],
+                        color: const Color.fromARGB(229, 226, 220, 220),
                       ),
                     ),
                   ],
                 ),
               ),
-              CustomSpacing(height: 10,),
               
               Obx(() {
                     if (controller.isLoading.value) {
