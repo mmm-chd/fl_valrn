@@ -1,3 +1,4 @@
+import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:flutter/material.dart';
@@ -29,45 +30,17 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // AppBar transparan
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white.withOpacity(0.3),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                        CircleAvatar(
-                          backgroundColor: Colors.white.withOpacity(0.3),
-                          child: IconButton(
-                            icon: const Icon(Icons.share, color: Colors.white),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
 
                 // Profile Picture - Positioned
                 Positioned(
-                  bottom: -60,
+                  bottom: -70,  
                   left: 0,
                   right: 0,
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        border: Border.all(color: Colors.white, width: 1.5),
                       ),
                       child: CircleAvatar(
                         radius: 100,
@@ -81,12 +54,12 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 70),
+            const CustomSpacing(height: 80),
 
             // Name
             CustomText(
               text: 'Mr. Farmer',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
 
@@ -96,52 +69,8 @@ class ProfilePage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFF757575),
-                fontSize: 13,
+                fontSize: 14,
                 height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Action Buttons
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {Get.offAllNamed(AppRoutes.settingsPage);},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4CAF50),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: const CustomText(
-                        text: 'Kirim Pesan',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.more_vert, size: 20),
-                      onPressed: () {},
-                      padding: EdgeInsets.all(8),
-                    ),
-                  ),
-                ],
               ),
             ),
 
@@ -158,14 +87,14 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   const CustomText(
                     text: 'Tentang saya',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   const CustomText(
                     text: 'Saya suka menanam dan memcari teman berbisnis jln',
                     style: TextStyle(
                       color: Color(0xFF757575),
-                      fontSize: 13,
+                      fontSize: 14,
                       height: 1.5,
                     ),
                   ),
@@ -175,6 +104,47 @@ class ProfilePage extends StatelessWidget {
             ),
             Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
             const SizedBox(height: 12),
+
+            // Informasi Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CustomText(
+                    text: 'Informasi',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Instagram
+                  _buildInfoRow(
+                    icon: Icons.camera_alt_outlined,
+                    label: 'Instagram',
+                    value: 'PetaniKeren',
+                    valueColor: Colors.green,
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Telephone
+                  _buildInfoRow(
+                    icon: Icons.phone_outlined,
+                    label: 'Telephone',
+                    value: '082136508987',
+                    valueColor: Colors.green,
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Facebook
+                  _buildInfoRow(
+                    icon: Icons.facebook_outlined,
+                    label: 'Facebook',
+                    value: 'PetaniKeren69',
+                    valueColor: Colors.green,
+                  ),
+                ],
+              ),
+            ),
 
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -218,6 +188,37 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+
+ Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color valueColor,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.grey.shade400, size: 24),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: valueColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
 
 class ProductCard extends StatelessWidget {
   final String imageUrl;
@@ -302,3 +303,5 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
+
+
