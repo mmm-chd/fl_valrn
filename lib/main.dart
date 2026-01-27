@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
         ),
       ),
-      initialRoute: AppRoutes.profilePage,
+      initialRoute: AppRoutes.splashPage,
       getPages: AppPages.pages,
     );
   }
