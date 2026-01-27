@@ -14,9 +14,9 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, top: 40),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
           child: CustomNavbarsafepadding(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

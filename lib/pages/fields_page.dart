@@ -1,3 +1,4 @@
+import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_clipper.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
@@ -14,140 +15,143 @@ class FieldsPage extends GetView<FieldsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-
-          /// HEADER
-          ClipPath(
-            clipper: CurvedHeaderClipper(),
-            child: Container(
-              height: 180,
-              width: double.infinity,
-              color: const Color(0xFF2A9134),
-              child: SafeArea(
-                bottom: false,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: CustomText(
-                      text: "My Fields",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+      body: SingleChildScrollView(
+        child: CustomNavbarsafepadding(
+          child: Column(
+            children: [
+              /// HEADER
+              ClipPath(
+                clipper: CurvedHeaderClipper(),
+                child: Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: const Color(0xFF2A9134),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: CustomText(
+                        text: "My Fields",
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
 
-          /// CONTENT
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 12),
+              /// CONTENT
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 12),
 
-                CustomTextfield(
-                  isNumber: false,
-                  controller: controller.searchController,
-                  label: 'Cari tanaman kamu..',
-                ),
-
-                const SizedBox(height: 20),
-
-                CustomText(
-                  text: "Recently",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                ),
-                CustomSpacing(height: 12),
-
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return SizedBox(
-                      height: 220,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-
-                  return SizedBox(
-                    height: 220,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.recentCard.length,
-                      itemBuilder: (context, index) {
-                        final item = controller.recentCard[index];
-                        return CustomCard(
-                          title: item.title,
-                          subtitle: item.subtitle,
-                          imageUrl: item.imageUrl,
-                          isExtendable: false,
-                          isEcommerce: false,
-                          isDescription: true,
-                          height: 216,
-                          width: 172,
-                          isImageLeft: false,
-                        );
-                      },
+                    CustomTextfield(
+                      isNumber: false,
+                      controller: controller.searchController,
+                      label: 'Cari tanaman kamu..',
                     ),
-                  );
-                }),
 
-                const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                CustomText(
-                  text: "Your Fields",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 12),
+                    CustomText(
+                      text: "Recently",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    CustomSpacing(height: 12),
 
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 40),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return SizedBox(
+                          height: 220,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
 
-                  return ListView.builder(
-                    itemCount: controller.fieldsCard.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: CustomCard(
-                          title: controller.fieldsCard[index].title,
-                          subtitle: controller.fieldsCard[index].title,
-                          imageUrl: controller.fieldsCard[index].imageUrl,
-                          isExtendable: true,
-                          isEcommerce: false,
-                          isDescription: true,
-                          height: 152,
-                          width: double.infinity,
-                          isImageLeft: true,
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.journeyPage,
-                              arguments: controller.fieldsCard[index],
+                      return SizedBox(
+                        height: 220,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.recentCard.length,
+                          itemBuilder: (context, index) {
+                            final item = controller.recentCard[index];
+                            return CustomCard(
+                              title: item.title,
+                              subtitle: item.subtitle,
+                              imageUrl: item.imageUrl,
+                              isExtendable: false,
+                              isEcommerce: false,
+                              isDescription: true,
+                              height: 216,
+                              width: 172,
+                              isImageLeft: false,
                             );
                           },
                         ),
                       );
-                    },
-                  );
-                }),
+                    }),
 
-                const SizedBox(height: 24), // biar ga mepet bawah
-              ],
-            ),
+                    const SizedBox(height: 20),
+
+                    CustomText(
+                      text: "Your Fields",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 40),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
+                      return ListView.builder(
+                        itemCount: controller.fieldsCard.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: CustomCard(
+                              title: controller.fieldsCard[index].title,
+                              subtitle: controller.fieldsCard[index].title,
+                              imageUrl: controller.fieldsCard[index].imageUrl,
+                              isExtendable: true,
+                              isEcommerce: false,
+                              isDescription: true,
+                              height: 152,
+                              width: double.infinity,
+                              isImageLeft: true,
+                              onTap: () {
+                                Get.toNamed(
+                                  AppRoutes.journeyPage,
+                                  arguments: controller.fieldsCard[index],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
-
   }
 }
