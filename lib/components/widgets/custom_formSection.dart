@@ -7,7 +7,10 @@ class CustomFormsection extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final double? height;
   final Color backgroundColor;
-  const CustomFormsection({super.key, required this.child, this.margin, this.padding, this.height, this.backgroundColor= Colors.white});
+  final bool border;
+  final Color borderColor;
+  final double borderWidth;
+  const CustomFormsection({super.key, required this.child, this.margin, this.padding, this.height, this.backgroundColor= Colors.white, this.border=false, this.borderColor= Colors.grey, this.borderWidth=1});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +21,12 @@ class CustomFormsection extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(5),
+        border:  border
+        ? Border.all(
+          color: borderColor,
+          width: borderWidth
+        )
+        : null,
       ),
       child: Padding(
       padding: padding ?? const EdgeInsets.all(16),

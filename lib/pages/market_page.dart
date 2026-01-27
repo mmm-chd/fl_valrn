@@ -58,7 +58,7 @@ class MarketPage extends GetView<MarketController> {
               CustomCard(
                 title: "ngetes",
                 subtitle: "muncul kaga",
-                imageUrl: "https://i.pinimg.com/736x/2f/de/99/2fde9942cfc7d25f34411c9ca1d8990f.jpg",
+                imageUrl: "https://i.pinimg.com/736x/3a/ee/ee/3aeeee1d04b16f5ab613337aca0721e7.jpg",
                 isExtendable: false,
                 isEcommerce: true,
                 isDescription: false,

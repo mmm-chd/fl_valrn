@@ -122,11 +122,15 @@ class CustomTextfield extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.never,
           hintFadeDuration: Duration(milliseconds: 500),
 
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(color: Colors.red),
+          ),
 
           border: _buildBorder(borderColor ?? Colors.grey.shade400),
           enabledBorder: _buildBorder(borderColor ?? Colors.grey.shade400),
           focusedBorder: _buildBorder(PColor.primGreen),
-          errorBorder: _buildBorder(Colors.red),
+          // errorBorder: _buildBorder(Colors.red),
           focusedErrorBorder: _buildBorder(Colors.red),
 
           contentPadding: variant == TextFieldVariant.underline
@@ -140,6 +144,7 @@ class CustomTextfield extends StatelessWidget {
           suffixIcon: useSuffixIcon!
               ? GestureDetector(onTap: onTapSuffixIcon, child: suffixIcon)
               : null,
+          // contentPadding: EdgeInsets.all(14),
         ),
         enableInteractiveSelection: enableInteractiveSelection ?? true,
         enableSuggestions: enableSuggestion ?? false,

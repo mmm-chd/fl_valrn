@@ -9,5 +9,4 @@ class ProductBinding extends Bindings{
     Get.lazyPut<ProductController>(()=>ProductController());
     Get.lazyPut<AddproductController>(()=>AddproductController());
   }
-
 }

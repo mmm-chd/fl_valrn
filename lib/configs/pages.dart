@@ -19,6 +19,7 @@ import 'package:fl_valrn/navigation/navBar_page.dart';
 import 'package:fl_valrn/pages/journey_page.dart';
 import 'package:fl_valrn/pages/auth_page.dart';
 import 'package:fl_valrn/pages/market_page.dart';
+import 'package:fl_valrn/pages/myProduct_page.dart';
 import 'package:fl_valrn/pages/overview_page.dart';
 import 'package:fl_valrn/pages/preview_page.dart';
 import 'package:fl_valrn/pages/product_page.dart';
@@ -96,6 +97,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.addProductPage, 
       page: ()=> AddProductPage(),
+      binding: ProductBinding()),
+    GetPage(
+      name: AppRoutes.myProductPage, 
+      page: ()=>MyproductPage(),
       binding: ProductBinding())
   ];
 }

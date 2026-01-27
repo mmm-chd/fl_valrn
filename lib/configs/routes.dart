@@ -13,4 +13,6 @@ class AppRoutes {
   static const String overviewPage = '/overviewPage';
   static const String settingsPage = '/settingsPage';
   static const String addProductPage='/addProductPage';
+  static const String myProductPage='/myProductPage';
+  
 }

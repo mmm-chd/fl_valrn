@@ -49,12 +49,6 @@ class HomePage extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                    Spacer(),
-                    Icon(
-                      Icons.notifications,
-                      size: 36,
-                      color: Color(0xFF2A9134),
-                    ),
                   ],
                 ),
                 CustomSpacing(height: 20),
@@ -69,7 +63,7 @@ class HomePage extends GetView<HomeController> {
                   title: "ngetes",
                   subtitle: "muncul kaga",
                   imageUrl:
-                      "https://i.pinimg.com/736x/2f/de/99/2fde9942cfc7d25f34411c9ca1d8990f.jpg",
+                      "https://i.pinimg.com/736x/3a/ee/ee/3aeeee1d04b16f5ab613337aca0721e7.jpg",
                   isExtendable: false,
                   isEcommerce: true,
                   isDescription: false,
@@ -91,7 +85,7 @@ class HomePage extends GetView<HomeController> {
                   }
 
                   return SizedBox(
-                    height: 220,
+                    height: 184,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.trendingCard.length,
@@ -149,7 +143,7 @@ class HomePage extends GetView<HomeController> {
                   }
 
                   return SizedBox(
-                    height: 220,
+                    height: 184,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.fieldsCard.length,
