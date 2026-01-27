@@ -68,7 +68,7 @@ class CustomTextfield extends StatelessWidget {
 
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(color:Colors.red),
+            borderSide: BorderSide(color: Colors.red),
           ),
 
           focusedErrorBorder: OutlineInputBorder(
@@ -102,7 +102,7 @@ class CustomTextfield extends StatelessWidget {
           suffixIcon: useSuffixIcon!
               ? GestureDetector(onTap: onTapSuffixIcon, child: suffixIcon)
               : null,
-          contentPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.all(14),
         ),
         enableInteractiveSelection: enableInteractiveSelection ?? true,
         enableSuggestions: enableSuggestion ?? false,

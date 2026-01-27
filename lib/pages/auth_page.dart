@@ -6,110 +6,99 @@ import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
+import 'package:fl_valrn/controllers/auth_controller.dart';
 import 'package:fl_valrn/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
-class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+class AuthPage extends GetView<LoginController> {
+  const AuthPage({super.key});
+  AuthController get authController => Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(-1, 1),
-            end: Alignment(1, 1),
-            colors: [Colors.lightGreen, PColor.primGreen],
+      body: SafeArea(
+        top: false,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(-1, 1),
+              end: Alignment(1, 1),
+              colors: [Colors.lightGreen, PColor.primGreen],
+            ),
           ),
-        ),
-        child: CustomScrollView(
-          slivers: [
-            // =========================
-            // HEADER
-            // =========================
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              expandedHeight: 240,
-              pinned: false,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 70, 14, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CustomText(
-                        text: 'PlantApp',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 44,
-                          fontWeight: FontWeight.w600,
+          child: CustomScrollView(
+            slivers: [
+              // HEADER
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                expandedHeight: 240,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/logo/white-waisya.svg',
+                          width: 180,
                         ),
-                      ),
-                      const CustomSpacing(height: 10),
-                      CustomText(
-                        text:
-                            'This application was created to help farmers out there.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.grey.shade100,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                        const CustomSpacing(height: 10),
+                        CustomText(
+                          text:
+                              'This application was created to help farmers out there.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey.shade100,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // =========================
-            // FORM CONTAINER
-            // =========================
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                ),
-                child: Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _tabBar(),
-                      controller.currentTabIndex.value == 0
-                          ? _loginForm()
-                          : _registerForm(),
-                      const CustomSpacing(height: 34),
-                      _socialDivider(),
-                      const CustomSpacing(height: 32),
-                      _socialButtons(),
-                      const CustomSpacing(height: 32),
-                    ],
+              // FORM CONTAINER
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                  ),
+                  child: Obx(
+                    () => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _tabBar(),
+                        controller.currentTabIndex.value == 0
+                            ? _loginForm()
+                            : _registerForm(),
+                        const CustomSpacing(height: 34),
+                        _socialDivider(),
+                        const CustomSpacing(height: 32),
+                        _socialButtons(),
+                        const CustomSpacing(height: 84),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            // =========================
-            // FILL SPACE (AVOID WHITE GAP)
-            // =========================
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: CustomSpacing(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // =========================
   // TAB BAR
-  // =========================
   Widget _tabBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -129,7 +118,7 @@ class LoginPage extends GetView<LoginController> {
                   text: 'Login',
                   tabIndex: 0,
                   currentIndex: controller.currentTabIndex,
-                  onTap: (i) => controller.selectTab(i),
+                  onTap: (i) => controller.selectTab(i, Get.context!),
                 ),
               ),
               const CustomSpacing(width: 4),
@@ -138,7 +127,7 @@ class LoginPage extends GetView<LoginController> {
                   text: 'Register',
                   tabIndex: 1,
                   currentIndex: controller.currentTabIndex,
-                  onTap: (i) => controller.selectTab(i),
+                  onTap: (i) => controller.selectTab(i, Get.context!),
                 ),
               ),
             ],
@@ -148,9 +137,7 @@ class LoginPage extends GetView<LoginController> {
     );
   }
 
-  // =========================
   // SOCIAL
-  // =========================
   Widget _socialDivider() {
     return Row(
       children: [
@@ -194,12 +181,20 @@ class LoginPage extends GetView<LoginController> {
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         CustomTextfield(
           isNumber: false,
           label: 'john@gmail.com',
           controller: controller.emailController,
+          onChanged: (_) => controller.emailError.value = '',
         ),
+        Obx(() {
+          if (controller.emailError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.emailError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         const CustomSpacing(height: 16.0),
         Row(
           children: [
@@ -212,12 +207,21 @@ class LoginPage extends GetView<LoginController> {
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  const CustomSpacing(height: 10),
+                  const CustomSpacing(height: 8),
                   CustomTextfield(
                     isNumber: false,
                     label: 'John',
                     controller: controller.firstNameController,
+                    onChanged: (_) => controller.firstNameError.value = '',
                   ),
+                  Obx(() {
+                    if (controller.firstNameError.isEmpty)
+                      return const CustomSpacing();
+                    return CustomText(
+                      text: controller.firstNameError.value,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -231,12 +235,21 @@ class LoginPage extends GetView<LoginController> {
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  const CustomSpacing(height: 10),
+                  const CustomSpacing(height: 8),
                   CustomTextfield(
                     isNumber: false,
                     label: 'Doe',
                     controller: controller.lastNameController,
+                    onChanged: (_) => controller.lastNameError.value = '',
                   ),
+                  Obx(() {
+                    if (controller.lastNameError.isEmpty)
+                      return const CustomSpacing();
+                    return CustomText(
+                      text: controller.lastNameError.value,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -248,7 +261,7 @@ class LoginPage extends GetView<LoginController> {
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         Obx(
           () => CustomTextfield(
             isNumber: false,
@@ -263,15 +276,23 @@ class LoginPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.passwordController,
+            onChanged: (_) => controller.passwordError.value = '',
           ),
         ),
+        Obx(() {
+          if (controller.passwordError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.passwordError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         const CustomSpacing(height: 16.0),
         CustomText(
           text: 'Confirm Password',
           textAlign: TextAlign.start,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         ),
-        const CustomSpacing(height: 10),
+        const CustomSpacing(height: 8),
         Obx(
           () => CustomTextfield(
             isNumber: false,
@@ -286,13 +307,46 @@ class LoginPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.confirmPasswordController,
+            onChanged: (_) => controller.confirmPasswordError.value = '',
           ),
         ),
+        Obx(() {
+          if (controller.confirmPasswordError.isEmpty)
+            return const CustomSpacing();
+          return CustomText(
+            text: controller.confirmPasswordError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         const CustomSpacing(height: 32.0),
+        Obx(() {
+          if (controller.registerGeneralError.isEmpty) {
+            return const CustomSpacing();
+          }
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: CustomText(
+              text: controller.registerGeneralError.value,
+              style: const TextStyle(color: Colors.red, fontSize: 13),
+            ),
+          );
+        }),
         Obx(
           () => CustomButton(
-            onPressed: () {},
-            text: controller.isLoading.value ? 'Loading..' : 'Register',
+            onPressed: authController.isLoading.value
+                ? null
+                : () {
+                    if (!controller.validateRegister()) return;
+                    authController.register(
+                      email: controller.emailController.text.trim(),
+                      firstName: controller.firstNameController.text.trim(),
+                      lastname: controller.lastNameController.text.trim(),
+                      password: controller.passwordController.text.trim(),
+                      confirmPassword: controller.confirmPasswordController.text
+                          .trim(),
+                    );
+                  },
+            text: authController.isLoading.value ? 'Loading..' : 'Register',
             backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
           ),
@@ -315,7 +369,15 @@ class LoginPage extends GetView<LoginController> {
           isNumber: false,
           label: 'Enter your email..',
           controller: controller.emailController,
+          onChanged: (_) => controller.emailError.value = '',
         ),
+        Obx(() {
+          if (controller.emailError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.emailError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         const CustomSpacing(height: 16.0),
         CustomText(
           text: 'Password',
@@ -337,8 +399,16 @@ class LoginPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.passwordController,
+            onChanged: (_) => controller.passwordError.value = '',
           ),
         ),
+        Obx(() {
+          if (controller.passwordError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.passwordError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -366,10 +436,16 @@ class LoginPage extends GetView<LoginController> {
             ),
           ],
         ),
-        const CustomSpacing(height: 16.0),
+        const CustomSpacing(height: 16),
         Obx(
           () => CustomButton(
-            onPressed: () {},
+            onPressed: () {
+              if (!controller.validateLogin()) return;
+              authController.login(
+                email: controller.emailController.text.trim(),
+                password: controller.passwordController.text.trim(),
+              );
+            },
             text: controller.isLoading.value ? 'Loading..' : 'Log In',
             backgroundColor: PColor.primGreen,
             foregroundColor: Colors.white,
