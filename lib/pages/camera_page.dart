@@ -20,7 +20,20 @@ class CameraPage extends GetView<CameraPageController> {
 
         return Stack(
           children: [
-            Positioned.fill(child: CameraPreview(controller.cameraController)),
+            Positioned.fill(
+              child: GestureDetector(
+                onTapDown: (details) {
+                  final screenSize = MediaQuery.of(context).size;
+                  controller.setFocus(details.localPosition, screenSize);
+                },
+                onScaleStart: (_) => controller.onZoomStart(),
+                onScaleUpdate: (details) {
+                  controller.onZoomUpdate(details.scale);
+                },
+                child: buildCameraPreview(context),
+              ),
+            ),
+            buildFocusRing(),
             Positioned(
               top: 0,
               left: 0,
@@ -150,6 +163,65 @@ class CameraPage extends GetView<CameraPageController> {
       }),
     );
   }
+
+  Widget buildCameraPreview(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final deviceRatio = size.width / size.height;
+
+    
+    if (!controller.cameraController.value.isInitialized) {
+      return const SizedBox.expand(
+        child: ColoredBox(color: Colors.black),
+      );
+    }
+
+    final cameraRatio =
+        controller.cameraController.value.previewSize!.height /
+        controller.cameraController.value.previewSize!.width;
+
+    return SizedBox.expand(
+      child: Transform.scale(
+        scale: cameraRatio / deviceRatio,
+        child: Center(
+          child: AspectRatio(
+            aspectRatio: cameraRatio,
+            child: CameraPreview(controller.cameraController),
+          ),
+        ),
+      ),
+    );
+}
+  Widget buildFocusRing() {
+  return Obx(() {
+    final point = controller.focusPoint.value;
+    if (point == null) return const SizedBox.shrink();
+
+    return Positioned(
+      left: point.dx - 35,
+      top: point.dy - 35,
+      child: AnimatedScale(
+        scale: 1,
+        duration: const Duration(milliseconds: 150),
+        child: AnimatedOpacity(
+          opacity: 1,
+          duration: const Duration(milliseconds: 150),
+          child: Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  });
+}
+
 
   // Pick dari gallery
   void _pickFromGallery() async {
