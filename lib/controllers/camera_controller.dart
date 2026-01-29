@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,12 @@ class CameraPageController extends GetxController {
   String? lastPickedImage; // Untuk simpan image path dari gallery
   final Rx<File?> recentImage = Rx<File?>(null);
 
+  late double minZoom = 1.0;
+  late double maxZoom = 1.0;
+  late double currentZoom = 1.0;
+  late double baseZoom = 1.0;
+  Rx<Offset?> focusPoint = Rx<Offset?>(null);
+
   final CameraDescription camera;
 
   CameraPageController(this.camera);
@@ -29,9 +36,10 @@ class CameraPageController extends GetxController {
       enableAudio: false,
     );
 
-    initializeFuture = cameraController.initialize().then((_) {
-      isReady.value = true;
-    });
+    initializeFuture = cameraController.initialize().then((_) async {
+    await initZoom(); 
+    isReady.value = true;
+  });
     loadRecentImage();
   }
 
@@ -64,6 +72,7 @@ class CameraPageController extends GetxController {
   Future<void> takePicture() async {
     if (!cameraController.value.isInitialized) return;
     image = await cameraController.takePicture();
+    await cameraController.pausePreview();
   }
 
   Future<void> toggleFlash() async {
@@ -87,7 +96,33 @@ class CameraPageController extends GetxController {
       lastPickedImage = pickedImage.path; // Simpan path
     }
   }
+  Future<void> initZoom() async {
+    minZoom = await cameraController.getMinZoomLevel();
+    maxZoom = await cameraController.getMaxZoomLevel();
+  }
 
+  Future<void> setFocus(Offset tapPosition, Size screenSize) async {
+    final double dx = tapPosition.dx / screenSize.width;
+    final double dy = tapPosition.dy / screenSize.height;
+
+    await cameraController.setFocusPoint(Offset(dx, dy));
+
+    focusPoint.value = tapPosition;
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      focusPoint.value = null;
+    });
+  }
+
+  void onZoomStart() {
+    baseZoom = currentZoom;
+  }
+  Future<void> onZoomUpdate(double scale) async {
+    final zoom = (baseZoom * scale).clamp(minZoom, maxZoom);
+    currentZoom = zoom;
+    await cameraController.setZoomLevel(zoom);
+  }
+  
   @override
   void onClose() {
     cameraController.dispose();
