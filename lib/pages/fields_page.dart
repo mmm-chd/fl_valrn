@@ -107,7 +107,6 @@ class FieldsPage extends GetView<FieldsController> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 12),
 
                     Obx(() {
                       if (controller.isLoading.value) {
