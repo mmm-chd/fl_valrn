@@ -1,9 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:fl_valrn/components/widgets/custom_cornerFrame.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
-import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/camera_controller.dart';
-import 'package:fl_valrn/services/ai_detection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -92,7 +90,7 @@ class CameraPage extends GetView<CameraPageController> {
                             backgroundColor: const Color(0xFF2A9134),
                             elevation: 0,
                           ),
-                          onPressed: () => _pickFromGallery(),
+                          onPressed: () => controller.pickFromGallery(),
                           child: const Icon(
                             Icons.photo_library,
                             color: Colors.white,
@@ -108,7 +106,7 @@ class CameraPage extends GetView<CameraPageController> {
                           elevation: 0,
                           iconSize: 20,
                         ),
-                        onPressed: () => _pickFromGallery(),
+                        onPressed: () => controller.pickFromGallery(),
                         child: ClipOval(
                           child: Image.file(
                             controller.recentImage.value!,
@@ -128,7 +126,7 @@ class CameraPage extends GetView<CameraPageController> {
                       onPressed: () async {
                         await controller.takePicture();
                         if (controller.image != null) {
-                          _detectAndNavigate(controller.image!.path);
+                          controller.detectAndNavigate(controller.image!.path);
                         }
                       },
                       child: const Icon(
@@ -137,23 +135,25 @@ class CameraPage extends GetView<CameraPageController> {
                         color: Colors.white,
                       ),
                     ),
-                    
-                    Obx(() => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(18),
-                        backgroundColor: const Color(0xFF2A9134),
-                        elevation: 0,
+
+                    Obx(
+                      () => ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(18),
+                          backgroundColor: const Color(0xFF2A9134),
+                          elevation: 0,
+                        ),
+                        onPressed: controller.toggleFlash,
+                        child: Icon(
+                          controller.isFlashOn.value
+                              ? Icons.flash_on
+                              : Icons.flash_off,
+                          size: 20,
+                          color: Colors.white,
+                        ),
                       ),
-                      onPressed: controller.toggleFlash,
-                      child: Icon(
-                        controller.isFlashOn.value
-                            ? Icons.flash_on
-                            : Icons.flash_off,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -168,11 +168,8 @@ class CameraPage extends GetView<CameraPageController> {
     final size = MediaQuery.of(context).size;
     final deviceRatio = size.width / size.height;
 
-    
     if (!controller.cameraController.value.isInitialized) {
-      return const SizedBox.expand(
-        child: ColoredBox(color: Colors.black),
-      );
+      return const SizedBox.expand(child: ColoredBox(color: Colors.black));
     }
 
     final cameraRatio =
@@ -190,78 +187,33 @@ class CameraPage extends GetView<CameraPageController> {
         ),
       ),
     );
-}
-  Widget buildFocusRing() {
-  return Obx(() {
-    final point = controller.focusPoint.value;
-    if (point == null) return const SizedBox.shrink();
+  }
 
-    return Positioned(
-      left: point.dx - 35,
-      top: point.dy - 35,
-      child: AnimatedScale(
-        scale: 1,
-        duration: const Duration(milliseconds: 150),
-        child: AnimatedOpacity(
-          opacity: 1,
+  Widget buildFocusRing() {
+    return Obx(() {
+      final point = controller.focusPoint.value;
+      if (point == null) return const SizedBox.shrink();
+
+      return Positioned(
+        left: point.dx - 35,
+        top: point.dy - 35,
+        child: AnimatedScale(
+          scale: 1,
           duration: const Duration(milliseconds: 150),
-          child: Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white,
-                width: 2,
+          child: AnimatedOpacity(
+            opacity: 1,
+            duration: const Duration(milliseconds: 150),
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
               ),
             ),
           ),
         ),
-      ),
-    );
-  });
-}
-
-
-  // Pick dari gallery
-  void _pickFromGallery() async {
-    await controller.pickFromGallery();
-    if (controller.lastPickedImage != null) {
-      print('Gallery image picked: ${controller.lastPickedImage}');
-      _detectAndNavigate(controller.lastPickedImage!);
-    } else {
-      print('No image picked from gallery');
-    }
-  }
-
-  // Detect AI dan navigate
-  void _detectAndNavigate(String imagePath) async {
-    Get.dialog(
-      const Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Color(0xff52A068)),
-        ),
-      ),
-      barrierDismissible: false,
-    );
-
-    try {
-      final apiResponse = await PlantAIService.analyzePlant(
-        imagePath: imagePath,
       );
-
-      apiResponse['imagePath'] = imagePath;
-
-      Get.back();
-
-      Get.toNamed(AppRoutes.overviewPage, arguments: apiResponse);
-    } catch (e) {
-      Get.back();
-      Get.snackbar(
-        'Gagal',
-        'Deteksi AI gagal: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
+    });
   }
 }

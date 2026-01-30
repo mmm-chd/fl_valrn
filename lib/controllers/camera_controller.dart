@@ -1,5 +1,7 @@
 import 'dart:io';
-import 'dart:ui';
+import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/services/ai_detection_service.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -87,7 +89,7 @@ class CameraPageController extends GetxController {
     isFlashOn.value = !isFlashOn.value;
   }
 
-  Future<void> pickFromGallery() async {
+  Future<void> _pickFromGallery() async {
     final XFile? pickedImage = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 90,
@@ -121,6 +123,48 @@ class CameraPageController extends GetxController {
     final zoom = (baseZoom * scale).clamp(minZoom, maxZoom);
     currentZoom = zoom;
     await cameraController.setZoomLevel(zoom);
+  }
+
+  // Pick dari gallery
+  void pickFromGallery() async {
+    await _pickFromGallery();
+    if (lastPickedImage != null) {
+      print('Gallery image picked: $lastPickedImage');
+      detectAndNavigate(lastPickedImage!);
+    } else {
+      print('No image picked from gallery');
+    }
+  }
+
+  // Detect AI dan navigate
+  void detectAndNavigate(String imagePath) async {
+    Get.dialog(
+      const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Color(0xff52A068)),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    try {
+      final apiResponse = await PlantAIService.analyzePlant(
+        imagePath: imagePath,
+      );
+
+      apiResponse['imagePath'] = imagePath;
+
+      Get.back();
+
+      Get.toNamed(AppRoutes.overviewPage, arguments: apiResponse);
+    } catch (e) {
+      Get.back();
+      Get.snackbar(
+        'Gagal',
+        'Deteksi AI gagal: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
   
   @override
