@@ -1,6 +1,10 @@
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
+import 'package:fl_valrn/configs/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -8,7 +12,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFEBEBEB),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -17,7 +21,7 @@ class ProfilePage extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  height: 268,
+                  height: 260,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
@@ -28,9 +32,66 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
 
+                Positioned(
+                  top: 32,
+                  left: 16,
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: Color(0xffEBEBEB).withOpacity(0.9),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(blurRadius: 1, color: Colors.black26),
+                      ],
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      iconSize: 36, // Kecilkan dari 40 ke 22-24
+                      icon: const Icon(
+                        Icons.chevron_left_rounded,
+                        color: Color(0xff2A9134),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
+
+                // SETTINGS ICON
+                Positioned(
+                  top: 32,
+                  right: 16,
+                  child: Container(
+                    width: 40, // Atur ukuran circle
+                    height: 40,
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: Color(0xffEBEBEB).withOpacity(0.9),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(blurRadius: 6, color: Colors.black26),
+                      ],
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      iconSize: 28,
+                      icon: const Icon(
+                        Icons.settings_rounded,
+                        color: Color(0xff2A9134),
+                      ),
+                      onPressed: () {
+                        Get.offAllNamed(AppRoutes.settingsPage);
+                      },
+                    ),
+                  ),
+                ),
+
                 // Profile Picture - Positioned
                 Positioned(
-                  bottom: -70,  
+                  bottom: -75,
                   left: 0,
                   right: 0,
                   child: Center(
@@ -51,14 +112,14 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
 
-            const CustomSpacing(height: 80),
+            const CustomSpacing(height: 84),
 
             // Name
             CustomText(
               text: 'Mr. Farmer',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 6),
+            const CustomSpacing(height: 6),
 
             // Description
             const CustomText(
@@ -70,11 +131,75 @@ class ProfilePage extends StatelessWidget {
                 height: 1.4,
               ),
             ),
+            const CustomSpacing(height: 16),
 
-            const SizedBox(height: 24),
+            // Button Kirim Pesan + Menu
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Row(
+                children: [
+                  // Button Kirim Pesan (ambil sebagian besar space)
+                  Expanded(
+                    flex: 5, // Proporsi button
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Action kirim pesan
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff2A9134),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 14),
+                        elevation: 2,
+                        shadowColor: Colors.black26,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Text(
+                        'Kirim Pesan',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  // Button Menu (3 dots) - ukuran fixed
+                  Container(
+                    height: 48, // Sama tinggi dengan button
+                    width: 48, // Lebar fixed
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEBEBEB), // Background putih
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                        color: Color(0xFFAFAFAF), // Outline hitam
+                        width: 1.5, // Ketebalan border
+                      ),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        // Action menu
+                      },
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Colors.black87,
+                        size: 24,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const CustomSpacing(height: 20),
 
             Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
-            const SizedBox(height: 16),
+            const CustomSpacing(height: 16),
 
             // Tentang Saya Section
             Padding(
@@ -143,16 +268,49 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
 
+            const CustomSpacing(height: 16),
+
+            Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
+            const CustomSpacing(height: 8),
+
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomText(
-                    text: 'Produk saya',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  Row(
+                    children: [
+                      const CustomText(
+                        text: 'Produk saya',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                      Spacer(),
+
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            AppRoutes.myProductPage,
+                          ); // Ganti dengan route Anda
+                        },
+                        child: CustomText(
+                          text: 'Edit Produk',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.green,
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
 
                   // Grid Produk
                   GridView.builder(
@@ -186,36 +344,33 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
- Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-    required Color valueColor,
-  }) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.grey.shade400, size: 24),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 16,
-            ),
-          ),
+Widget _buildInfoRow({
+  required IconData icon,
+  required String label,
+  required String value,
+  required Color valueColor,
+}) {
+  return Row(
+    children: [
+      Icon(icon, color: Colors.grey.shade400, size: 24),
+      const SizedBox(width: 12),
+      Expanded(
+        child: Text(
+          label,
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            color: valueColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+      ),
+      Text(
+        value,
+        style: TextStyle(
+          color: valueColor,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
 class ProductCard extends StatelessWidget {
   final String imageUrl;
@@ -300,5 +455,3 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-
-
