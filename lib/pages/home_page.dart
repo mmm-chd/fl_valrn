@@ -5,6 +5,7 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/home_controller.dart';
+import 'package:fl_valrn/controllers/location_controller.dart';
 import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 class HomePage extends GetView<HomeController> {
   HomePage({super.key});
   final userC= Get.find<UserController>();
+  final locC= Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class HomePage extends GetView<HomeController> {
                           ()=> Row(
                             children: [
                               CustomText(
-                                text: controller.locationText.value,
+                                text: '${locC.kabupaten.value}, ${locC.kecamatan.value}',
                                 style: TextStyle(fontSize: 14),
                               ),
                               Icon(
