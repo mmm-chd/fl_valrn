@@ -1,10 +1,12 @@
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/login_controller.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:fl_valrn/services/auth_service.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
   final isLoading = false.obs;
+  final UserController userC = Get.find<UserController>();
 
   Future<void> login({
     required String email,
@@ -17,9 +19,19 @@ class AuthController extends GetxController {
       final result = await AuthService.login(email: email, password: password);
 
       if (result['token'] != null) {
+        final token = result['token'];
+        final profile = await AuthService.getProfile();
+
+        userC.setUser(
+          id: profile['id'],
+          name: profile['name'],
+          email: profile['email'],
+        );
+
         Get.offAllNamed(
           AppRoutes.navbarPage
         );
+        
       }else {
         loginController.passwordError.value =
           result['message'] ?? 'Invalid credentials';

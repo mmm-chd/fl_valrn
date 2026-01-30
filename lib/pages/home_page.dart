@@ -5,11 +5,13 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/home_controller.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
+  HomePage({super.key});
+  final userC= Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,26 +28,37 @@ class HomePage extends GetView<HomeController> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          text: "Halo, {User}!",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                        Obx(
+                          ()=> userC.name.isEmpty ? CustomText(
+                            text: 'Halo Kamu!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                          : CustomText(
+                            text: 'Halo, ${userC.name.value}!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                         CustomSpacing(height: 4),
-                        Row(
-                          children: [
-                            CustomText(
-                              text: "Lokasi tembak kesini",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Icon(
-                              Icons.pin_drop_sharp,
-                              size: 20,
-                              color: Color(0xFF2A9134),
-                            ),
-                          ],
+                        Obx(
+                          ()=> Row(
+                            children: [
+                              CustomText(
+                                text: controller.locationText.value,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Icon(
+                                Icons.pin_drop_sharp,
+                                size: 20,
+                                color: Color(0xFF2A9134),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

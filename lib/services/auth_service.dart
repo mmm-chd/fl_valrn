@@ -85,4 +85,27 @@ class AuthService {
     return jsonDecode(body);
 
   }
+
+  static Future<Map<String, dynamic>> getProfile() async {
+    final prefs= await SharedPreferences.getInstance();
+    final token= prefs.getString('token');
+
+    if (token == null) {
+      throw Exception('Token not found');
+    }
+
+    final response= await http.get(
+      Uri.parse('$baseUrl/profile'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      }
+    );
+
+    if (response.statusCode== 200) {
+      return jsonDecode(response.body);
+    }else {
+      throw Exception('Failde to fetch profile');
+    }
+  }
 }
