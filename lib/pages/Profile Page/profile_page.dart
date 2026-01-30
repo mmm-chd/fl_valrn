@@ -2,13 +2,16 @@ import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+  final userC= Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +120,7 @@ class ProfilePage extends StatelessWidget {
 
             // Name
             CustomText(
-              text: 'Mr. Farmer',
+              text: userC.name.value,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const CustomSpacing(height: 6),

@@ -3,18 +3,48 @@ import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
+import 'package:fl_valrn/controllers/location_controller.dart';
 import 'package:fl_valrn/controllers/market_controller.dart';
 import 'package:fl_valrn/pages/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MarketPage extends GetView<MarketController> {
-  const MarketPage({super.key});
+  MarketPage({super.key});
+  final locC= Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.pin_drop_sharp,
+                    color: Color(0xff2A9134),
+                    size: 40,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: locC.kecamatan.value,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      CustomText(
+                        text: '${locC.kabupaten.value}, ${locC.provinsi.value}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
         child: CustomNavbarsafepadding(
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
