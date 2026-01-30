@@ -1,3 +1,4 @@
+import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
@@ -204,61 +205,67 @@ class ProfilePage extends StatelessWidget {
             Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
             const CustomSpacing(height: 16),
 
-            // Tentang Saya Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(
-                    text: 'Tentang saya',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  const CustomText(
-                    text: 'Saya suka menanam dan memcari teman berbisnis jln',
-                    style: TextStyle(
-                      color: Color(0xFF757575),
-                      fontSize: 14,
-                      height: 1.5,
+              // Tentang Saya Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomText(
+                      text: 'Tentang saya',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                ],
+                    const SizedBox(height: 8),
+                    const CustomText(
+                      text: 'Saya suka menanam dan memcari teman berbisnis jln',
+                      style: TextStyle(
+                        color: Color(0xFF757575),
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
               ),
-            ),
-            Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
-            const SizedBox(height: 12),
+              Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
+              const SizedBox(height: 12),
 
-            // Informasi Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(
-                    text: 'Informasi',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 12),
+              // Informasi Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomText(
+                      text: 'Informasi',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
 
-                  // Instagram
-                  _buildInfoRow(
-                    icon: Icons.camera_alt_outlined,
-                    label: 'Instagram',
-                    value: 'PetaniKeren',
-                    valueColor: Colors.green,
-                  ),
-                  const SizedBox(height: 12),
+                    // Instagram
+                    _buildInfoRow(
+                      icon: Icons.camera_alt_outlined,
+                      label: 'Instagram',
+                      value: 'PetaniKeren',
+                      valueColor: Colors.green,
+                    ),
+                    const SizedBox(height: 12),
 
-                  // Telephone
-                  _buildInfoRow(
-                    icon: Icons.phone_outlined,
-                    label: 'Telephone',
-                    value: '082136508987',
-                    valueColor: Colors.green,
-                  ),
-                  const SizedBox(height: 12),
+                    // Telephone
+                    _buildInfoRow(
+                      icon: Icons.phone_outlined,
+                      label: 'Telephone',
+                      value: '082136508987',
+                      valueColor: Colors.green,
+                    ),
+                    const SizedBox(height: 12),
 
                   // Facebook
                   _buildInfoRow(

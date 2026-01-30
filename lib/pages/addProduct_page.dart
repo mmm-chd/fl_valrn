@@ -18,9 +18,7 @@ class AddProductPage extends GetView<AddproductController> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F2)
-          ),
+          decoration: BoxDecoration(color: const Color(0xFFF2F2F2)),
           child: Container(
             margin: EdgeInsets.all(5),
             child: Column(
@@ -42,7 +40,7 @@ class AddProductPage extends GetView<AddproductController> {
                           ),
                         ),
                       ),
-                      
+
                       Align(
                         alignment: Alignment.center,
                         child: CustomText(
@@ -61,43 +59,49 @@ class AddProductPage extends GetView<AddproductController> {
                 CustomFormsection(
                   backgroundColor: Colors.amber,
                   child: Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.notifications, size: 24, color: Colors.white,),
-                      CustomSpacing(width: 8,),
-                      CustomText(text: "Ini kata mikel kasi notif")
-                    ],
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                        CustomSpacing(width: 8),
+                        CustomText(text: "Ini kata mikel kasi notif"),
+                      ],
+                    ),
                   ),
-                )),
-            
+                ),
+
                 CustomFormsection(
                   child: Container(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(text: "Foto Produk", style: TextStyle(
-                        fontSize: 20,
-                      ),),
-                      Obx(
-                        ()=> Wrap(
-                          spacing: 12,
-                          runSpacing: 12,
-                          children: [
-                            ...List.generate(
-                              controller.images.length, 
-                              (index)=> _ImageThumbnail(
-                                file: controller.images[index],
-                                onRemove: ()=> controller.removeImage(index)
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "Foto Produk",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Obx(
+                          () => Wrap(
+                            spacing: 12,
+                            runSpacing: 12,
+                            children: [
+                              ...List.generate(
+                                controller.images.length,
+                                (index) => _ImageThumbnail(
+                                  file: controller.images[index],
+                                  onRemove: () => controller.removeImage(index),
+                                ),
                               ),
-                            ),
-                            _AddImageButton(
-                              onTap: controller.pickImage
-                            ),
-                          ],
-                        )
-                      )
-                    ],
+                              _AddImageButton(onTap: controller.pickImage),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                ),
                 CustomFormsection(
                   child: Container(
                     child: Column(
@@ -107,25 +111,28 @@ class AddProductPage extends GetView<AddproductController> {
                           children: [
                             CustomText(
                               text: "Nama Produk",
-                              style: TextStyle(
-                                fontSize: 16
-                              ),),
+                              style: TextStyle(fontSize: 16),
+                            ),
                             Spacer(),
-                            CustomText(text: "0/225", style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              
-                            ),)
+                            CustomText(
+                              text: "0/225",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                            ),
                           ],
                         ),
                         CustomTextfield(
-                          isNumber: false, 
+                          isNumber: false,
                           controller: controller.productNamec,
                           label: "Masukkan Nama Produk",
-                           variant: TextFieldVariant.underline,),
+                          variant: TextFieldVariant.underline,
+                        ),
                       ],
                     ),
-                )),
+                  ),
+                ),
                 CustomFormsection(
                   child: Container(
                     child: Column(
@@ -135,59 +142,71 @@ class AddProductPage extends GetView<AddproductController> {
                           children: [
                             CustomText(
                               text: "Deskripsi Produk",
-                              style: TextStyle(
-                                fontSize: 16
-                              ),),
+                              style: TextStyle(fontSize: 16),
+                            ),
                             Spacer(),
-                            CustomText(text: "0/3000", style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16
-                            ),)
+                            CustomText(
+                              text: "0/3000",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                            ),
                           ],
                         ),
                         CustomTextfield(
-                          isNumber: false, 
+                          isNumber: false,
                           controller: controller.productNamec,
                           label: "Masukkan Deskripsi",
-                          variant: TextFieldVariant.underline,),
+                          variant: TextFieldVariant.underline,
+                        ),
                       ],
                     ),
-                )),
+                  ),
+                ),
                 CustomFormsection(
                   child: Container(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.sort, size: 24, color: Colors.grey,),
-                        CustomSpacing(width: 5,),
+                        Icon(Icons.sort, size: 24, color: Colors.grey),
+                        CustomSpacing(width: 5),
                         CustomText(
                           text: "Kategori",
-                          style: TextStyle(
-                            fontSize: 18
-                          ),),
+                          style: TextStyle(fontSize: 18),
+                        ),
                         Spacer(),
-                        Icon(Icons.keyboard_arrow_down_sharp, size: 24, color: Colors.grey,)
+                        Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 24,
+                          color: Colors.grey,
+                        ),
                       ],
                     ),
-                )),
-                CustomFormsection(child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.discount, size: 24, color: Colors.grey,),
-                        CustomSpacing(width: 8,),
-                        CustomText(text: "Harga Produk", style: TextStyle(
-                          fontSize: 16,
-                        ),),
-                      ],
-                    ),
-                    CustomTextfield(
-                      isNumber: false, 
-                      controller: controller.productNamec,
-                      label: "Masukkan Harga",
-                      variant: TextFieldVariant.underline,)
-                  ],
-                )),
+                  ),
+                ),
+                CustomFormsection(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.discount, size: 24, color: Colors.grey),
+                          CustomSpacing(width: 8),
+                          CustomText(
+                            text: "Harga Produk",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      CustomTextfield(
+                        isNumber: false,
+                        controller: controller.productNamec,
+                        label: "Masukkan Harga",
+                        variant: TextFieldVariant.underline,
+                      ),
+                    ],
+                  ),
+                ),
                 // CustomFormsection(
                 //   child: Container(
                 //     child: Column(
@@ -199,7 +218,7 @@ class AddProductPage extends GetView<AddproductController> {
                 //             fontSize: 16
                 //           ),),
                 //         CustomTextfield(
-                //           isNumber: false, 
+                //           isNumber: false,
                 //           controller: controller.productNamec,
                 //           label: "Masukkan Stok Produk",),
                 //       ],
@@ -212,37 +231,40 @@ class AddProductPage extends GetView<AddproductController> {
                       children: [
                         CustomText(
                           text: "Lokasi",
-                          style: TextStyle(
-                            fontSize: 16
-                          ),),
+                          style: TextStyle(fontSize: 16),
+                        ),
                         Row(
                           children: [
-                            CustomText(text: "ini alamat", style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16
-                            ),),
+                            CustomText(
+                              text: "ini alamat",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                            ),
                             Spacer(),
                             InkWell(
-                              onTap: (){},
-                              child: CustomText(text: "Edit" ,style: TextStyle(
-                                color: PColor.primGreen
-                              ),),
-                            )
+                              onTap: () {},
+                              child: CustomText(
+                                text: "Edit",
+                                style: TextStyle(color: PColor.primGreen),
+                              ),
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
-                )),
-
-                CustomSpacing(
-                  height: 20,
+                  ),
                 ),
 
-                CustomButton(text: "Buat Dagangan",
-                foregroundColor: Colors.white,
-                backgroundColor: PColor.primGreen,
-                onPressed: (){},)
-            
+                CustomSpacing(height: 20),
+
+                CustomButton(
+                  text: "Buat Dagangan",
+                  foregroundColor: Colors.white,
+                  backgroundColor: PColor.primGreen,
+                  onPressed: () {},
+                ),
               ],
             ),
           ),
@@ -255,7 +277,7 @@ class AddProductPage extends GetView<AddproductController> {
 class _ImageThumbnail extends StatelessWidget {
   final XFile file;
   final VoidCallback onRemove;
-  const _ImageThumbnail({super.key, required this.file, required this.onRemove});
+  const _ImageThumbnail({required this.file, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +289,7 @@ class _ImageThumbnail extends StatelessWidget {
             File(file.path),
             width: 72,
             height: 72,
-            fit:  BoxFit.cover,
+            fit: BoxFit.cover,
           ),
         ),
 
@@ -280,15 +302,12 @@ class _ImageThumbnail extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black54
+                color: Colors.black54,
               ),
-              child: const Icon(
-                Icons.close,
-                size: 14,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.close, size: 14, color: Colors.white),
             ),
-        ))
+          ),
+        ),
       ],
     );
   }
@@ -296,7 +315,7 @@ class _ImageThumbnail extends StatelessWidget {
 
 class _AddImageButton extends StatelessWidget {
   final VoidCallback onTap;
-  const _AddImageButton({super.key, required this.onTap});
+  const _AddImageButton({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -315,10 +334,7 @@ class _AddImageButton extends StatelessWidget {
               const CustomSpacing(height: 4),
               CustomText(
                 text: "Tambah\nFoto",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: PColor.primGreen,
-                ),
+                style: TextStyle(fontSize: 10, color: PColor.primGreen),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -332,7 +348,7 @@ class _AddImageButton extends StatelessWidget {
 // Tambahkan class ini di bawah _AddImageButton
 class _DashedBorderPainter extends CustomPainter {
   final Color color;
-  
+
   _DashedBorderPainter({required this.color});
 
   @override
@@ -345,10 +361,12 @@ class _DashedBorderPainter extends CustomPainter {
     const dashWidth = 6.0;
     const dashSpace = 4.0;
     final path = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        const Radius.circular(12),
-      ));
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          const Radius.circular(12),
+        ),
+      );
 
     final pathMetrics = path.computeMetrics();
     for (final metric in pathMetrics) {

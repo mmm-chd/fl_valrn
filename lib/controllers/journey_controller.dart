@@ -18,7 +18,7 @@ class JourneyController extends GetxController{
     final result = journeys
         .where((j) =>
             j.createdAt != null &&
-            j.createdAt!.month == selectedMonth.value)
+            j.createdAt.month == selectedMonth.value)
         .toList();
 
     result.sort(
@@ -80,7 +80,6 @@ class JourneyController extends GetxController{
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     field = Get.arguments as FieldsItem;
     journeys.assignAll(field.plants);

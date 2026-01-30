@@ -193,7 +193,6 @@ class HomePage extends GetView<HomeController> {
                   text: "Artikel menarik yang sayang dilewatkan",
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
-                CustomSpacing(height: 12),
                 Obx(() {
                   return ListView.builder(
                     itemCount: controller.artikelCard.length,
