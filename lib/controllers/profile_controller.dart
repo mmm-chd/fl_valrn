@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
   final userC = Get.find<UserController>();
   final products = <ProductItem>[].obs;
-  var profile = Rxn<ProfileModel>(); 
+  var profile = Rxn<ProfileModel>();
   final isMyProfile = true.obs;
   final isLoading = false.obs;
 
@@ -19,7 +19,6 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
 
     // Tunggu sampai userC.id tidak null
@@ -35,10 +34,9 @@ class ProfileController extends GetxController {
       fetchProfile(userC.id.value!);
       fetchMyProducts(userC.id.value!);
     }
-
   }
 
-   void fetchProfile(int userId) async {
+  void fetchProfile(int userId) async {
     try {
       isLoading(true);
       profile.value = await ProfileService.getProfile(userId);
@@ -49,7 +47,15 @@ class ProfileController extends GetxController {
     }
   }
 
-  void updateProfile(int userId, String name, String email, String phone, String insta, String facebook, String about) async {
+  void updateProfile(
+    int userId,
+    String name,
+    String email,
+    String phone,
+    String insta,
+    String facebook,
+    String about,
+  ) async {
     isLoading(true);
     bool success = await ProfileService.updateProfile(userId, {
       'name': name,
