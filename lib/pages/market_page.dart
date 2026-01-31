@@ -98,33 +98,6 @@ class MarketPage extends GetView<MarketController> {
                 ),
               ],
             ),
-      return SizedBox(
-        height: 220,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: controller.productCard.length,
-          itemBuilder: (context, index) {
-            final item = controller.productCard[index];
-            return CustomCard(
-              title: item.title,
-              subtitle: item.subtitle,
-              imageUrl: item.imageUrl,
-              rate: item.rate,
-              price: item.price,
-              isExtendable: false,
-              isEcommerce: true,
-              isDescription: true,
-              textSize: 20,
-              height: 240,
-              width: 260,
-              isImageLeft: false,
-              onTap: () => _navigateToProduct(item),
-            );
-          },
-        ),
-      );
-    });
-  }
 
             CustomSpacing(height: 12),
 
