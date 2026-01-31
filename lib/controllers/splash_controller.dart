@@ -1,8 +1,8 @@
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
+import 'package:fl_valrn/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {
   late AnimationController animationController;
@@ -14,7 +14,7 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
   void onInit() {
     super.onInit();
     _initAnimation();
-    verifyLogin();
+    _checkLoginAndNavigate();
   }
 
   void _initAnimation() {
@@ -40,13 +40,32 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
     animationController.forward();
   }
 
-  Future<void> verifyLogin() async {
-    await Future.delayed(const Duration(seconds: 3));
+  Future<void> _checkLoginAndNavigate() async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
 
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('token') != null) {
-      Get.offAllNamed(AppRoutes.navbarPage);
-    } else {
+      print('🔍 Checking login status...');
+
+      final isLoggedIn = await AuthService.isLoggedIn();
+
+      print('📊 Is Logged In: $isLoggedIn');
+
+      if (isLoggedIn) {
+        try {
+          await AuthService.getProfile();
+          print('✅ Token valid, navigating to navbar...');
+          Get.offAllNamed(AppRoutes.navbarPage);
+        } catch (e) {
+          print('⚠️ Token invalid: $e');
+          await AuthService.clearStorage();
+          Get.offAllNamed(AppRoutes.authPage);
+        }
+      } else {
+        print('❌ Not logged in, navigating to auth page...');
+        Get.offAllNamed(AppRoutes.authPage);
+      }
+    } catch (e) {
+      print('❌ ERROR in splash: $e');
       Get.offAllNamed(AppRoutes.authPage);
     }
   }

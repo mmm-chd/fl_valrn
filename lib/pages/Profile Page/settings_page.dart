@@ -99,9 +99,7 @@ class SettingsPage extends GetView<ProfileController> {
                   ),
                   CustomSpacing(height: 12),
                   InkWell(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.editAccountPage);
-                    },
+                    onTap: () {},
                     child: Row(
                       children: [
                         Icon(
