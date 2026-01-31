@@ -1,4 +1,3 @@
-import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -156,7 +155,7 @@ class MarketPage extends GetView<MarketController> {
                             title: item.title,
                             subtitle: item.subtitle,
                             imageUrl: item.imageUrl,
-                            price: item.price.toString(),
+                            price: controller.formatPrice(item.price),
                             isEcommerce: true,
                             isDescription: true,
                             onTap: () {

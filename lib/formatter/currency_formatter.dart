@@ -1,10 +1,9 @@
 import 'package:intl/intl.dart';
 
 class CurrencyFormatter {
-  /// Format angka menjadi format Rupiah (Rp 1.200.000)
   static String formatToRupiah(dynamic value) {
     if (value == null) return 'Rp 0';
-    
+
     double amount;
     if (value is String) {
       amount = double.tryParse(value) ?? 0;
@@ -25,10 +24,9 @@ class CurrencyFormatter {
     return formatter.format(amount);
   }
 
-  /// Format angka tanpa simbol Rupiah (1.200.000)
   static String formatNumber(dynamic value) {
     if (value == null) return '0';
-    
+
     double amount;
     if (value is String) {
       amount = double.tryParse(value) ?? 0;

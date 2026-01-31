@@ -82,8 +82,9 @@ class ProductPage extends GetView<MarketController> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
                               elevation: 0,
                             ),
                             child: controller.isSendingMessage.value
@@ -93,7 +94,8 @@ class ProductPage extends GetView<MarketController> {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
+                                        Colors.white,
+                                      ),
                                     ),
                                   )
                                 : Row(
@@ -249,7 +251,6 @@ class ProductPage extends GetView<MarketController> {
                     title: item.title,
                     subtitle: item.subtitle,
                     imageUrl: item.imageUrl,
-                    // Format harga di grid
                     price: controller.formatPrice(item.price),
                     isEcommerce: true,
                     isDescription: true,
