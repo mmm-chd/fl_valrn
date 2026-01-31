@@ -54,7 +54,7 @@ class CameraPage extends GetView<CameraPageController> {
                       Expanded(
                         child: Center(
                           child: CustomText(
-                            text: "Waisen",
+                            text: "Waisense",
                             maxLines: 1,
                             style: const TextStyle(
                               color: Colors.white,
