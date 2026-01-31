@@ -50,6 +50,7 @@ dependencies:
   geocoding: ^4.0.0
   google_fonts: ^8.0.0
   lottie: ^3.3.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,7 @@ flutter:
     - assets/icons/socialIcons/
     - assets/icons/selected/
     - assets/icons/unselected/
+    - assets/icons/
     - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see

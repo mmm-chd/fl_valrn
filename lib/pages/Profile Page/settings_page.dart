@@ -15,7 +15,7 @@ class SettingsPage extends GetView<ProfileController> {
     CustomBottomsheetfix.show(
       context,
       title: 'Log Out',
-      initialChildSize: 0.28,
+      initialChildSize: 0.3,
       children: [
         Center(
           child: Column(
@@ -65,7 +65,7 @@ class SettingsPage extends GetView<ProfileController> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      onPressed: Get.back,
+                      onPressed: () => Get.back(),
                       icon: Icon(
                         Icons.arrow_back_ios_new_rounded,
                         size: 25,
