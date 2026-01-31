@@ -16,7 +16,7 @@ class PlantAIService {
     }
 
     final uri = Uri.parse(
-      '${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.ANALYZE}',
+      '${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.API_GROUP_PLANT}${ConstantApi.ANALYZE}',
     );
     final request = http.MultipartRequest('POST', uri);
 

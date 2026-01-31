@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
+import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/services/ai_detection_service.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +41,9 @@ class CameraPageController extends GetxController {
     );
 
     initializeFuture = cameraController.initialize().then((_) async {
-    await initZoom(); 
-    isReady.value = true;
-  });
+      await initZoom();
+      isReady.value = true;
+    });
     loadRecentImage();
   }
 
@@ -54,10 +56,7 @@ class CameraPageController extends GetxController {
       type: RequestType.image,
       filterOption: FilterOptionGroup(
         orders: [
-          const OrderOption(
-            type: OrderOptionType.createDate,
-            asc: false,
-          ),
+          const OrderOption(type: OrderOptionType.createDate, asc: false),
         ],
       ),
       pageCount: 1,
@@ -98,6 +97,7 @@ class CameraPageController extends GetxController {
       lastPickedImage = pickedImage.path; // Simpan path
     }
   }
+
   Future<void> initZoom() async {
     minZoom = await cameraController.getMinZoomLevel();
     maxZoom = await cameraController.getMaxZoomLevel();
@@ -119,6 +119,7 @@ class CameraPageController extends GetxController {
   void onZoomStart() {
     baseZoom = currentZoom;
   }
+
   Future<void> onZoomUpdate(double scale) async {
     final zoom = (baseZoom * scale).clamp(minZoom, maxZoom);
     currentZoom = zoom;
@@ -166,7 +167,25 @@ class CameraPageController extends GetxController {
       );
     }
   }
-  
+
+  void _showSheet({required String text, context}) {
+    CustomBottomsheetfix.show(
+      context,
+      title: '',
+      hideHeader: true,
+      initialChildSize: 0.34,
+      onDismissed: () {},
+      children: [
+        Row(
+          children: [
+            Container(width: 100, height: 100),
+            CustomText(text: text),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   void onClose() {
     cameraController.dispose();
