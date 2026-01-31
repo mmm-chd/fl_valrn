@@ -5,6 +5,10 @@ class UserController extends GetxController{
   final id = RxnInt();
   final name = ''.obs;
   final email = ''.obs;
+  // final name = ''.obs;
+  // final email = ''.obs;
+  // final name = ''.obs;
+  // final email = ''.obs;
 
   void setUser({
     required int id,

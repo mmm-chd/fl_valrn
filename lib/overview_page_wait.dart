@@ -188,6 +188,7 @@
 //         ],
 //       ),
 
+//       // ===== BOTTOM NAVIGATION BAR =====
 //       bottomNavigationBar: SafeArea(
 //         child: Container(
 //           padding: const EdgeInsets.all(18),
@@ -206,130 +207,154 @@
 //             backgroundColor: const Color(0xff52A068),
 //             foregroundColor: Colors.white,
 //             onPressed: () {
+//               // ===== BOTTOM SHEET 1: ADD TO MYFIELDS =====
 //               CustomBottomsheetfix.show(
-//                 context, 
-//                 onDismissed: () {
-//                   print('Bottomsheet dismissed');
-//                 },
+//                 context,
+//                 onDismissed: () {},
 //                 children: [
+//                   // Title
 //                   const CustomText(
 //                     text: "Add to MyFields",
 //                     style: TextStyle(
 //                       color: PColor.primGreen,
 //                       fontSize: 22,
-//                       fontWeight: FontWeight.w600
-//                     ),),
-//                   CustomSpacing(height: 8,),
-//                   const CustomText(
-//                     text: 'Pilih opsi untuk menambahkan field ke daftar kamu atau membuat field baru.',
-//                     style: TextStyle(fontSize: 16),
+//                       fontWeight: FontWeight.w600,
+//                     ),
 //                   ),
-//                   const CustomSpacing(height: 16),
-//                   InkWell(
-//                     onTap: (){
+//                   const CustomSpacing(height: 6),
 
+//                   // Description
+//                   const CustomText(
+//                     text:
+//                         'Pilih opsi untuk menambahkan field ke daftar kamu atau membuat field baru.',
+//                     style: TextStyle(
+//                       fontSize: 14,
+//                       color: Colors.grey,
+//                     ),
+//                   ),
+//                   const CustomSpacing(height: 20),
+
+//                   // Perbarui Fields
+//                   InkWell(
+//                     onTap: () {
+//                       Get.back();
+//                       Future.delayed(const Duration(milliseconds: 300), () {
+//                         _showPerbariuFields(context);
+//                       });
 //                     },
 //                     child: CustomFormsection(
 //                       border: true,
 //                       child: Padding(
-//                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-//                         child: InkWell(
-//                           onTap: (){
-                    
-//                           },
-//                           child: Row(
-//                             children: [
-//                               Container(
-//                                 width: 40,
-//                                 height: 40,
-//                                 decoration: BoxDecoration(
-//                                   color: PColor.primGreen.withOpacity(0.15),
-//                                   shape: BoxShape.circle,
-//                                 ),
-//                                 child: Icon(Icons.home, size: 22,)),
-//                               CustomSpacing( width: 8,),
-                    
-//                               Expanded(
-//                                 child: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                 children: [
+//                         padding: const EdgeInsets.symmetric(
+//                             vertical: 10, horizontal: 10),
+//                         child: Row(
+//                           children: [
+//                             Container(
+//                               width: 36,
+//                               height: 36,
+//                               decoration: BoxDecoration(
+//                                 color: PColor.primGreen.withOpacity(0.15),
+//                                 shape: BoxShape.circle,
+//                               ),
+//                               child: const Icon(
+//                                 Icons.home,
+//                                 size: 20,
+//                                 color: PColor.primGreen,
+//                               ),
+//                             ),
+//                             const CustomSpacing(width: 12),
+//                             Expanded(
+//                               child: Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: const [
 //                                   CustomText(
 //                                     text: "Perbarui Fields",
 //                                     style: TextStyle(
-//                                       color: PColor.primGreen,
-//                                       fontSize: 18,
-//                                       fontWeight: FontWeight.w600
-//                                     ),),
-//                                   CustomText(
-//                                     text: "Sesuaikan dan perbarui data field",
-//                                     style: TextStyle(
 //                                       color: Colors.black,
+//                                       fontSize: 15,
+//                                       fontWeight: FontWeight.w600,
+//                                     ),
+//                                   ),
+//                                   CustomSpacing(height: 2),
+//                                   CustomText(
+//                                     text:
+//                                         "Sesuaikan dan perbarui data field",
+//                                     style: TextStyle(
+//                                       color: Colors.grey,
 //                                       fontSize: 12,
 //                                       fontWeight: FontWeight.w400,
-//                                     ),),
-                                    
-                                
+//                                     ),
+//                                   ),
 //                                 ],
-//                                 ),
 //                               ),
-//                             ],
-//                           ),
+//                             ),
+//                           ],
 //                         ),
-//                       )),
+//                       ),
+//                     ),
 //                   ),
 
-//                     const CustomSpacing(height: 16),
+//                   const CustomSpacing(height: 12),
+
+//                   // Buat Fields Baru
 //                   InkWell(
+//                     onTap: () {
+//                       Get.back();
+//                       Future.delayed(const Duration(milliseconds: 300), () {
+//                         _showBuatFieldsBaru(context);
+//                       });
+//                     },
 //                     child: CustomFormsection(
 //                       border: true,
 //                       child: Padding(
-//                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-//                         child: InkWell(
-//                           onTap: (){
-                      
-//                           },
-//                           child: Row(
-//                             children: [
-//                               Container(
-//                                 width: 40,
-//                                 height: 40,
-//                                 decoration: BoxDecoration(
-//                                   color: PColor.primGreen.withOpacity(0.15),
-//                                   shape: BoxShape.circle,
-//                                 ),
-//                                 child: Icon(Icons.add, size: 22,)),
-//                               CustomSpacing( width: 8,),
-                    
-//                               Expanded(
-//                                 child: Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                 children: [
+//                         padding: const EdgeInsets.symmetric(
+//                             vertical: 10, horizontal: 10),
+//                         child: Row(
+//                           children: [
+//                             Container(
+//                               width: 36,
+//                               height: 36,
+//                               decoration: BoxDecoration(
+//                                 color: PColor.primGreen.withOpacity(0.15),
+//                                 shape: BoxShape.circle,
+//                               ),
+//                               child: const Icon(
+//                                 Icons.add,
+//                                 size: 20,
+//                                 color: PColor.primGreen,
+//                               ),
+//                             ),
+//                             const CustomSpacing(width: 12),
+//                             Expanded(
+//                               child: Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: const [
 //                                   CustomText(
 //                                     text: "Buat Fields Baru",
 //                                     style: TextStyle(
-//                                       color: PColor.primGreen,
-//                                       fontSize: 18,
-//                                       fontWeight: FontWeight.w600
-//                                     ),),
-//                                   CustomText(
-//                                     text: "Buat field baru untuk pengelolaan",
-//                                     style: TextStyle(
 //                                       color: Colors.black,
+//                                       fontSize: 15,
+//                                       fontWeight: FontWeight.w600,
+//                                     ),
+//                                   ),
+//                                   CustomSpacing(height: 2),
+//                                   CustomText(
+//                                     text:
+//                                         "Buat field baru untuk pengelolaan",
+//                                     style: TextStyle(
+//                                       color: Colors.grey,
 //                                       fontSize: 12,
 //                                       fontWeight: FontWeight.w400,
-//                                     ),),
-                                    
-                                
+//                                     ),
+//                                   ),
 //                                 ],
-//                                 ),
 //                               ),
-//                             ],
-//                           ),
+//                             ),
+//                           ],
 //                         ),
-//                       )),
+//                       ),
+//                     ),
 //                   ),
-
-                  
 //                 ],
 //               );
 //             },
@@ -339,6 +364,7 @@
 //     );
 //   }
 
+//   // ===== BACK BUTTON =====
 //   static Widget _buildBackButton() {
 //     return SafeArea(
 //       child: Positioned(
@@ -364,6 +390,7 @@
 //     );
 //   }
 
+//   // ===== TAB BAR =====
 //   Widget _tabBar(OverviewController controller) {
 //     return Padding(
 //       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
@@ -399,6 +426,186 @@
 //           ),
 //         ),
 //       ),
+//     );
+//   }
+
+//   // ===== BOTTOM SHEET 2: PERBARUI FIELDS =====
+//   void _showPerbariuFields(BuildContext context) {
+//     CustomBottomsheetfix.show(
+//       context,
+//       title: "Perbarui Fields",
+//       initialChildSize: 0.55,
+//       onDismissed: () {},
+//       onPressed: () {
+//         // Logic pilih fields
+//       },
+//       primaryButtonText: "Pilih Fields",
+//       pBackgroundColor: PColor.primGreen,
+//       pForegroundColor: Colors.white,
+//       children: [
+//         // Description
+//         const CustomText(
+//           text:
+//               "Pilih field yang ingin kamu ubah agar pengelolaan lebih optimal.",
+//           style: TextStyle(
+//             fontSize: 13,
+//             color: Colors.grey,
+//           ),
+//         ),
+//         const CustomSpacing(height: 16),
+
+//         // List Fields
+//         ...List.generate(3, (index) {
+//           return Column(
+//             children: [
+//               InkWell(
+//                 onTap: () {},
+//                 child: CustomFormsection(
+//                   border: true,
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(
+//                         vertical: 10, horizontal: 10),
+//                     child: Row(
+//                       children: [
+//                         // Icon
+//                         Container(
+//                           width: 36,
+//                           height: 36,
+//                           decoration: BoxDecoration(
+//                             color: PColor.primGreen.withOpacity(0.15),
+//                             shape: BoxShape.circle,
+//                           ),
+//                           child: const Icon(
+//                             Icons.home,
+//                             size: 18,
+//                             color: PColor.primGreen,
+//                           ),
+//                         ),
+//                         const CustomSpacing(width: 12),
+
+//                         // Text
+//                         Expanded(
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               CustomText(
+//                                 text: "Fields ${index + 1}",
+//                                 style: const TextStyle(
+//                                   fontSize: 15,
+//                                   fontWeight: FontWeight.w600,
+//                                   color: Colors.black,
+//                                 ),
+//                               ),
+//                               const CustomSpacing(height: 2),
+//                               const CustomText(
+//                                 text: "Deskripsi Fields",
+//                                 style: TextStyle(
+//                                   fontSize: 12,
+//                                   color: Colors.grey,
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               const CustomSpacing(height: 8),
+//             ],
+//           );
+//         }),
+//       ],
+//     );
+//   }
+
+//   // ===== BOTTOM SHEET 3: BUAT FIELDS BARU =====
+//   void _showBuatFieldsBaru(BuildContext context) {
+//     CustomBottomsheetfix.show(
+//       context,
+//       title: "Buat Fields Baru",
+//       initialChildSize: 0.55,
+//       onDismissed: () {},
+//       onPressed: () {
+//         // Logic buat fields baru
+//       },
+//       primaryButtonText: "Buat Fields",
+//       pBackgroundColor: PColor.primGreen,
+//       pForegroundColor: Colors.white,
+//       children: [
+//         // Description
+//         const CustomText(
+//           text:
+//               "Lengkapi data untuk memastikan field baru tertimpan dengan baik.",
+//           style: TextStyle(
+//             fontSize: 13,
+//             color: Colors.grey,
+//           ),
+//         ),
+//         const CustomSpacing(height: 20),
+
+//         // Title Fields
+//         _buildInputField(hint: "Masukkan Title Fields"),
+//         const CustomSpacing(height: 20),
+
+//         // Deskripsi Fields
+//         _buildInputField(hint: "Masukkan Deskripsi Fields"),
+//         const CustomSpacing(height: 20),
+
+//         // Masukkan Image
+//         _buildInputField(hint: "Masukkan Image"),
+//       ],
+//     );
+//   }
+
+//   // ===== REUSABLE INPUT FIELD =====
+//   Widget _buildInputField({required String hint}) {
+//     return Row(
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//         // Circle indicator
+//         Container(
+//           width: 18,
+//           height: 18,
+//           decoration: BoxDecoration(
+//             shape: BoxShape.circle,
+//             border: Border.all(
+//               color: Colors.grey.shade400,
+//               width: 1.5,
+//             ),
+//           ),
+//         ),
+//         const CustomSpacing(width: 12),
+
+//         // TextField
+//         Expanded(
+//           child: TextField(
+//             style: const TextStyle(
+//               fontSize: 14,
+//               color: Colors.black,
+//             ),
+//             decoration: InputDecoration(
+//               hintText: hint,
+//               hintStyle: const TextStyle(
+//                 color: Colors.grey,
+//                 fontSize: 14,
+//               ),
+//               isDense: true,
+//               contentPadding: const EdgeInsets.symmetric(vertical: 8),
+//               border: const UnderlineInputBorder(
+//                 borderSide: BorderSide(color: Colors.grey),
+//               ),
+//               enabledBorder: const UnderlineInputBorder(
+//                 borderSide: BorderSide(color: Colors.grey),
+//               ),
+//               focusedBorder: UnderlineInputBorder(
+//                 borderSide: BorderSide(color: PColor.primGreen, width: 2),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
 //     );
 //   }
 // }
