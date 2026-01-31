@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final Color? backgroundColor, foregroundColor;
   final VoidCallback? onPressed;
   final OutlinedBorder? shape;
+  final EdgeInsetsGeometry? padding;
 
   const CustomButton({
     super.key,
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.foregroundColor,
     this.onPressed,
     this.shape,
+    this.padding,
   });
 
   @override
@@ -29,7 +31,7 @@ class CustomButton extends StatelessWidget {
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           elevation: 1,
-          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 32.0),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 12.0, horizontal: 32.0),
           shape:
               shape ??
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
