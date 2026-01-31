@@ -28,4 +28,62 @@ class JournalService {
       throw Exception('Failed to load journals');
     }
   }
+
+  static Future<bool> createJournal({
+    required String title,
+    required String description,
+    String? imageUrl,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) throw Exception('Token not found');
+
+    final response = await http.post(
+      Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.JOURNALS}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+      body: {
+        'title': title,
+        'description': description,
+        'image': imageUrl ?? '',
+      },
+    );
+
+    return response.statusCode == 200 || response.statusCode == 201;
+}
+
+  static Future<bool> updateJournal({
+  required int id,
+  String? title,
+  String? description,
+  String? imageUrl,
+}) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+
+  if (token == null) throw Exception('Token not found, please login');
+
+  final body = {
+    'id': id, // wajib kirim ID karena endpoint tanpa /$id
+    'title': title ?? 'Updated Title',
+    'description': description ?? 'Updated Desc',
+    'image': imageUrl ?? '',
+  };
+
+  final response = await http.put(
+    Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.JOURNALS}'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: jsonEncode(body),
+  );
+
+  return response.statusCode == 200;
+}
+
 }

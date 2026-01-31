@@ -6,11 +6,13 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/field_controller.dart';
+import 'package:fl_valrn/controllers/journal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FieldsPage extends GetView<FieldsController> {
-  const FieldsPage({super.key});
+  FieldsPage({super.key});
+  final jourC = Get.find<JournalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,13 @@ class FieldsPage extends GetView<FieldsController> {
                   );
                 }
 
+                if (jourC.journals.isEmpty) {
+                    return SizedBox(
+                      height: 184,
+                      child: Center(child: Text('Belum ada journal')),
+                    );
+                  }
+
                 return SizedBox(
                   height: 220,
                   child: ListView.builder(
@@ -129,12 +138,14 @@ class FieldsPage extends GetView<FieldsController> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+                          final journal = jourC.journals[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: CustomCard(
-                              title: controller.fieldsCard[index].title,
-                              subtitle: controller.fieldsCard[index].title,
-                              imageUrl: controller.fieldsCard[index].imageUrl,
+                              title: journal.title,
+                              subtitle: journal.description ?? '-',
+                              imageUrl: journal.imageUrl ??
+                              'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
                               isExtendable: true,
                               isEcommerce: false,
                               isDescription: true,
