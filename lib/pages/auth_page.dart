@@ -423,7 +423,7 @@ class AuthPage extends GetView<LoginController> {
             ),
           ],
         ),
-        const CustomSpacing(height: 64),
+        const CustomSpacing(height: 84),
         Obx(
           () => CustomButton(
             onPressed: () {
