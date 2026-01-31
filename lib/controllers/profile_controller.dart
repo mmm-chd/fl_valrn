@@ -3,7 +3,6 @@ import 'package:fl_valrn/model/profile_model.dart';
 import 'package:fl_valrn/services/auth_service.dart';
 import 'package:fl_valrn/services/market_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
@@ -319,12 +318,6 @@ class ProfileController extends GetxController {
 
         // Navigate to login page
         // Get.offAllNamed('/login'); // Uncomment dan sesuaikan route
-
-        Get.snackbar(
-          'Berhasil',
-          'Anda telah keluar',
-          snackPosition: SnackPosition.BOTTOM,
-        );
       }
     } catch (e) {
       print('❌ ERROR LOGOUT: $e');
