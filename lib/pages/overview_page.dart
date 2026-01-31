@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
 import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_detection_tab.dart';
 import 'package:fl_valrn/components/widgets/custom_disease_tab.dart';
+import 'package:fl_valrn/components/widgets/custom_formSection.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
+import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/controllers/overview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -202,7 +205,134 @@ class OverviewPage extends StatelessWidget {
             text: 'Save to my journal',
             backgroundColor: const Color(0xff52A068),
             foregroundColor: Colors.white,
-            onPressed: () => controller.saveToJournal(),
+            onPressed: () {
+              CustomBottomsheetfix.show(
+                context, 
+                onDismissed: () {
+                  print('Bottomsheet dismissed');
+                },
+                children: [
+                  const CustomText(
+                    text: "Add to MyFields",
+                    style: TextStyle(
+                      color: PColor.primGreen,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600
+                    ),),
+                  CustomSpacing(height: 8,),
+                  const CustomText(
+                    text: 'Pilih opsi untuk menambahkan field ke daftar kamu atau membuat field baru.',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const CustomSpacing(height: 16),
+                  InkWell(
+                    onTap: (){
+
+                    },
+                    child: CustomFormsection(
+                      border: true,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+                        child: InkWell(
+                          onTap: (){
+                    
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: PColor.primGreen.withOpacity(0.15),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.home, size: 22,)),
+                              CustomSpacing( width: 8,),
+                    
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    text: "Perbarui Fields",
+                                    style: TextStyle(
+                                      color: PColor.primGreen,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600
+                                    ),),
+                                  CustomText(
+                                    text: "Sesuaikan dan perbarui data field",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),),
+                                    
+                                
+                                ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                  ),
+
+                    const CustomSpacing(height: 16),
+                  InkWell(
+                    child: CustomFormsection(
+                      border: true,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+                        child: InkWell(
+                          onTap: (){
+                      
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: PColor.primGreen.withOpacity(0.15),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.add, size: 22,)),
+                              CustomSpacing( width: 8,),
+                    
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    text: "Buat Fields Baru",
+                                    style: TextStyle(
+                                      color: PColor.primGreen,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600
+                                    ),),
+                                  CustomText(
+                                    text: "Buat field baru untuk pengelolaan",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),),
+                                    
+                                
+                                ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                  ),
+
+                  
+                ],
+              );
+            },
           ),
         ),
       ),
