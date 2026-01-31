@@ -20,7 +20,7 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.only(top: 50),
           child: CustomNavbarsafepadding(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,18 +82,7 @@ class HomePage extends GetView<HomeController> {
                         label: 'Cari tanaman kamu..',
                       ),
                       CustomSpacing(height: 20),
-                      CustomCard(
-                        title: "ngetes",
-                        subtitle: "muncul kaga",
-                        imageUrl:
-                            "https://i.pinimg.com/736x/3a/ee/ee/3aeeee1d04b16f5ab613337aca0721e7.jpg",
-                        isExtendable: false,
-                        isEcommerce: true,
-                        isDescription: false,
-                        width: double.infinity,
-                      ),
 
-                      CustomSpacing(height: 8),
                       CustomText(
                         text: "Trending",
                         style: TextStyle(
