@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialBinding: AppBinding(),
-      initialRoute: AppRoutes.overviewPage,
+      initialRoute: AppRoutes.splashPage,
       getPages: AppPages.pages,
     );
   }
