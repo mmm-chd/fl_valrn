@@ -73,40 +73,33 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
 
                   // SETTINGS ICON
-                  Obx(
-                    () => controller.isMyProfile.value
-                        ? const SizedBox.shrink()
-                        : Positioned(
-                            top: 32,
-                            right: 16,
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              padding: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                color: Color(0xffEBEBEB).withOpacity(0.9),
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 6,
-                                    color: Colors.black26,
-                                  ),
-                                ],
-                              ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                iconSize: 28,
-                                icon: const Icon(
-                                  Icons.settings_rounded,
-                                  color: Color(0xff2A9134),
-                                ),
-                                onPressed: () {
-                                  Get.offAllNamed(AppRoutes.settingsPage);
-                                },
-                              ),
-                            ),
-                          ),
+                  Positioned(
+                    top: 40,
+                    right: 16,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      padding: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                        color: Color(0xffEBEBEB).withOpacity(0.9),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(blurRadius: 6, color: Colors.black26),
+                        ],
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        iconSize: 28,
+                        icon: const Icon(
+                          Icons.settings_rounded,
+                          color: Color(0xff2A9134),
+                        ),
+                        onPressed: () {
+                          Get.offAllNamed(AppRoutes.settingsPage);
+                        },
+                      ),
+                    ),
                   ),
 
                   // Profile Picture - Positioned
@@ -133,8 +126,8 @@ class ProfilePage extends GetView<ProfileController> {
               ),
 
               const CustomSpacing(height: 84),
-            // Name
-            Obx(() {
+              // Name
+              Obx(() {
                 if (controller.isLoading.value) {
                   return CircularProgressIndicator();
                 }
@@ -144,7 +137,7 @@ class ProfilePage extends GetView<ProfileController> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 );
               }),
-            const CustomSpacing(height: 6),
+              const CustomSpacing(height: 6),
               // Name
               CustomText(
                 text: userC.name.value,
@@ -153,7 +146,7 @@ class ProfilePage extends GetView<ProfileController> {
               const CustomSpacing(height: 6),
 
               // Description
-              Obx((){
+              Obx(() {
                 final profile = controller.profile.value;
                 return CustomText(
                   text: profile?.about ?? 'Halo, edit deskripsi anda',
@@ -164,9 +157,7 @@ class ProfilePage extends GetView<ProfileController> {
                     height: 1.4,
                   ),
                 );
-              }
-                
-              ),
+              }),
               const CustomSpacing(height: 16),
 
               // Button Kirim Pesan + Menu
@@ -255,19 +246,18 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                     Obx((){
-                        final profile = controller.profile.value;
-                        return CustomText(
-                          text: profile?.about ?? 'Halo, edit deskripsi anda',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF757575),
-                            fontSize: 14,
-                            height: 1.4,
-                          ),
-                        );
-                      }
-                     ),
+                    Obx(() {
+                      final profile = controller.profile.value;
+                      return CustomText(
+                        text: profile?.about ?? 'Halo, edit deskripsi anda',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF757575),
+                          fontSize: 14,
+                          height: 1.4,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -291,42 +281,39 @@ class ProfilePage extends GetView<ProfileController> {
                     const SizedBox(height: 12),
 
                     // Instagram
-                    Obx((){
+                    Obx(() {
                       final profile = controller.profile.value;
                       return _buildInfoRow(
                         icon: Icons.camera_alt_outlined,
                         label: 'Instagram',
-                        value: profile?.insta?? '-',
+                        value: profile?.insta ?? '-',
                         valueColor: Colors.green,
                       );
-                    }
-                    ),
+                    }),
                     const SizedBox(height: 12),
 
                     // Telephone
-                    Obx((){
+                    Obx(() {
                       final profile = controller.profile.value;
                       return _buildInfoRow(
-                      icon: Icons.phone_outlined,
-                      label: 'Telephone',
-                      value: profile?.phone?? '-',
-                      valueColor: Colors.green,
-                    );
-                    }
-                    ),
+                        icon: Icons.phone_outlined,
+                        label: 'Telephone',
+                        value: profile?.phone ?? '-',
+                        valueColor: Colors.green,
+                      );
+                    }),
                     const SizedBox(height: 12),
 
                     // Facebook
-                    Obx((){
+                    Obx(() {
                       final profile = controller.profile.value;
                       return _buildInfoRow(
-                      icon: Icons.facebook_outlined,
-                      label: 'Facebook',
-                      value: profile?.facebook ?? '-',
-                      valueColor: Colors.green,
-                    );
-                    }
-                    ),
+                        icon: Icons.facebook_outlined,
+                        label: 'Facebook',
+                        value: profile?.facebook ?? '-',
+                        valueColor: Colors.green,
+                      );
+                    }),
                   ],
                 ),
               ),
