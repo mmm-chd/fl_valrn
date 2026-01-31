@@ -192,7 +192,7 @@ class CameraPageController extends GetxController {
       context,
       title: '',
       hideHeader: true,
-      initialChildSize: 0.4,
+      initialChildSize: 0.45,
       onDismissed: () {
         if (cameraController.value.isInitialized) {
           cameraController.resumePreview();

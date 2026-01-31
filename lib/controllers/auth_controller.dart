@@ -8,13 +8,10 @@ class AuthController extends GetxController {
   final isLoading = false.obs;
   final UserController userC = Get.find<UserController>();
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     final loginController = Get.find<LoginController>();
-    try{
-      isLoading.value= true;
+    try {
+      isLoading.value = true;
 
       final result = await AuthService.login(email: email, password: password);
 
@@ -28,17 +25,14 @@ class AuthController extends GetxController {
           email: profile['email'],
         );
 
-        Get.offAllNamed(
-          AppRoutes.navbarPage
-        );
-        
-      }else {
+        Get.offAllNamed(AppRoutes.navbarPage);
+      } else {
         loginController.passwordError.value =
-          result['message'] ?? 'Invalid credentials';
-      } 
-    }catch (e){
+            result['message'] ?? 'Invalid credentials';
+      }
+    } catch (e) {
       loginController.passwordError.value =
-        'Unable to connect. Please try again.';
+          'Unable to connect. Please try again.';
     } finally {
       isLoading.value = false;
     }
@@ -46,17 +40,19 @@ class AuthController extends GetxController {
 
   Future<void> register({
     required String email,
+    required String number,
     required String firstName,
     required String lastname,
     required String password,
     required String confirmPassword,
   }) async {
     final loginController = Get.find<LoginController>();
-    try{
-      isLoading.value= true;
+    try {
+      isLoading.value = true;
 
       final result = await AuthService.register(
         email: email,
+        phone: number,
         firstName: firstName,
         lastName: lastname,
         password: password,
@@ -64,22 +60,21 @@ class AuthController extends GetxController {
       );
 
       if (result['success'] == true || result['token'] != null) {
-      Get.snackbar('Success', 'Register successful');
-      final loginController = Get.find<LoginController>();
-      loginController.clearAll();
-      loginController.currentTabIndex.value = 0;
+        Get.snackbar('Success', 'Register successful');
+        final loginController = Get.find<LoginController>();
+        loginController.clearAll();
+        loginController.currentTabIndex.value = 0;
 
-      Get.back();
-        } else {
-          loginController.registerGeneralError.value =
-            result['message'] ?? 'Register failed';
-        
-        }
-      } catch (e) {
+        Get.back();
+      } else {
         loginController.registerGeneralError.value =
-        'Unable to connect. Please try again.';
-      } finally {
-        isLoading.value = false;
+            result['message'] ?? 'Register failed';
       }
+    } catch (e) {
+      loginController.registerGeneralError.value =
+          'Unable to connect. Please try again.';
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

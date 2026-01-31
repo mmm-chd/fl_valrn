@@ -32,6 +32,7 @@ class AuthService {
 
   static Future<Map<String, dynamic>> register({
     required String email,
+    required String phone,
     required String firstName,
     required String lastName,
     required String password,
@@ -45,6 +46,7 @@ class AuthService {
     request.fields.addAll({
       'name': '$firstName $lastName',
       'email': email,
+      'phone': phone,
       'password': password,
       'password_confirmation': confirmPassword,
     });
@@ -91,10 +93,7 @@ class AuthService {
 
     final response = await http.get(
       Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.PROFILE}'),
-    headers: {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    },
+      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
     );
 
     final body = jsonDecode(response.body);
@@ -109,4 +108,3 @@ class AuthService {
     }
   }
 }
-
