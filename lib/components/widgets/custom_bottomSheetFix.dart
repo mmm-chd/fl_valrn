@@ -70,25 +70,26 @@ class CustomBottomsheetfix {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Divider(height: 1, color: Colors.grey.shade300),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 16,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: children,
-                        ),
+                    // SETELAHNYA
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 16,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: children,
                       ),
                     ),
+                    // Spacer di sini supaya button tetap di bawah
+                    Spacer(),
 
                     // === FIXED BUTTONS AT BOTTOM ===
                     AnimatedSize(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeOut,
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 18),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                         decoration: BoxDecoration(color: Colors.white),
                         child: onPressed != null
                             ? onReset != null
@@ -154,6 +155,7 @@ class CustomBottomsheetfix {
               side: BorderSide(color: sBorderColor ?? Colors.amber),
             ),
             foregroundColor: sForegroundColor ?? Colors.amber,
+            padding: EdgeInsets.symmetric(vertical: 12.0),
             onPressed: () {
               onReset();
               Get.back(result: false);
@@ -166,6 +168,7 @@ class CustomBottomsheetfix {
             text: primaryButtonText ?? 'Apply',
             backgroundColor: pBackgroundColor ?? Colors.amber,
             foregroundColor: pForegroundColor ?? Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 12.0),
             onPressed: () {
               onPressed();
               Get.back(result: true);
