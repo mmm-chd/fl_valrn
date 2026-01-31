@@ -19,7 +19,10 @@ class OverviewHeader extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(child: _buildImage()),
-              _buildBackButton(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildBackButton(),
+              ),
             ],
           ),
         );
@@ -32,17 +35,14 @@ class OverviewHeader extends StatelessWidget {
       return Container(color: Colors.grey[300]);
     }
 
-    return Image.file(
-      File(controller.images.first),
-      fit: BoxFit.cover,
-    );
+    return Image.file(File(controller.images.first), fit: BoxFit.cover);
   }
 
   Widget _buildBackButton() {
     return SafeArea(
       child: Positioned(
-        top: 8,
-        left: 16,
+        top: 16,
+        left: 20,
         child: GestureDetector(
           onTap: () => Get.back(),
           child: Container(
@@ -51,6 +51,13 @@ class OverviewHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: const Icon(
               Icons.arrow_back_ios_new_rounded,

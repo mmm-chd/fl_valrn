@@ -5,7 +5,7 @@ import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
 import 'package:fl_valrn/controllers/overview_controller.dart';
-import 'package:fl_valrn/overview_tab_bar.dart';
+import 'package:fl_valrn/pages/overview/overview_tab_bar.dart';
 // import 'package:fl_valrn/pages/Overview%20Page/overview_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

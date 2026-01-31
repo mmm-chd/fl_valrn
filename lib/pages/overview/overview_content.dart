@@ -1,7 +1,7 @@
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/controllers/overview_controller.dart';
-import 'package:fl_valrn/overview_detail.dart';
-import 'package:fl_valrn/overview_header.dart';
+import 'package:fl_valrn/pages/overview/overview_detail.dart';
+import 'package:fl_valrn/pages/overview/overview_header.dart';
 // import 'package:fl_valrn/pages/Overview%20Page/overview_detail.dart';
 // import 'package:fl_valrn/pages/Overview%20Page/overview_header.dart';
 import 'package:flutter/material.dart';
