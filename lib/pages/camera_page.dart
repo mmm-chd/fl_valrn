@@ -78,73 +78,82 @@ class CameraPage extends GetView<CameraPageController> {
               left: 0,
               right: 0,
               child: SafeArea(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Obx(() {
-                      if (controller.recentImage.value == null) {
+                child: Obx(() {
+                  final isDisabled = controller.isProcessing.value;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Obx(() {
+                        if (controller.recentImage.value == null) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(18),
+                              backgroundColor: const Color(0xFF2A9134),
+                              elevation: 0,
+                            ),
+                            onPressed: isDisabled
+                                ? null
+                                : () => controller.pickFromGallery(),
+                            child: const Icon(
+                              Icons.photo_library,
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(18),
-                            backgroundColor: const Color(0xFF2A9134),
+                            padding: const EdgeInsets.all(5),
+                            backgroundColor: Colors.white.withOpacity(0.25),
                             elevation: 0,
+                            iconSize: 20,
                           ),
-                          onPressed: () => controller.pickFromGallery(),
-                          child: const Icon(
-                            Icons.photo_library,
-                            color: Colors.white,
+                          onPressed: isDisabled
+                              ? null
+                              : () => controller.pickFromGallery(),
+                          child: ClipOval(
+                            child: Image.file(
+                              controller.recentImage.value!,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         );
-                      }
-
-                      return ElevatedButton(
+                      }),
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(5),
-                          backgroundColor: Colors.white.withOpacity(0.25),
-                          elevation: 0,
-                          iconSize: 20,
+                          padding: const EdgeInsets.all(18),
+                          backgroundColor: const Color(0xFF2A9134),
                         ),
-                        onPressed: () => controller.pickFromGallery(),
-                        child: ClipOval(
-                          child: Image.file(
-                            controller.recentImage.value!,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
+                        onPressed: isDisabled
+                            ? null
+                            : () async {
+                                await controller.takePicture();
+                                if (controller.image != null) {
+                                  controller.detectAndNavigate(
+                                    controller.image!.path,
+                                  );
+                                }
+                              },
+                        child: const Icon(
+                          Icons.camera_alt,
+                          size: 40,
+                          color: Colors.white,
                         ),
-                      );
-                    }),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(18),
-                        backgroundColor: const Color(0xFF2A9134),
                       ),
-                      onPressed: () async {
-                        await controller.takePicture();
-                        if (controller.image != null) {
-                          controller.detectAndNavigate(controller.image!.path);
-                        }
-                      },
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-
-                    Obx(
-                      () => ElevatedButton(
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(18),
                           backgroundColor: const Color(0xFF2A9134),
                           elevation: 0,
                         ),
-                        onPressed: controller.toggleFlash,
+                        onPressed: isDisabled ? null : controller.toggleFlash,
                         child: Icon(
                           controller.isFlashOn.value
                               ? Icons.flash_on
@@ -153,9 +162,9 @@ class CameraPage extends GetView<CameraPageController> {
                           color: Colors.white,
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                }),
               ),
             ),
           ],
