@@ -1,6 +1,5 @@
 import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_card.dart';
-import 'package:fl_valrn/components/widgets/custom_product_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
@@ -9,13 +8,11 @@ import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:fl_valrn/pages/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   ProfilePage({super.key});
-  final userC= Get.find<UserController>();
+  final userC = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,61 +38,75 @@ class ProfilePage extends GetView<ProfileController> {
                     ),
                   ),
 
-                  Positioned(
-                    top: 32,
-                    left: 16,
-                    child: Container(
-                      width: 36,
-                      height: 36,
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                        color: Color(0xffEBEBEB).withOpacity(0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(blurRadius: 1, color: Colors.black26),
-                        ],
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        iconSize: 36, // Kecilkan dari 40 ke 22-24
-                        icon: const Icon(
-                          Icons.chevron_left_rounded,
-                          color: Color(0xff2A9134),
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
+                  Obx(
+                    () => controller.isMyProfile.value
+                        ? const SizedBox.shrink()
+                        : Positioned(
+                            top: 32,
+                            left: 16,
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              padding: EdgeInsets.zero,
+                              decoration: BoxDecoration(
+                                color: Color(0xffEBEBEB).withOpacity(0.9),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 1,
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                iconSize: 36,
+                                icon: const Icon(
+                                  Icons.chevron_left_rounded,
+                                  color: Color(0xff2A9134),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ),
                   ),
 
                   // SETTINGS ICON
-                  Positioned(
-                    top: 32,
-                    right: 16,
-                    child: Container(
-                      width: 40, // Atur ukuran circle
-                      height: 40,
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                        color: Color(0xffEBEBEB).withOpacity(0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(blurRadius: 6, color: Colors.black26),
-                        ],
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        iconSize: 28,
-                        icon: const Icon(
-                          Icons.settings_rounded,
-                          color: Color(0xff2A9134),
-                        ),
-                        onPressed: () {
-                          Get.offAllNamed(AppRoutes.settingsPage);
-                        },
-                      ),
-                    ),
+                  Obx(
+                    () => controller.isMyProfile.value
+                        ? const SizedBox.shrink()
+                        : Positioned(
+                            top: 32,
+                            right: 16,
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              padding: EdgeInsets.zero,
+                              decoration: BoxDecoration(
+                                color: Color(0xffEBEBEB).withOpacity(0.9),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 6,
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                iconSize: 28,
+                                icon: const Icon(
+                                  Icons.settings_rounded,
+                                  color: Color(0xff2A9134),
+                                ),
+                                onPressed: () {
+                                  Get.offAllNamed(AppRoutes.settingsPage);
+                                },
+                              ),
+                            ),
+                          ),
                   ),
 
                   // Profile Picture - Positioned
@@ -134,6 +145,12 @@ class ProfilePage extends GetView<ProfileController> {
                 );
               }),
             const CustomSpacing(height: 6),
+              // Name
+              CustomText(
+                text: userC.name.value,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const CustomSpacing(height: 6),
 
               // Description
               Obx((){
@@ -153,66 +170,70 @@ class ProfilePage extends GetView<ProfileController> {
               const CustomSpacing(height: 16),
 
               // Button Kirim Pesan + Menu
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                  children: [
-                    // Button Kirim Pesan (ambil sebagian besar space)
-                    Expanded(
-                      flex: 5, // Proporsi button
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Action kirim pesan
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff2A9134),
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          elevation: 2,
-                          shadowColor: Colors.black26,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Text(
-                          'Kirim Pesan',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
+              Obx(
+                () => controller.isMyProfile.value
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Row(
+                          children: [
+                            // Button Kirim Pesan (ambil sebagian besar space)
+                            Expanded(
+                              flex: 5, // Proporsi button
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Action kirim pesan
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xff2A9134),
+                                  foregroundColor: Colors.white,
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  elevation: 2,
+                                  shadowColor: Colors.black26,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Kirim Pesan',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
 
-                    const SizedBox(width: 8),
+                            const SizedBox(width: 8),
 
-                    // Button Menu (3 dots) - ukuran fixed
-                    Container(
-                      height: 48, // Sama tinggi dengan button
-                      width: 48, // Lebar fixed
-                      decoration: BoxDecoration(
-                        color: Color(0xFFEBEBEB), // Background putih
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Color(0xFFAFAFAF), // Outline hitam
-                          width: 1.5, // Ketebalan border
+                            // Button Menu (3 dots) - ukuran fixed
+                            Container(
+                              height: 48, // Sama tinggi dengan button
+                              width: 48, // Lebar fixed
+                              decoration: BoxDecoration(
+                                color: Color(0xFFEBEBEB), // Background putih
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: Color(0xFFAFAFAF), // Outline hitam
+                                  width: 1.5, // Ketebalan border
+                                ),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  // Action menu
+                                },
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: Colors.black87,
+                                  size: 24,
+                                ),
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: IconButton(
-                        onPressed: () {
-                          // Action menu
-                        },
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: Colors.black87,
-                          size: 24,
-                        ),
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                      ),
-                    ),
-                  ],
-                ),
               ),
 
               const CustomSpacing(height: 20),
@@ -335,36 +356,41 @@ class ProfilePage extends GetView<ProfileController> {
 
                         Spacer(),
 
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.myProductPage,
-                            ); // Ganti dengan route Anda
-                          },
-                          child: CustomText(
-                            text: 'Edit Produk',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green,
-                              fontFamily: GoogleFonts.montserrat().fontFamily,
-                            ),
-                          ),
+                        Obx(
+                          () => controller.isMyProfile.value
+                              ? const SizedBox.shrink()
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(AppRoutes.myProductPage);
+                                  },
+                                  child: CustomText(
+                                    text: 'Edit Produk',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.green,
+                                      fontFamily:
+                                          GoogleFonts.montserrat().fontFamily,
+                                    ),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
 
                     // Grid Produk
-                    Obx(
-                      (){
-                        if (controller.products.isEmpty) {
-                          return Center(
+                    Obx(() {
+                      if (controller.products.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Center(
                             child: CustomText(
                               text: 'Belum ada produk',
                               style: TextStyle(color: Colors.grey),
                             ),
-                          );
-                        }
+                          ),
+                        );
+                      }
                       return GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -385,18 +411,13 @@ class ProfilePage extends GetView<ProfileController> {
                             price: item.price.toString(),
                             isEcommerce: true,
                             isDescription: true,
-                            onTap: (){
-                              Get.to(
-                                ()=> ProductPage(),
-                                arguments: item,
-                              );
+                            onTap: () {
+                              Get.to(() => ProductPage(), arguments: item);
                             },
                           );
-                          
                         },
                       );
-                      }
-                    ),
+                    }),
                   ],
                 ),
               ),
@@ -424,8 +445,8 @@ Widget _buildInfoRow({
           style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
         ),
       ),
-      Text(
-        value,
+      CustomText(
+        text: value,
         style: TextStyle(
           color: valueColor,
           fontSize: 14,

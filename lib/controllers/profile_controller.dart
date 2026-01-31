@@ -2,7 +2,6 @@ import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:fl_valrn/model/product_model.dart';
 import 'package:fl_valrn/model/profile_model.dart';
 import 'package:fl_valrn/services/auth_service.dart';
-import 'package:fl_valrn/services/market_service.dart';
 import 'package:fl_valrn/services/myproducts_service.dart';
 import 'package:fl_valrn/services/profile_service.dart';
 import 'package:get/get.dart';
@@ -11,10 +10,10 @@ class ProfileController extends GetxController {
   final userC = Get.find<UserController>();
   final products = <ProductItem>[].obs;
   var profile = Rxn<ProfileModel>(); 
+  final isMyProfile = true.obs;
   final isLoading = false.obs;
 
-  
-  Future<void> logout() async{
+  Future<void> logout() async {
     await AuthService.logout();
   }
 
@@ -66,18 +65,17 @@ class ProfileController extends GetxController {
 
   Future<void> fetchMyProducts(int userId) async {
     try {
-      isLoading.value= true;
+      isLoading.value = true;
       final result = await MyproductsService.getMyProducts(userId);
       products.assignAll(result);
-
     } catch (e) {
       print('ERROR FETCH PRODUCT: $e');
       Get.snackbar(
-        
-        'Error', 
+        'Error',
         'Gagal mengambil produk',
-        snackPosition: SnackPosition.BOTTOM);
-    } finally{
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
       isLoading.value = false;
     }
   }
