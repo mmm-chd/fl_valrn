@@ -1,5 +1,7 @@
 import 'package:fl_valrn/components/widgets/custom_bottomSheet.dart';
+import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/controllers/journal_controller.dart';
+import 'package:fl_valrn/controllers/analysis_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,14 +19,6 @@ class OverviewBottomSheet {
       title: "Add to Myfields",
       onDismissed: () {},
       children: [
-        // const CustomText(
-        //   text: "Add to MyFields",
-        //   style: TextStyle(
-        //     color: PColor.primGreen,
-        //     fontSize: 22,
-        //     fontWeight: FontWeight.w600,
-        //   ),
-        // ),
         const CustomSpacing(height: 6),
 
         const CustomText(
@@ -66,36 +60,123 @@ class OverviewBottomSheet {
     );
   }
 
-  // ================= UPDATE FIELDS =================
+  // ================= UPDATE FIELDS (SIMPLIFIED - HANYA BUTTON) =================
   static void showUpdate(BuildContext context) {
-    final c = Get.put(JournalController());
+    final journalController = Get.find<JournalController>();
+    
+    // Initialize AnalysisController jika belum ada
+    if (!Get.isRegistered<AnalysisController>()) {
+      Get.put(AnalysisController());
+    }
+    final analysisController = Get.find<AnalysisController>();
+    
     CustomBottomsheet.show(
       context,
       title: "Perbarui Fields",
       initialChildSize: 0.55,
-      primaryButtonText: "Pilih Fields",
+      primaryButtonText: "Tutup",
       pBackgroundColor: PColor.primGreen,
       pForegroundColor: Colors.white,
-      onPressed: () {},
+      onPressed: () {
+        Get.back();
+      },
       onDismissed: () {},
       children: [
         const CustomText(
           text:
-              "Pilih field yang ingin kamu ubah agar pengelolaan lebih optimal.",
+              "Pilih field yang ingin kamu analisis.",
           style: TextStyle(fontSize: 13, color: Colors.grey),
         ),
 
         const CustomSpacing(height: 16),
 
         Obx(() {
-          if (c.isLoading.value) return CircularProgressIndicator();
+          if (journalController.isLoading.value) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: CircularProgressIndicator(
+                  color: PColor.primGreen,
+                ),
+              ),
+            );
+          }
+
+          if (journalController.journals.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: CustomText(
+                  text: "Belum ada field yang tersedia",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            );
+          }
 
           return Column(
-            children: c.journals
-                .map(
-                  (journal) => _fieldItem(journal.title, journal.description),
-                )
-                .toList(),
+            children: journalController.journals.map((journal) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _fieldItem(
+                  journal.title,
+                  journal.description ?? '-',
+                  onTap: () {
+                    // ✅ Tampilkan bottom sheet dengan HANYA button update
+                    _showUpdateButton(context, journal.id, journal.title);
+                  },
+                ),
+              );
+            }).toList(),
+          );
+        })
+      ],
+    );
+  }
+
+  // ✅ BOTTOM SHEET SIMPLIFIED - HANYA ADA BUTTON UPDATE
+  static void _showUpdateButton(BuildContext context, int journalId, String journalTitle) {
+    final analysisController = Get.find<AnalysisController>();
+
+    CustomBottomsheetfix.show(
+      context,
+      title: "Create Analysis",
+      onDismissed: () {},
+      children: [
+        CustomText(
+          text: "Field: $journalTitle",
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        
+        const CustomSpacing(height: 8),
+        
+        const CustomText(
+          text: "Klik tombol di bawah untuk membuat analysis dengan data default.",
+          style: TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+
+        const CustomSpacing(height: 24),
+
+        // ✅ HANYA BUTTON UPDATE
+        Obx(() {
+          return CustomButton(
+            text: analysisController.isLoading.value ? "Loading..." : "Update Analysis",
+            backgroundColor: PColor.primGreen,
+            onPressed: analysisController.isLoading.value 
+              ? null 
+              : () async {
+                  // Hit API /api/v1/analyses
+                  await analysisController.createAnalysis(journalId);
+                  
+                  // Tutup bottom sheet setelah success
+                  if (!analysisController.isLoading.value) {
+                    Get.back(); // Tutup bottom sheet update button
+                    Get.back(); // Tutup bottom sheet list journals
+                  }
+                },
           );
         }),
       ],
@@ -104,6 +185,10 @@ class OverviewBottomSheet {
 
   // ================= CREATE FIELDS =================
   static void showCreate(BuildContext context) {
+    final titleC = TextEditingController();
+    final descC = TextEditingController();
+    final imageC = TextEditingController();
+    
     CustomBottomsheetfix.show(
       context,
       title: "Buat Fields Baru",
@@ -111,8 +196,33 @@ class OverviewBottomSheet {
       primaryButtonText: "Buat Fields",
       pBackgroundColor: PColor.primGreen,
       pForegroundColor: Colors.white,
-      onPressed: () {},
-      onDismissed: () {},
+      onPressed: () async {
+        final title = titleC.text.trim();
+        final desc = descC.text.trim();
+        final image = imageC.text.trim();
+
+        if (title.isEmpty || desc.isEmpty) {
+          Get.snackbar(
+            "Peringatan",
+            "Title dan Deskripsi harus diisi",
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          return;
+        }
+
+        await Get.find<JournalController>().createJournal(
+          title,
+          desc,
+          imageUrl: image.isEmpty ? null : image,
+        );
+
+        Get.back();
+      },
+      onDismissed: () {
+        titleC.dispose();
+        descC.dispose();
+        imageC.dispose();
+      },
       children: [
         const CustomText(
           text:
@@ -122,13 +232,13 @@ class OverviewBottomSheet {
 
         const CustomSpacing(height: 20),
 
-        _inputField("Masukkan Title Fields"),
+        _inputField("Masukkan Title Fields", controller: titleC),
         const CustomSpacing(height: 20),
 
-        _inputField("Masukkan Deskripsi Fields"),
+        _inputField("Masukkan Deskripsi Fields", controller: descC),
         const CustomSpacing(height: 20),
 
-        _inputField("Masukkan Image"),
+        _inputField("Masukkan Image URL (opsional)", controller: imageC),
       ],
     );
   }
@@ -187,9 +297,9 @@ class OverviewBottomSheet {
   }
 
   // ================= REUSABLE FIELD ITEM =================
-  static Widget _fieldItem(String title, String subtitle) {
+  static Widget _fieldItem(String title, String subtitle, {VoidCallback? onTap}) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: CustomFormsection(
         border: true,
         child: Padding(
@@ -231,6 +341,8 @@ class OverviewBottomSheet {
                   ],
                 ),
               ),
+
+              const Icon(Icons.chevron_right, color: Colors.grey),
             ],
           ),
         ),
@@ -239,7 +351,7 @@ class OverviewBottomSheet {
   }
 
   // ================= REUSABLE INPUT =================
-  static Widget _inputField(String hint) {
+  static Widget _inputField(String hint, {TextEditingController? controller}) {
     return Row(
       children: [
         Container(
@@ -255,6 +367,7 @@ class OverviewBottomSheet {
 
         Expanded(
           child: TextField(
+            controller: controller,
             style: const TextStyle(fontSize: 14),
             decoration: InputDecoration(
               hintText: hint,

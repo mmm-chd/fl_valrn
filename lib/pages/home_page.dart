@@ -5,6 +5,7 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/home_controller.dart';
+import 'package:fl_valrn/controllers/journal_controller.dart';
 import 'package:fl_valrn/controllers/location_controller.dart';
 import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class HomePage extends GetView<HomeController> {
   HomePage({super.key});
   final userC = Get.find<UserController>();
   final locC = Get.find<LocationController>();
+  final jourC = Get.find<JournalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -171,17 +173,27 @@ class HomePage extends GetView<HomeController> {
                     );
                   }
 
+                  if (jourC.journals.isEmpty) {
+                    return SizedBox(
+                      height: 184,
+                      child: Center(child: Text('Belum ada journal')),
+                    );
+                  }
+
                   return SizedBox(
                     height: 184,
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       scrollDirection: Axis.horizontal,
-                      itemCount: controller.fieldsCard.length,
+                      itemCount: jourC.journals.length,
                       itemBuilder: (context, index) {
-                        return CustomCard(
-                          title: controller.fieldsCard[index].title,
-                          subtitle: controller.fieldsCard[index].subtitle,
-                          imageUrl: controller.fieldsCard[index].imageUrl,
+                        final journal = jourC.journals[index];
+
+                         return CustomCard(
+                          title: journal.title,
+                          subtitle: journal.description ?? '-',
+                          imageUrl: journal.imageUrl ??
+                              'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
                           isExtendable: false,
                           isEcommerce: false,
                           isDescription: true,
@@ -189,10 +201,7 @@ class HomePage extends GetView<HomeController> {
                           width: 128,
                           isImageLeft: false,
                           onTap: () {
-                            Get.toNamed(
-                              AppRoutes.journeyPage,
-                              arguments: controller.fieldsCard[index],
-                            );
+                            Get.toNamed(AppRoutes.journeyPage, arguments: journal);
                           },
                         );
                       },
