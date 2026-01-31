@@ -42,21 +42,21 @@ class FieldsPage extends GetView<FieldsController> {
                 ),
               ),
 
+              const CustomSpacing(height: 12),
+
               /// CONTENT
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 12),
-
                     CustomTextfield(
                       isNumber: false,
                       controller: controller.searchController,
                       label: 'Cari tanaman kamu..',
                     ),
 
-                    const SizedBox(height: 20),
+                    const CustomSpacing(height: 20),
 
                     CustomText(
                       text: "Recently",
@@ -65,41 +65,49 @@ class FieldsPage extends GetView<FieldsController> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    CustomSpacing(height: 12),
+                    const CustomSpacing(height: 12),
+                  ],
+                ),
+              ),
 
-                    Obx(() {
-                      if (controller.isLoading.value) {
-                        return SizedBox(
-                          height: 220,
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return SizedBox(
+                    height: 220,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
 
-                      return SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: controller.recentCard.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.recentCard[index];
-                            return CustomCard(
-                              title: item.title,
-                              subtitle: item.subtitle,
-                              imageUrl: item.imageUrl,
-                              isExtendable: false,
-                              isEcommerce: false,
-                              isDescription: true,
-                              height: 216,
-                              width: 172,
-                              isImageLeft: false,
-                            );
-                          },
-                        ),
+                return SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.recentCard.length,
+                    itemBuilder: (context, index) {
+                      final item = controller.recentCard[index];
+                      return CustomCard(
+                        title: item.title,
+                        subtitle: item.subtitle,
+                        imageUrl: item.imageUrl,
+                        isExtendable: false,
+                        isEcommerce: false,
+                        isDescription: true,
+                        height: 216,
+                        width: 172,
+                        isImageLeft: false,
                       );
-                    }),
+                    },
+                  ),
+                );
+              }),
 
-                    const SizedBox(height: 20),
-
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomSpacing(height: 20),
                     CustomText(
                       text: "Your Fields",
                       style: TextStyle(

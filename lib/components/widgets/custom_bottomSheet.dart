@@ -95,54 +95,53 @@ class CustomBottomsheet {
                     ),
 
                     // === FIXED BUTTONS AT BOTTOM ===
-                    Obx(
-                      () => AnimatedSize(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
-                        child: selected != null && onPressed != null
-                            ? selected.value
-                                  ? const SizedBox.shrink()
-                                  : Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        0,
-                                        12,
-                                        0,
-                                        18,
+                    if (selected != null && onPressed != null)
+                      Obx(
+                        () => AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                          child: selected.value
+                              ? const SizedBox.shrink()
+                              : Container(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    0,
+                                    12,
+                                    0,
+                                    18,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade300,
+                                        blurRadius: 10,
+                                        offset: const Offset(0, -2),
                                       ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.shade300,
-                                            blurRadius: 10,
-                                            offset: const Offset(0, -2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: onReset != null
-                                          ? _buildTwoButtons(
-                                              context,
-                                              onPressed,
-                                              onReset,
-                                              primaryButtonText,
-                                              secondaryButtonText,
-                                              sBorderColor,
-                                              sForegroundColor,
-                                              sBackgroundColor,
-                                              pForegroundColor,
-                                              pBackgroundColor,
-                                            )
-                                          : _buildOneButton(
-                                              context,
-                                              onPressed,
-                                              primaryButtonText,
-                                              pForegroundColor,
-                                              pBackgroundColor,
-                                            ),
-                                    )
-                            : const SizedBox.shrink(),
+                                    ],
+                                  ),
+                                  child: onReset != null
+                                      ? _buildTwoButtons(
+                                          context,
+                                          onPressed,
+                                          onReset,
+                                          primaryButtonText,
+                                          secondaryButtonText,
+                                          sBorderColor,
+                                          sForegroundColor,
+                                          sBackgroundColor,
+                                          pForegroundColor,
+                                          pBackgroundColor,
+                                        )
+                                      : _buildOneButton(
+                                          context,
+                                          onPressed,
+                                          primaryButtonText,
+                                          pForegroundColor,
+                                          pBackgroundColor,
+                                        ),
+                                ),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               );

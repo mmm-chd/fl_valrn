@@ -6,6 +6,7 @@ class CustomTextfield extends StatelessWidget {
   final Color? fillColor, borderColor;
   final bool isNumber;
   final String label, hint;
+  final String? prefixText;
   final double? marginTop;
   final TextEditingController controller;
   final bool? obscureText,
@@ -45,8 +46,9 @@ class CustomTextfield extends StatelessWidget {
     this.usePrefixIcon = false,
     this.fillColor,
     this.borderColor,
-    this.borderless= false,
+    this.borderless = false,
     this.variant = TextFieldVariant.outline,
+    this.prefixText,
   });
 
   @override
@@ -100,7 +102,7 @@ class CustomTextfield extends StatelessWidget {
         //     borderRadius: BorderRadius.circular(12.0),
         //     borderSide: BorderSide(color: Colors.grey.shade200),
         //   ),
-         
+
         //   prefixIcon: usePrefixIcon!
         //       ? GestureDetector(onTap: onTapPrefixIcon, child: prefixIcon)
         //       : null,
@@ -117,6 +119,7 @@ class CustomTextfield extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.grey.shade700),
           hintStyle: TextStyle(color: SColor.secGrey.withValues(alpha: 0.7)),
           labelText: label,
+          prefixText: prefixText,
           alignLabelWithHint: false,
           hintText: hint,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -155,26 +158,23 @@ class CustomTextfield extends StatelessWidget {
       ),
     );
   }
-  InputBorder _buildBorder(Color color){
-        switch (variant) {
-          case TextFieldVariant.underline:
-            return UnderlineInputBorder(
-              borderSide: BorderSide(color: color, width: 1),
-            );
-          case TextFieldVariant.borderless:
-            return InputBorder.none;
-          case TextFieldVariant.outline:
-          default:
-            return OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: color)
-            );
-        }
-      }
+
+  InputBorder _buildBorder(Color color) {
+    switch (variant) {
+      case TextFieldVariant.underline:
+        return UnderlineInputBorder(
+          borderSide: BorderSide(color: color, width: 1),
+        );
+      case TextFieldVariant.borderless:
+        return InputBorder.none;
+      case TextFieldVariant.outline:
+      default:
+        return OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: color),
+        );
+    }
+  }
 }
 
-enum TextFieldVariant {
-  outline,
-  underline,
-  borderless
-}
+enum TextFieldVariant { outline, underline, borderless }

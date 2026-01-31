@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
+import 'package:fl_valrn/components/widgets/custom_bottomSheet.dart';
+import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/services/ai_detection_service.dart';
@@ -16,8 +17,9 @@ class CameraPageController extends GetxController {
 
   RxBool isFlashOn = false.obs;
   RxBool isReady = false.obs;
+  RxBool isProcessing = false.obs;
   XFile? image;
-  String? lastPickedImage; // Untuk simpan image path dari gallery
+  String? lastPickedImage;
   final Rx<File?> recentImage = Rx<File?>(null);
 
   late double minZoom = 1.0;
@@ -72,6 +74,8 @@ class CameraPageController extends GetxController {
 
   Future<void> takePicture() async {
     if (!cameraController.value.isInitialized) return;
+    if (isProcessing.value) return;
+
     image = await cameraController.takePicture();
     await cameraController.pausePreview();
   }
@@ -94,7 +98,7 @@ class CameraPageController extends GetxController {
       imageQuality: 90,
     );
     if (pickedImage != null) {
-      lastPickedImage = pickedImage.path; // Simpan path
+      lastPickedImage = pickedImage.path;
     }
   }
 
@@ -128,6 +132,8 @@ class CameraPageController extends GetxController {
 
   // Pick dari gallery
   void pickFromGallery() async {
+    if (isProcessing.value) return;
+
     await _pickFromGallery();
     if (lastPickedImage != null) {
       print('Gallery image picked: $lastPickedImage');
@@ -139,6 +145,10 @@ class CameraPageController extends GetxController {
 
   // Detect AI dan navigate
   void detectAndNavigate(String imagePath) async {
+    if (isProcessing.value) return;
+
+    isProcessing.value = true;
+
     Get.dialog(
       const Center(
         child: CircularProgressIndicator(
@@ -157,29 +167,60 @@ class CameraPageController extends GetxController {
 
       Get.back();
 
+      isProcessing.value = false;
+
       Get.toNamed(AppRoutes.overviewPage, arguments: apiResponse);
     } catch (e) {
       Get.back();
-      Get.snackbar(
-        'Gagal',
-        'Deteksi AI gagal: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+
+      isProcessing.value = false;
+
+      String errorMessage = 'Deteksi AI gagal';
+
+      if (e is Map<String, dynamic>) {
+        errorMessage = e['message'] ?? errorMessage;
+      } else {
+        errorMessage = e.toString();
+      }
+
+      _showSheet(text: errorMessage, context: Get.context!);
     }
   }
 
-  void _showSheet({required String text, context}) {
-    CustomBottomsheetfix.show(
+  void _showSheet({required String text, required BuildContext context}) {
+    CustomBottomsheet.show(
       context,
       title: '',
       hideHeader: true,
-      initialChildSize: 0.34,
-      onDismissed: () {},
+      initialChildSize: 0.45,
+      onDismissed: () {
+        if (cameraController.value.isInitialized) {
+          cameraController.resumePreview();
+          isReady.value = true;
+        }
+      },
       children: [
-        Row(
+        Column(
           children: [
-            Container(width: 100, height: 100),
-            CustomText(text: text),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.red[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                Icons.error_outline,
+                color: Colors.red[700],
+                size: 50,
+              ),
+            ),
+            const CustomSpacing(height: 16),
+            CustomText(
+              text: text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ],
