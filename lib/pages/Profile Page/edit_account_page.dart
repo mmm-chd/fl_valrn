@@ -4,12 +4,17 @@ import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
+import 'package:fl_valrn/controllers/edit_account_controller.dart';
 import 'package:fl_valrn/controllers/profile_controller.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EditAccountPage extends GetView<ProfileController> {
-  const EditAccountPage({super.key});
+  EditAccountPage({super.key});
+  final userC = Get.find<UserController>();
+  int? get id => userC.id.value;
+  final c = Get.find<EditAccountController>();
 
   @override
   Widget build(BuildContext context) {
@@ -102,26 +107,47 @@ class EditAccountPage extends GetView<ProfileController> {
               ),
               CustomSpacing(height: 32),
 
-              // Nama Pertama
-              FormLabel(label: "Nama Pertama*"),
-              FormInputField(hint: "Emmanuel Michael"),
-              CustomSpacing(height: 20),
+              
+              Obx(() {
+                if (c.isLoading.value) return CircularProgressIndicator();
 
-              // Nama Terakhir
-              FormLabel(label: "Nama Terakhir*"),
-              FormInputField(hint: "Emmanuel Michael"),
-              CustomSpacing(height: 20),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FormLabel(label: "Nama Pertama*"),
+                    FormInputField(controller: c.nameC, hint: controller.profile.value?.name ?? '-',),
+                    CustomSpacing(height: 20),
 
-              // Nomor Telepon
-              FormLabel(label: "Nomor Telepon*"),
-              FormInputField(hint: "081234567890"),
-              CustomSpacing(height: 40),
+                    FormLabel(label: "Email*"),
+                    FormInputField(controller: c.emailC, hint: controller.profile.value?.email ?? '-',),
+                    CustomSpacing(height: 20),
+
+                    FormLabel(label: "Nomor Telepon*"),
+                    FormInputField(controller: c.phoneC, hint: controller.profile.value?.phone ?? '-',),
+                    CustomSpacing(height: 20),
+
+                    FormLabel(label: "Facebook*"),
+                    FormInputField(controller: c.facebookC, hint: controller.profile.value?.facebook ?? '-',),
+                    CustomSpacing(height: 20),
+
+                    FormLabel(label: "Instagram*"),
+                    FormInputField(controller: c.instaC, hint: controller.profile.value?.insta ?? '-',),
+                    CustomSpacing(height: 20),
+
+                    FormLabel(label: "Tentang Saya*"),
+                    FormInputField(controller: c.aboutC, hint: controller.profile.value?.about ?? '-',),
+                    CustomSpacing(height: 20),
+                  ],
+                );
+              }),
 
               CustomButton(
                 text: "Simpan Perubahan",
                 backgroundColor: PColor.primGreen,
                 foregroundColor: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                   c.updateProfile(id!);
+                },
               ),
               CustomSpacing(height: 12),
 

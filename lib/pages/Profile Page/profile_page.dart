@@ -133,6 +133,18 @@ class ProfilePage extends GetView<ProfileController> {
               ),
 
               const CustomSpacing(height: 84),
+            // Name
+            Obx(() {
+                if (controller.isLoading.value) {
+                  return CircularProgressIndicator();
+                }
+                final profile = controller.profile.value;
+                return CustomText(
+                  text: profile?.name ?? 'Loading...',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                );
+              }),
+            const CustomSpacing(height: 6),
               // Name
               CustomText(
                 text: userC.name.value,
@@ -141,14 +153,19 @@ class ProfilePage extends GetView<ProfileController> {
               const CustomSpacing(height: 6),
 
               // Description
-              const CustomText(
-                text: 'Hello everyone, im just a farmer\nin kudus jln',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF757575),
-                  fontSize: 14,
-                  height: 1.4,
-                ),
+              Obx((){
+                final profile = controller.profile.value;
+                return CustomText(
+                  text: profile?.about ?? 'Halo, edit deskripsi anda',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF757575),
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                );
+              }
+                
               ),
               const CustomSpacing(height: 16),
 
@@ -238,14 +255,19 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const CustomText(
-                      text: 'Saya suka menanam dan memcari teman berbisnis jln',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        fontSize: 14,
-                        height: 1.5,
-                      ),
-                    ),
+                     Obx((){
+                        final profile = controller.profile.value;
+                        return CustomText(
+                          text: profile?.about ?? 'Halo, edit deskripsi anda',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF757575),
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        );
+                      }
+                     ),
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -269,29 +291,41 @@ class ProfilePage extends GetView<ProfileController> {
                     const SizedBox(height: 12),
 
                     // Instagram
-                    _buildInfoRow(
-                      icon: Icons.camera_alt_outlined,
-                      label: 'Instagram',
-                      value: 'PetaniKeren',
-                      valueColor: Colors.green,
+                    Obx((){
+                      final profile = controller.profile.value;
+                      return _buildInfoRow(
+                        icon: Icons.camera_alt_outlined,
+                        label: 'Instagram',
+                        value: profile?.insta?? '-',
+                        valueColor: Colors.green,
+                      );
+                    }
                     ),
                     const SizedBox(height: 12),
 
                     // Telephone
-                    _buildInfoRow(
+                    Obx((){
+                      final profile = controller.profile.value;
+                      return _buildInfoRow(
                       icon: Icons.phone_outlined,
                       label: 'Telephone',
-                      value: '082136508987',
+                      value: profile?.phone?? '-',
                       valueColor: Colors.green,
+                    );
+                    }
                     ),
                     const SizedBox(height: 12),
 
                     // Facebook
-                    _buildInfoRow(
+                    Obx((){
+                      final profile = controller.profile.value;
+                      return _buildInfoRow(
                       icon: Icons.facebook_outlined,
                       label: 'Facebook',
-                      value: 'PetaniKeren69',
+                      value: profile?.facebook ?? '-',
                       valueColor: Colors.green,
+                    );
+                    }
                     ),
                   ],
                 ),
