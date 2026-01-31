@@ -1,6 +1,5 @@
 import 'package:fl_valrn/components/widgets/custom_button.dart';
 import 'package:fl_valrn/components/widgets/custom_checkBox.dart';
-import 'package:fl_valrn/components/widgets/custom_socialButton.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
@@ -13,8 +12,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class AuthPage extends GetView<LoginController> {
-  const AuthPage({super.key});
-  AuthController get authController => Get.find<AuthController>();
+  AuthPage({super.key});
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +80,6 @@ class AuthPage extends GetView<LoginController> {
                         controller.currentTabIndex.value == 0
                             ? _loginForm()
                             : _registerForm(),
-                        const CustomSpacing(height: 34),
-                        _socialDivider(),
-                        const CustomSpacing(height: 32),
-                        _socialButtons(),
                         const CustomSpacing(height: 84),
                       ],
                     ),
@@ -137,41 +132,6 @@ class AuthPage extends GetView<LoginController> {
     );
   }
 
-  // SOCIAL
-  Widget _socialDivider() {
-    return Row(
-      children: [
-        Expanded(child: Divider(color: Colors.grey)),
-        Expanded(
-          flex: 2,
-          child: CustomText(
-            text: 'Or sign in with',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade700,
-            ),
-          ),
-        ),
-        Expanded(child: Divider(color: Colors.grey)),
-      ],
-    );
-  }
-
-  Widget _socialButtons() {
-    return Row(
-      children: [
-        Expanded(
-          child: CustomSocialbutton(type: 'facebook', onTap: () {}),
-        ),
-        const CustomSpacing(width: 16),
-        Expanded(
-          child: CustomSocialbutton(type: 'google', onTap: () {}),
-        ),
-      ],
-    );
-  }
-
   Column _registerForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +144,7 @@ class AuthPage extends GetView<LoginController> {
         const CustomSpacing(height: 8),
         CustomTextfield(
           isNumber: false,
-          label: 'john@gmail.com',
+          label: 'Input email..',
           controller: controller.emailController,
           onChanged: (_) => controller.emailError.value = '',
         ),
@@ -192,6 +152,26 @@ class AuthPage extends GetView<LoginController> {
           if (controller.emailError.isEmpty) return const CustomSpacing();
           return CustomText(
             text: controller.emailError.value,
+            style: const TextStyle(color: Colors.red, fontSize: 12),
+          );
+        }),
+        const CustomSpacing(height: 16.0),
+        CustomText(
+          text: 'Phone Number',
+          textAlign: TextAlign.start,
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+        ),
+        const CustomSpacing(height: 8),
+        CustomTextfield(
+          isNumber: true,
+          controller: controller.numberController,
+          label: 'Input phone number...',
+          prefixText: "+62 ",
+        ),
+        Obx(() {
+          if (controller.numberError.isEmpty) return const CustomSpacing();
+          return CustomText(
+            text: controller.numberError.value,
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
@@ -265,7 +245,7 @@ class AuthPage extends GetView<LoginController> {
         Obx(
           () => CustomTextfield(
             isNumber: false,
-            label: 'Enter your password..',
+            label: 'Input password..',
             obscureText: controller.isObsecurePass.value,
             enableInteractiveSelection: false,
             onTapSuffixIcon: controller.togglePassword,
@@ -296,7 +276,7 @@ class AuthPage extends GetView<LoginController> {
         Obx(
           () => CustomTextfield(
             isNumber: false,
-            label: 'Confirm your password..',
+            label: 'Confirm password..',
             obscureText: controller.isObsecureCPass.value,
             enableInteractiveSelection: false,
             onTapSuffixIcon: controller.toggleConfirmPassword,
@@ -318,7 +298,7 @@ class AuthPage extends GetView<LoginController> {
             style: const TextStyle(color: Colors.red, fontSize: 12),
           );
         }),
-        const CustomSpacing(height: 32.0),
+        const CustomSpacing(height: 52.0),
         Obx(() {
           if (controller.registerGeneralError.isEmpty) {
             return const CustomSpacing();
@@ -339,6 +319,7 @@ class AuthPage extends GetView<LoginController> {
                     if (!controller.validateRegister()) return;
                     authController.register(
                       email: controller.emailController.text.trim(),
+                      number: controller.numberController.text.trim(),
                       firstName: controller.firstNameController.text.trim(),
                       lastname: controller.lastNameController.text.trim(),
                       password: controller.passwordController.text.trim(),
@@ -359,84 +340,90 @@ class AuthPage extends GetView<LoginController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(
-          text: 'Email',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 10),
-        CustomTextfield(
-          isNumber: false,
-          label: 'Enter your email..',
-          controller: controller.emailController,
-          onChanged: (_) => controller.emailError.value = '',
-        ),
-        Obx(() {
-          if (controller.emailError.isEmpty) return const CustomSpacing();
-          return CustomText(
-            text: controller.emailError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
-        const CustomSpacing(height: 16.0),
-        CustomText(
-          text: 'Password',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 10),
-        Obx(
-          () => CustomTextfield(
-            isNumber: false,
-            label: 'Enter your password..',
-            obscureText: controller.isObsecurePass.value,
-            enableInteractiveSelection: false,
-            onTapSuffixIcon: controller.togglePassword,
-            useSuffixIcon: true,
-            suffixIcon: Icon(
-              controller.isObsecurePass.value
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-            ),
-            controller: controller.passwordController,
-            onChanged: (_) => controller.passwordError.value = '',
-          ),
-        ),
-        Obx(() {
-          if (controller.passwordError.isEmpty) return const CustomSpacing();
-          return CustomText(
-            text: controller.passwordError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Obx(
-                () => CustomCheckbox(
-                  value: controller.isCheckedRememberMe.value,
-                  onChanged: (value) {
-                    controller.toggleRememberMe();
-                  },
-                  label: 'Remember me',
-                  padding: EdgeInsets.all(0),
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  borderColor: Colors.grey.shade600,
-                  labelStyle: TextStyle(color: Colors.grey.shade600),
+            CustomText(
+              text: 'Email',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+            const CustomSpacing(height: 10),
+            CustomTextfield(
+              isNumber: false,
+              label: 'Enter your email..',
+              controller: controller.emailController,
+              onChanged: (_) => controller.emailError.value = '',
+            ),
+            Obx(() {
+              if (controller.emailError.isEmpty) return const CustomSpacing();
+              return CustomText(
+                text: controller.emailError.value,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+              );
+            }),
+            const CustomSpacing(height: 16.0),
+            CustomText(
+              text: 'Password',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+            const CustomSpacing(height: 10),
+            Obx(
+              () => CustomTextfield(
+                isNumber: false,
+                label: 'Enter your password..',
+                obscureText: controller.isObsecurePass.value,
+                enableInteractiveSelection: false,
+                onTapSuffixIcon: controller.togglePassword,
+                useSuffixIcon: true,
+                suffixIcon: Icon(
+                  controller.isObsecurePass.value
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
                 ),
+                controller: controller.passwordController,
+                onChanged: (_) => controller.passwordError.value = '',
               ),
             ),
-            GestureDetector(
-              onTap: () {},
-              child: CustomText(
-                text: 'Forgot Password?',
-                style: TextStyle(color: PColor.primGreen),
-              ),
+            Obx(() {
+              if (controller.passwordError.isEmpty)
+                return const CustomSpacing();
+              return CustomText(
+                text: controller.passwordError.value,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+              );
+            }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Obx(
+                    () => CustomCheckbox(
+                      value: controller.isCheckedRememberMe.value,
+                      onChanged: (value) {
+                        controller.toggleRememberMe();
+                      },
+                      label: 'Remember me',
+                      padding: EdgeInsets.all(0),
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      borderColor: Colors.grey.shade600,
+                      labelStyle: TextStyle(color: Colors.grey.shade600),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: CustomText(
+                    text: 'Forgot Password?',
+                    style: TextStyle(color: PColor.primGreen),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        const CustomSpacing(height: 16),
+        const CustomSpacing(height: 64),
         Obx(
           () => CustomButton(
             onPressed: () {

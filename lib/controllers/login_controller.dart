@@ -7,6 +7,7 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final numberController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -21,6 +22,7 @@ class LoginController extends GetxController {
   final emailError = ''.obs;
   final passwordError = ''.obs;
 
+  final numberError = ''.obs;
   final firstNameError = ''.obs;
   final lastNameError = ''.obs;
   final confirmPasswordError = ''.obs;
@@ -28,6 +30,7 @@ class LoginController extends GetxController {
 
   void clearAllErrors() {
     emailError.value = '';
+    numberError.value = '';
     passwordError.value = '';
     firstNameError.value = '';
     lastNameError.value = '';
@@ -42,6 +45,7 @@ class LoginController extends GetxController {
 
   void clearRegisterErrors() {
     emailError.value = '';
+    numberError.value = '';
     firstNameError.value = '';
     lastNameError.value = '';
     passwordError.value = '';
@@ -78,6 +82,14 @@ class LoginController extends GetxController {
       isValid = false;
     } else if (!GetUtils.isEmail(emailController.text)) {
       emailError.value = 'Email format is invalid';
+      isValid = false;
+    }
+
+    if (numberController.text.isEmpty) {
+      numberError.value = 'Phone number is required';
+      isValid = false;
+    } else if (!GetUtils.isPhoneNumber(numberController.text)) {
+      numberError.value = 'Phone number is invalid';
       isValid = false;
     }
 
@@ -141,6 +153,7 @@ class LoginController extends GetxController {
   // HELPERS
   bool _hasAnyText() {
     return emailController.text.isNotEmpty ||
+        numberController.text.isNotEmpty ||
         firstNameController.text.isNotEmpty ||
         lastNameController.text.isNotEmpty ||
         passwordController.text.isNotEmpty ||
@@ -149,6 +162,7 @@ class LoginController extends GetxController {
 
   void clearAll() {
     emailController.clear();
+    numberController.clear();
     firstNameController.clear();
     lastNameController.clear();
     passwordController.clear();
@@ -195,6 +209,7 @@ class LoginController extends GetxController {
   @override
   void onClose() {
     emailController.dispose();
+    numberController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
     passwordController.dispose();

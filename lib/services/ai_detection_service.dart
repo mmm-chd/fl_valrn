@@ -51,10 +51,12 @@ class PlantAIService {
     print('Status: ${response.statusCode}');
     print('Body: $responseBody');
 
+    final jsonResponse = json.decode(responseBody);
+
     if (response.statusCode != 200) {
-      throw Exception('API Error ${response.statusCode}: $responseBody');
+      throw jsonResponse;
     }
 
-    return json.decode(responseBody);
+    return jsonResponse;
   }
 }
