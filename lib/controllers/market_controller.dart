@@ -2,6 +2,7 @@ import 'package:fl_valrn/dummy_data/dummyProduct.dart';
 import 'package:fl_valrn/dummy_data/dummyTrending.dart';
 import 'package:fl_valrn/model/product_model.dart';
 import 'package:fl_valrn/model/trending_model.dart';
+import 'package:fl_valrn/services/market_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -33,8 +34,19 @@ class MarketController extends GetxController{
     isLoading.value = false;
   }
   void fetchProducts() async {
-    await Future.delayed(Duration(seconds: 2));
-    productCard.value = dummyProduct;
-    isLoading.value = false;
+    try {
+      isLoading.value= true;
+      final result = await MarketService.getProducts();
+      productCard.assignAll(result);
+    } catch (e) {
+      print('ERROR FETCH PRODUCT: $e');
+      Get.snackbar(
+        
+        'Error', 
+        'Gagal mengambil produk',
+        snackPosition: SnackPosition.BOTTOM);
+    } finally{
+
+    }
   }
 }
