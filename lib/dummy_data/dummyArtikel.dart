@@ -4,16 +4,16 @@ final List<ArtikelItem> dummyArtikel =[
   ArtikelItem(
     title: 'Sawit Farm',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg', isImageLeft: true, isDescription: true
+    imageUrl: 'https://i.pinimg.com/1200x/b8/e1/b8/b8e1b82140fde3ebee504e7080eeed8f.jpg', isImageLeft: false
   ),
   ArtikelItem(
     title: 'Sawit Farm',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg', isImageLeft: false, isDescription: true
+    imageUrl: 'https://i.pinimg.com/1200x/b8/e1/b8/b8e1b82140fde3ebee504e7080eeed8f.jpg', isImageLeft: false
   ),
   ArtikelItem(
     title: 'Sawit Farm',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg', isImageLeft: false
+    imageUrl: 'https://i.pinimg.com/1200x/b8/e1/b8/b8e1b82140fde3ebee504e7080eeed8f.jpg', isImageLeft: false
   ),
 ];

@@ -4,6 +4,7 @@ import 'package:fl_valrn/dummy_data/dummyTrending.dart';
 import 'package:fl_valrn/model/artikel_model.dart';
 import 'package:fl_valrn/model/fields_model.dart';
 import 'package:fl_valrn/model/trending_model.dart';
+import 'package:fl_valrn/services/location_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,8 @@ class HomeController extends GetxController {
   var artikelCard = <ArtikelItem>[].obs;
   var isLoading= true.obs;
 
+  RxString locationText= "Mendeteksi lokasi...".obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -22,6 +25,16 @@ class HomeController extends GetxController {
     fetchFields();
     fetchArtikel();
     super.onInit();
+  }
+
+  Future<void> loadLocation() async{
+    final address= await LocationService.getAddress();
+    if (address != null) {
+      locationText.value=address;
+    } else {
+      locationText.value="Lokasi tidak tersedia";
+    }
+
   }
 
   void fetchTrendings() async {

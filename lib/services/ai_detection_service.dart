@@ -1,18 +1,31 @@
 import 'dart:convert';
+import 'package:fl_valrn/configs/constant_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PlantAIService {
-  static const String _endpoint = 'http://10.10.13.60:8000/api/v1/plant/analyze';
-
   static Future<Map<String, dynamic>> analyzePlant({
     required String imagePath,
   }) async {
-    final uri = Uri.parse(_endpoint);
+    //get token
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null || token.isEmpty) {
+      throw Exception('User not logged in');
+    }
+
+    final uri = Uri.parse(
+      '${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.API_GROUP_PLANT}${ConstantApi.ANALYZE}',
+    );
     final request = http.MultipartRequest('POST', uri);
 
-    request.files.add(
-      await http.MultipartFile.fromPath('image', imagePath),
-    );
+    request.headers.addAll({
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    });
+
+    request.files.add(await http.MultipartFile.fromPath('image', imagePath));
 
     request.fields['language'] = 'id';
     request.fields['detail_level'] = 'standard';
@@ -31,23 +44,18 @@ class PlantAIService {
       request.fields['focus_areas[$i]'] = focusAreas[i];
     }
 
+    // send
     final response = await request.send();
     final responseBody = await response.stream.bytesToString();
 
-    print('=== API RESPONSE ===');
-    print('Status Code: ${response.statusCode}');
-    print('Response Body: $responseBody');
-    print('==================');
-
-    if (response.statusCode != 200) {
-      throw Exception('API Error ${response.statusCode}: $responseBody');
-    }
+    print('Status: ${response.statusCode}');
+    print('Body: $responseBody');
 
     final jsonResponse = json.decode(responseBody);
-    
-    print('=== PARSED JSON ===');
-    print(jsonResponse);
-    print('==================');
+
+    if (response.statusCode != 200) {
+      throw jsonResponse;
+    }
 
     return jsonResponse;
   }

@@ -43,7 +43,7 @@ class AuthPage extends GetView<LoginController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          'assets/logo/white-waisya.svg',
+                          'assets/logo/waisya-white.svg',
                           width: 180,
                         ),
                         const CustomSpacing(height: 10),

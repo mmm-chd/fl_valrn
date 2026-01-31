@@ -19,9 +19,7 @@ class NavbarPage extends GetView<NavbarController> {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            Positioned.fill(
-              child: controller.pages[controller.currentIndex.value],
-            ),
+            controller.pages[controller.currentIndex.value],
 
             Positioned(
               left: 0,

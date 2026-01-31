@@ -4,16 +4,16 @@ final List<TrendingItem> dummyTrending =[
   TrendingItem(
     title: 'Peace Lily',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg'
+    imageUrl: 'https://i.pinimg.com/736x/6b/77/c6/6b77c618a60385e72e0ddcc813873c9e.jpg'
   ),
   TrendingItem(
     title: 'Mad Lily',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg'
+    imageUrl: 'https://i.pinimg.com/736x/6b/77/c6/6b77c618a60385e72e0ddcc813873c9e.jpg'
   ),
   TrendingItem(
     title: 'Shy Lily',
     subtitle: 'Decoration',
-    imageUrl: 'https://i.pinimg.com/736x/5f/12/73/5f127347eee618c165aa815a3c8ab6e2.jpg'
+    imageUrl: 'https://i.pinimg.com/736x/6b/77/c6/6b77c618a60385e72e0ddcc813873c9e.jpg'
   ),
 ];

@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:fl_valrn/bindings/app_binding.dart';
 import 'package:fl_valrn/configs/pages.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
         ),
       ),
+      initialBinding: AppBinding(),
       initialRoute: AppRoutes.splashPage,
       getPages: AppPages.pages,
     );

@@ -5,18 +5,22 @@ import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/home_controller.dart';
+import 'package:fl_valrn/controllers/location_controller.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({super.key});
+  HomePage({super.key});
+  final userC= Get.find<UserController>();
+  final locC= Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(left: 16, right: 16, top: 40),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
           child: CustomNavbarsafepadding(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,34 +30,39 @@ class HomePage extends GetView<HomeController> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          text: "Halo, {User}!",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                        Obx(
+                          ()=> userC.name.isEmpty ? CustomText(
+                            text: 'Halo Kamu!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                          : CustomText(
+                            text: 'Halo, ${userC.name.value}!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                         CustomSpacing(height: 4),
-                        Row(
-                          children: [
-                            CustomText(
-                              text: "Lokasi tembak kesini",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Icon(
-                              Icons.pin_drop_sharp,
-                              size: 20,
-                              color: Color(0xFF2A9134),
-                            ),
-                          ],
+                        Obx(
+                          ()=> Row(
+                            children: [
+                              CustomText(
+                                text: '${locC.kabupaten.value}, ${locC.kecamatan.value}',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Icon(
+                                Icons.pin_drop_sharp,
+                                size: 20,
+                                color: Color(0xFF2A9134),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.notifications,
-                      size: 36,
-                      color: Color(0xFF2A9134),
                     ),
                   ],
                 ),
@@ -69,7 +78,7 @@ class HomePage extends GetView<HomeController> {
                   title: "ngetes",
                   subtitle: "muncul kaga",
                   imageUrl:
-                      "https://i.pinimg.com/736x/2f/de/99/2fde9942cfc7d25f34411c9ca1d8990f.jpg",
+                      "https://i.pinimg.com/736x/3a/ee/ee/3aeeee1d04b16f5ab613337aca0721e7.jpg",
                   isExtendable: false,
                   isEcommerce: true,
                   isDescription: false,
@@ -91,7 +100,7 @@ class HomePage extends GetView<HomeController> {
                   }
 
                   return SizedBox(
-                    height: 220,
+                    height: 184,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.trendingCard.length,
@@ -117,7 +126,7 @@ class HomePage extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "My Garden",
+                      text: "My Fields",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -127,15 +136,14 @@ class HomePage extends GetView<HomeController> {
                     InkWell(
                       child: CustomText(
                         text: "See More",
-                        style: TextStyle(fontSize: 12, color: Color(0xFF2A9134)),
-                        
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF2A9134),
+                        ),
                       ),
                       onTap: () {
-                            Get.offAllNamed(
-                              AppRoutes.navbarPage,
-                              arguments: 1
-                            );
-                          },
+                        Get.offAllNamed(AppRoutes.navbarPage, arguments: 1);
+                      },
                     ),
                   ],
                 ),
@@ -149,7 +157,7 @@ class HomePage extends GetView<HomeController> {
                   }
 
                   return SizedBox(
-                    height: 220,
+                    height: 184,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.fieldsCard.length,
@@ -185,7 +193,6 @@ class HomePage extends GetView<HomeController> {
                   text: "Artikel menarik yang sayang dilewatkan",
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
-                CustomSpacing(height: 12),
                 Obx(() {
                   return ListView.builder(
                     itemCount: controller.artikelCard.length,
