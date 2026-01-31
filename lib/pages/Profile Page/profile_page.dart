@@ -1,15 +1,19 @@
 import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
+import 'package:fl_valrn/components/widgets/custom_card.dart';
+import 'package:fl_valrn/components/widgets/custom_product_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/configs/routes.dart';
+import 'package:fl_valrn/controllers/profile_controller.dart';
 import 'package:fl_valrn/controllers/user_controller.dart';
+import 'package:fl_valrn/pages/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends GetView<ProfileController> {
   ProfilePage({super.key});
   final userC= Get.find<UserController>();
 
@@ -118,13 +122,6 @@ class ProfilePage extends StatelessWidget {
               ),
 
               const CustomSpacing(height: 84),
-
-              // Name
-              CustomText(
-                text: 'Mr. Farmer',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const CustomSpacing(height: 6),
             // Name
             CustomText(
               text: userC.name.value,
@@ -330,26 +327,47 @@ class ProfilePage extends StatelessWidget {
                     ),
 
                     // Grid Produk
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.78,
-                          ),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return ProductCard(
-                          imageUrl:
-                              'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400',
-                          name: 'Bawang Merah',
-                          rating: 4.5,
-                          location: 'Kabupaten kudus, Jatira...',
-                        );
-                      },
+                    Obx(
+                      (){
+                        if (controller.products.isEmpty) {
+                          return Center(
+                            child: CustomText(
+                              text: 'Belum ada produk',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          );
+                        }
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.78,
+                            ),
+                        itemCount: controller.products.length,
+                        itemBuilder: (context, index) {
+                          final item = controller.products[index];
+                          return CustomCard(
+                            title: item.title,
+                            subtitle: item.subtitle,
+                            imageUrl: item.imageUrl,
+                            price: item.price.toString(),
+                            isEcommerce: true,
+                            isDescription: true,
+                            onTap: (){
+                              Get.to(
+                                ()=> ProductPage(),
+                                arguments: item,
+                              );
+                            },
+                          );
+                          
+                        },
+                      );
+                      }
                     ),
                   ],
                 ),
