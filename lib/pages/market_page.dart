@@ -174,7 +174,7 @@ class MarketPage extends GetView<MarketController> {
               subtitle: item.subtitle,
               imageUrl: item.imageUrl,
               rate: item.rate,
-              price: item.price, 
+              price: item.price,
               isExtendable: false,
               isEcommerce: true,
               isDescription: true,
