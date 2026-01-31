@@ -96,7 +96,7 @@ class ProfilePage extends GetView<ProfileController> {
                           color: Color(0xff2A9134),
                         ),
                         onPressed: () {
-                          Get.offAllNamed(AppRoutes.settingsPage);
+                          Get.toNamed(AppRoutes.settingsPage);
                         },
                       ),
                     ),

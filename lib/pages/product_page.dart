@@ -7,6 +7,7 @@ import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/controllers/market_controller.dart';
 import 'package:fl_valrn/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ProductPage extends GetView<MarketController> {
@@ -27,7 +28,8 @@ class ProductPage extends GetView<MarketController> {
                 currentIndex: controller.currentIndex.value,
                 onPageChanged: controller.onPageChanged,
                 title: item.title,
-                subtitle: item.price.toString(),
+                // Format harga menggunakan controller
+                subtitle: controller.formatPrice(item.price),
                 onBack: () {
                   Get.back();
                 },
@@ -54,9 +56,7 @@ class ProductPage extends GetView<MarketController> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-
                   const CustomSpacing(height: 10),
-
                   Row(
                     children: [
                       Expanded(
@@ -68,32 +68,53 @@ class ProductPage extends GetView<MarketController> {
                           variant: TextFieldVariant.underline,
                         ),
                       ),
-
                       const CustomSpacing(height: 10, width: 10),
-
-                      SizedBox(
-                        height: 48,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // aksi kirim pesan
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      Obx(() {
+                        return SizedBox(
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: controller.isSendingMessage.value
+                                ? null
+                                : () => controller.sendWhatsAppMessage(item),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              disabledBackgroundColor: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              elevation: 0,
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            elevation: 0,
+                            child: controller.isSendingMessage.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  )
+                                : Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/waIcon.svg",
+                                        color: Colors.white,
+                                      ),
+                                      const CustomSpacing(width: 8),
+                                      const CustomText(
+                                        text: "Kirim",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                           ),
-                          child: const Text(
-                            "Kirim",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ],
@@ -116,7 +137,6 @@ class ProductPage extends GetView<MarketController> {
                     maxLines: 3,
                     style: TextStyle(fontSize: 14),
                   ),
-
                   const CustomSpacing(height: 10),
                   Divider(thickness: 2, color: Colors.grey[300]),
                   const CustomSpacing(height: 10),
@@ -141,7 +161,6 @@ class ProductPage extends GetView<MarketController> {
                     ],
                   ),
                   CustomSpacing(height: 12),
-
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -171,37 +190,10 @@ class ProductPage extends GetView<MarketController> {
                   const CustomSpacing(height: 10),
                   Divider(thickness: 2, color: Colors.grey[300]),
                   const CustomSpacing(height: 10),
-
-                  CustomText(
-                    text: "Lokasi",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const CustomSpacing(height: 10),
-                  Container(
-                    height: 100,
-                    width: 408,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                    ),
-                    child: CustomText(text: "Kata mikel belum tau ini gimana"),
-                  ),
-                  const CustomSpacing(height: 10),
                 ],
               ),
             ),
-            // const CustomSpacing(height: 10, ),
-            // Divider(
-            //   thickness: 25,
-            //   color: const Color.fromARGB(217, 188, 182, 182),
-            // ),
             const CustomSpacing(height: 10),
-
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
               child: Row(
@@ -212,7 +204,6 @@ class ProductPage extends GetView<MarketController> {
                       color: const Color.fromARGB(229, 226, 220, 220),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: CustomText(
@@ -223,7 +214,6 @@ class ProductPage extends GetView<MarketController> {
                       ),
                     ),
                   ),
-
                   Expanded(
                     child: Divider(
                       thickness: 1,
@@ -259,7 +249,8 @@ class ProductPage extends GetView<MarketController> {
                     title: item.title,
                     subtitle: item.subtitle,
                     imageUrl: item.imageUrl,
-                    price: item.price.toString(),
+                    // Format harga di grid
+                    price: controller.formatPrice(item.price),
                     isEcommerce: true,
                     isDescription: true,
                     height: 244,

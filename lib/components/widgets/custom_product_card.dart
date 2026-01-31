@@ -2,10 +2,22 @@ import 'package:fl_valrn/components/widgets/custom_spacing.dart';
 import 'package:flutter/material.dart';
 
 class CustomProductCard extends StatelessWidget {
-  const CustomProductCard({super.key, required this.images, required this.currentIndex, required this.onPageChanged, this.onBack, this.onShare, this.onMore, this.onBookmark, required this.title, required this.subtitle, this.trailing});
+  const CustomProductCard({
+    super.key,
+    required this.images,
+    required this.currentIndex,
+    required this.onPageChanged,
+    this.onBack,
+    this.onShare,
+    this.onMore,
+    this.onBookmark,
+    required this.title,
+    required this.subtitle,
+    this.trailing,
+  });
   final List<String> images;
   final int currentIndex;
-  final Function(int)onPageChanged;
+  final Function(int) onPageChanged;
 
   final VoidCallback? onBack;
   final VoidCallback? onShare;
@@ -16,7 +28,7 @@ class CustomProductCard extends StatelessWidget {
   final String subtitle;
   final Widget? trailing;
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
@@ -32,14 +44,11 @@ class CustomProductCard extends StatelessWidget {
                   itemCount: images.length,
                   onPageChanged: onPageChanged,
                   itemBuilder: (context, index) {
-                    return Image.network(
-                      images[index],
-                      fit: BoxFit.cover,
-                    );
+                    return Image.network(images[index], fit: BoxFit.cover);
                   },
                 ),
               ),
-      
+
               // TOP OVERLAY ICONS
               Container(
                 margin: EdgeInsets.all(15),
@@ -49,7 +58,7 @@ class CustomProductCard extends StatelessWidget {
                   right: 16,
                   child: Row(
                     children: [
-                      _circleIcon(Icons.arrow_back, onBack,),
+                      _circleIcon(Icons.arrow_back, onBack),
                       const Spacer(),
                       _circleIcon(Icons.share, onShare),
                       const SizedBox(width: 8),
@@ -58,36 +67,39 @@ class CustomProductCard extends StatelessWidget {
                   ),
                 ),
               ),
-      
+
               // INDICATOR
               Positioned(
                 bottom: 12,
                 right: 12,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     '${currentIndex + 1}/${images.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ),
             ],
           ),
-      
+
           // BOTTOM LABEL
           Container(
             padding: const EdgeInsets.all(12),
             color: const Color(0xFF2A9134),
             child: Row(
-              children: [ Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 3,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -108,11 +120,15 @@ class CustomProductCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                const Spacer(),
-                _circleIcon(Icons.handshake, onBack,),
-                CustomSpacing(width: 20,),
-                _circleIcon(Icons.bookmark_add, onBookmark,),
-                if (trailing != null) trailing!,
+                ),
+                Row(
+                  children: [
+                    _circleIcon(Icons.handshake, onBack),
+                    CustomSpacing(width: 20),
+                    _circleIcon(Icons.bookmark_add, onBookmark),
+                    if (trailing != null) trailing!,
+                  ],
+                ),
               ],
             ),
           ),
