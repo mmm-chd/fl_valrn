@@ -10,6 +10,9 @@ class FieldsItem {
     required this.imageUrl,
     required this.plants,
   });
+
+  // factory FieldsItem.fromJson(Map<String, dynamic> json){
+  // }
 }
 
 class PlantItem {
@@ -28,4 +31,6 @@ class PlantItem {
     required this.createdAt,
     required this.imageUrl,
   });
+
+  
 }

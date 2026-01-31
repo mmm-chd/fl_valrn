@@ -27,7 +27,7 @@ class ProductPage extends GetView<MarketController> {
                 currentIndex: controller.currentIndex.value,
                 onPageChanged: controller.onPageChanged,
                 title: item.title,
-                subtitle: item.price,
+                subtitle: item.price.toString(),
                 onBack: () {
                   Get.back();
                 },
@@ -151,14 +151,14 @@ class ProductPage extends GetView<MarketController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: "{Nama akun}",
+                            text: item.user!.name,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           CustomText(
-                            text: "{Deskripsi akun}",
+                            text: item.user!.email,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -259,8 +259,7 @@ class ProductPage extends GetView<MarketController> {
                     title: item.title,
                     subtitle: item.subtitle,
                     imageUrl: item.imageUrl,
-                    rate: item.rate,
-                    price: item.price,
+                    price: item.price.toString(),
                     isEcommerce: true,
                     isDescription: true,
                     height: 244,
