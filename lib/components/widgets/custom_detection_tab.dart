@@ -24,10 +24,7 @@ class DetectionTab extends StatelessWidget {
             child: Obx(
               () => Column(
                 children: controller.nutritionData.entries
-                    .map(
-                      (e) =>
-                          InfoRow(leftText: e.key, rightText: e.value),
-                    )
+                    .map((e) => InfoRow(leftText: e.key, rightText: e.value))
                     .toList(),
               ),
             ),
@@ -52,12 +49,10 @@ class DetectionTab extends StatelessWidget {
             () => InfoSection(
               title: controller.habitatTitle.value,
               child: InfoBox(
-                child: CustomText(
-                  text: controller.habitatText.value,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    height: 1.6,
-                  ),
+                child: Column(
+                  children: controller.habitatList
+                      .map((e) => BulletListItem(text: e))
+                      .toList(),
                 ),
               ),
             ),
@@ -103,10 +98,7 @@ class DetectionTab extends StatelessWidget {
               child: Obx(
                 () => CustomText(
                   text: controller.funFact.value,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    height: 1.6,
-                  ),
+                  style: const TextStyle(fontSize: 13, height: 1.6),
                 ),
               ),
             ),

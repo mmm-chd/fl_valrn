@@ -10,7 +10,7 @@ import 'package:fl_valrn/bindings/product_binding.dart';
 import 'package:fl_valrn/bindings/profile_binding.dart';
 import 'package:fl_valrn/bindings/splash_binding.dart';
 import 'package:fl_valrn/configs/routes.dart';
-import 'package:fl_valrn/overview_page.dart';
+import 'package:fl_valrn/pages/overview/overview_page.dart';
 import 'package:fl_valrn/pages/Profile%20Page/edit_account_page.dart';
 import 'package:fl_valrn/pages/Profile%20Page/profile_page.dart';
 import 'package:fl_valrn/pages/addProduct_page.dart';

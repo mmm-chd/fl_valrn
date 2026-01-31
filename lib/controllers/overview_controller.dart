@@ -23,11 +23,28 @@ class OverviewController extends GetxController {
 
   var nutritionData = <String, String>{}.obs;
   var habitatTitle = ''.obs;
-  var habitatText = ''.obs;
+  var habitatList = <String>[].obs;
   var advantages = <String>[].obs;
   var disadvantages = <String>[].obs;
   var cultivation = <String>[].obs;
   var funFact = ''.obs;
+
+  // Helper function to clean bullet points from AI response
+  String _cleanBulletPoint(String text) {
+    // Remove common bullet point characters and trim
+    return text
+        .replaceFirst(RegExp(r'^[\s•●○◦▪▫–—-]\s*'), '')
+        .replaceFirst(RegExp(r'^\d+\.\s*'), '') // Remove numbered lists like "1. "
+        .trim();
+  }
+
+  // Helper function to clean list of strings
+  List<String> _cleanBulletList(List<dynamic> items) {
+    return items
+        .where((e) => e != null && e.toString().trim().isNotEmpty)
+        .map((e) => _cleanBulletPoint(e.toString()))
+        .toList();
+  }
 
   @override
   void onInit() {
@@ -70,7 +87,7 @@ class OverviewController extends GetxController {
       impact.value = [];
 
       prevention.value = (health['recommended_actions'] is List)
-          ? List<String>.from(health['recommended_actions'])
+          ? _cleanBulletList(health['recommended_actions'])
           : [
               'Lanjutkan perawatan rutin',
               'Pantau kondisi tanaman secara berkala',
@@ -92,14 +109,14 @@ class OverviewController extends GetxController {
         
         // Symptoms
         symptoms.value = (health['symptoms'] is List)
-            ? List<String>.from(health['symptoms'])
+            ? _cleanBulletList(health['symptoms'])
             : (firstDisease['symptoms'] is List)
-                ? List<String>.from(firstDisease['symptoms'])
+                ? _cleanBulletList(firstDisease['symptoms'])
                 : [];
         
         // Causes
         causes.value = (firstDisease['causes'] is List)
-            ? List<String>.from(firstDisease['causes'])
+            ? _cleanBulletList(firstDisease['causes'])
             : [];
         
         // Impact
@@ -110,13 +127,13 @@ class OverviewController extends GetxController {
           impact.add('Potensi kehilangan hasil: ${estimatedImpact['yield_loss_percent']}');
         }
         if (firstDisease['impact'] != null) {
-          impact.add(firstDisease['impact']);
+          impact.add(_cleanBulletPoint(firstDisease['impact']));
         }
         
         if (impact.isEmpty) {
           final actionPlan = health['action_plan'] ?? {};
           if (actionPlan['short_term'] is List) {
-            impact.value = List<String>.from(actionPlan['short_term']);
+            impact.value = _cleanBulletList(actionPlan['short_term']);
           }
         }
         
@@ -128,15 +145,15 @@ class OverviewController extends GetxController {
         final curativeMeasures = controlMeasures['curative'] ?? [];
         
         if (preventiveMeasures is List) {
-          prevention.addAll(List<String>.from(preventiveMeasures));
+          prevention.addAll(_cleanBulletList(preventiveMeasures));
         }
         if (curativeMeasures is List) {
-          prevention.addAll(List<String>.from(curativeMeasures));
+          prevention.addAll(_cleanBulletList(curativeMeasures));
         }
         
         // Recommended_actions
         if (health['recommended_actions'] is List) {
-          prevention.addAll(List<String>.from(health['recommended_actions']));
+          prevention.addAll(_cleanBulletList(health['recommended_actions']));
         }
         
         // Remove duplicates
@@ -145,12 +162,12 @@ class OverviewController extends GetxController {
         diseaseTitle.value = 'Peringatan Kesehatan';
         diseaseDescription.value = health['summary'] ?? health['message'] ?? '';
         symptoms.value = (health['symptoms'] is List)
-            ? List<String>.from(health['symptoms'])
+            ? _cleanBulletList(health['symptoms'])
             : [];
         causes.value = [];
         impact.value = [];
         prevention.value = (health['recommended_actions'] is List)
-            ? List<String>.from(health['recommended_actions'])
+            ? _cleanBulletList(health['recommended_actions'])
             : [];
       }
     }
@@ -181,31 +198,32 @@ class OverviewController extends GetxController {
 
     final growth = analysis['growth_requirements'] ?? {};
     habitatTitle.value = 'Habitat & Distribusi';
-    habitatText.value =
-        'Tanah: ${growth['soil_type'] ?? 'Subur dengan drainase baik'}\n'
-        'pH: ${growth['ph_range'] ?? '6.0 - 7.0'}\n'
-        'Suhu: ${growth['temperature_range_number'] ?? '20–30'}°C\n'
-        'Cahaya: ${growth['lighting'] ?? 'Sinar matahari penuh'}\n'
-        'Air: ${growth['watering'] ?? 'Penyiraman teratur'}';
+    
+    habitatList.clear();
+    habitatList.add('Tanah: ${growth['soil_type'] ?? 'Subur dengan drainase baik'}');
+    habitatList.add('pH: ${growth['ph_range'] ?? '6.0 - 7.0'}');
+    habitatList.add('Suhu: ${growth['temperature_range_number'] ?? '20–30'}°C');
+    habitatList.add('Cahaya: ${growth['lighting'] ?? 'Sinar matahari penuh'}');
+    habitatList.add('Air: ${growth['watering'] ?? 'Penyiraman teratur'}');
 
     advantages.clear();
     final uses = analysis['uses'] ?? {};
 
     if (uses['culinary'] != null && uses['culinary'] != '') {
-      advantages.add('Kuliner: ${uses['culinary']}');
+      advantages.add('Kuliner: ${_cleanBulletPoint(uses['culinary'])}');
     }
     if (uses['medicinal'] != null && uses['medicinal'] != '') {
-      advantages.add('Medis: ${uses['medicinal']}');
+      advantages.add('Medis: ${_cleanBulletPoint(uses['medicinal'])}');
     }
     if (uses['industrial'] != null && uses['industrial'] != '') {
-      advantages.add('Industri: ${uses['industrial']}');
+      advantages.add('Industri: ${_cleanBulletPoint(uses['industrial'])}');
     }
 
     if (nutrition['health_benefits'] is List) {
       final benefits = nutrition['health_benefits'] as List;
       if (benefits.isNotEmpty) {
         advantages.add('Manfaat Kesehatan:');
-        advantages.addAll(benefits.map((e) => '• $e').toList());
+        advantages.addAll(_cleanBulletList(benefits));
       }
     }
 
@@ -213,14 +231,14 @@ class OverviewController extends GetxController {
     final additional = analysis['additional_info'] ?? {};
 
     if (additional['risks'] != null && additional['risks'] != '') {
-      disadvantages.add('Risiko: ${additional['risks']}');
+      disadvantages.add('Risiko: ${_cleanBulletPoint(additional['risks'])}');
     }
     if (additional['toxic_parts'] != null && additional['toxic_parts'] != '' && additional['toxic_parts'] != 'Tidak ada') {
-      disadvantages.add('Bagian Beracun: ${additional['toxic_parts']}');
+      disadvantages.add('Bagian Beracun: ${_cleanBulletPoint(additional['toxic_parts'])}');
     }
 
     if (nutrition['dietary_notes'] is List) {
-      final notes = (nutrition['dietary_notes'] as List).where((e) => e != null && e != '').toList();
+      final notes = _cleanBulletList(nutrition['dietary_notes']);
       if (notes.isNotEmpty) {
         disadvantages.add('Catatan Diet: ${notes.join(', ')}');
       }
@@ -234,13 +252,13 @@ class OverviewController extends GetxController {
     final care = analysis['care_instructions'] ?? {};
 
     if (care['watering'] != null && care['watering'] != '') {
-      cultivation.add('Penyiraman: ${care['watering']}');
+      cultivation.add('Penyiraman: ${_cleanBulletPoint(care['watering'])}');
     }
     if (care['fertilization'] != null && care['fertilization'] != '') {
-      cultivation.add('Pemupukan: ${care['fertilization']}');
+      cultivation.add('Pemupukan: ${_cleanBulletPoint(care['fertilization'])}');
     }
     if (care['other_maintenance'] != null && care['other_maintenance'] != '') {
-      cultivation.add('Perawatan Lain: ${care['other_maintenance']}');
+      cultivation.add('Perawatan Lain: ${_cleanBulletPoint(care['other_maintenance'])}');
     }
 
     funFact.value = additional['native_habitat'] ?? 

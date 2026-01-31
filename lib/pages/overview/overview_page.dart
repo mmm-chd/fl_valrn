@@ -1,5 +1,5 @@
-import 'package:fl_valrn/overview_bottom_button.dart';
-import 'package:fl_valrn/overview_content.dart';
+import 'package:fl_valrn/pages/overview/overview_bottom_button.dart';
+import 'package:fl_valrn/pages/overview/overview_content.dart';
 // import 'package:fl_valrn/pages/Overview%20Page/overview_bottom_button.dart';
 // import 'package:fl_valrn/pages/Overview%20Page/overview_content.dart';
 import 'package:flutter/material.dart';

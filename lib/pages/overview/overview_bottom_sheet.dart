@@ -1,15 +1,15 @@
+import 'package:fl_valrn/components/widgets/custom_bottomSheet.dart';
 import 'package:fl_valrn/controllers/journal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../components/widgets/custom_bottomSheetFix.dart';
-import '../../../components/widgets/custom_formSection.dart';
-import '../../../components/widgets/custom_spacing.dart';
-import '../../../components/widgets/custom_text.dart';
-import '../../../configs/themes_color.dart';
+import '../../../../../components/widgets/custom_bottomSheetFix.dart';
+import '../../../../../components/widgets/custom_formSection.dart';
+import '../../../../../components/widgets/custom_spacing.dart';
+import '../../../../../components/widgets/custom_text.dart';
+import '../../../../../configs/themes_color.dart';
 
 class OverviewBottomSheet {
-  
   // ================= ADD TO MYFIELDS =================
   static void showAdd(BuildContext context) {
     CustomBottomsheetfix.show(
@@ -25,7 +25,6 @@ class OverviewBottomSheet {
         //     fontWeight: FontWeight.w600,
         //   ),
         // ),
-
         const CustomSpacing(height: 6),
 
         const CustomText(
@@ -70,7 +69,7 @@ class OverviewBottomSheet {
   // ================= UPDATE FIELDS =================
   static void showUpdate(BuildContext context) {
     final c = Get.put(JournalController());
-    CustomBottomsheetfix.show(
+    CustomBottomsheet.show(
       context,
       title: "Perbarui Fields",
       initialChildSize: 0.55,
@@ -88,13 +87,17 @@ class OverviewBottomSheet {
 
         const CustomSpacing(height: 16),
 
-       Obx(() {
+        Obx(() {
           if (c.isLoading.value) return CircularProgressIndicator();
 
           return Column(
-            children: c.journals.map((journal) => _fieldItem(journal.title, journal.description)).toList(),
+            children: c.journals
+                .map(
+                  (journal) => _fieldItem(journal.title, journal.description),
+                )
+                .toList(),
           );
-        })
+        }),
       ],
     );
   }
@@ -171,10 +174,7 @@ class OverviewBottomSheet {
                     const CustomSpacing(height: 2),
                     CustomText(
                       text: subtitle,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -226,10 +226,7 @@ class OverviewBottomSheet {
                     const CustomSpacing(height: 2),
                     CustomText(
                       text: subtitle,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

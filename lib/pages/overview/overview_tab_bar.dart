@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../components/widgets/custom_spacing.dart';
-import '../../../components/widgets/custom_tabBar.dart';
-import '../../../controllers/overview_controller.dart';
+import '../../../../../components/widgets/custom_spacing.dart';
+import '../../../../../components/widgets/custom_tabBar.dart';
+import '../../../../../controllers/overview_controller.dart';
 
 class OverviewTabbar extends StatelessWidget {
   final OverviewController controller;
