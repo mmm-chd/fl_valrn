@@ -106,7 +106,7 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
                 Obx(() {
-                  if (controller.isLoading.value) {
+                  if (controller.isLoadingTrending.value) {
                     return SizedBox(
                       height: 220,
                       child: Center(child: CircularProgressIndicator()),
@@ -175,7 +175,7 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
                 Obx(() {
-                  if (controller.isLoading.value) {
+                  if (controller.isLoadingFields.value) {
                     return SizedBox(
                       height: 220,
                       child: Center(child: CircularProgressIndicator()),
@@ -232,6 +232,24 @@ class HomePage extends GetView<HomeController> {
                         ),
                       ),
                       Obx(() {
+                        if (controller.isLoadingArticle.value) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        if (controller.artikelCard.isEmpty) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text('Tidak ada artikel'),
+                            ),
+                          );
+                        }
+
                         return ListView.builder(
                           itemCount: controller.artikelCard.length,
                           shrinkWrap: true,
@@ -239,14 +257,12 @@ class HomePage extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             return CustomCard(
                               title: controller.artikelCard[index].title,
-                              subtitle: controller.artikelCard[index].subtitle,
-                              imageUrl: controller.artikelCard[index].imageUrl,
+                              subtitle: controller.artikelCard[index].content,
+                              imageUrl:
+                                  controller.artikelCard[index].thumbnail ??
+                                  'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
                               isExtendable: false,
                               isEcommerce: false,
-                              isDescription:
-                                  controller.artikelCard[index].isDescription,
-                              isImageLeft:
-                                  controller.artikelCard[index].isImageLeft,
                               height: 208,
                               width: 408,
                             );
