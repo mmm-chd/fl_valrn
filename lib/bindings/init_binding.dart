@@ -2,6 +2,8 @@ import 'package:fl_valrn/controllers/camera_controller.dart';
 import 'package:fl_valrn/controllers/field_controller.dart';
 import 'package:fl_valrn/controllers/home_controller.dart';
 import 'package:fl_valrn/controllers/market_controller.dart';
+import 'package:fl_valrn/controllers/profile_controller.dart';
+import 'package:fl_valrn/controllers/user_controller.dart';
 import 'package:fl_valrn/main.dart';
 import 'package:fl_valrn/navigation/navBar_controller.dart';
 import 'package:get/get.dart';
@@ -15,5 +17,7 @@ class InitBinding extends Bindings {
     Get.lazyPut<FieldsController>(() => FieldsController());
     Get.lazyPut<MarketController>(() => MarketController());
     Get.lazyPut<CameraPageController>(() => CameraPageController(cameras.first));
+    Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<UserController>(() => UserController());
   }
 }
