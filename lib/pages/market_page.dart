@@ -11,84 +11,61 @@ import 'package:get/get.dart';
 
 class MarketPage extends GetView<MarketController> {
   MarketPage({super.key});
-  final locC= Get.find<LocationController>();
+
+  final locC = Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.pin_drop_sharp,
-                    color: Color(0xff2A9134),
-                    size: 40,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: locC.kecamatan.value,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      CustomText(
-                        text: '${locC.kabupaten.value}, ${locC.provinsi.value}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-        child: CustomNavbarsafepadding(
+      body: CustomNavbarsafepadding(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+                // ================= HEADER LOKASI =================
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.pin_drop_sharp,
                       color: Color(0xff2A9134),
                       size: 40,
                     ),
+                    const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          text: "Kecamatan {Kecamatan}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        CustomText(
-                          text: "Kabupaten {Kabupaten}, Provinsi",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        Obx(() => CustomText(
+                              text: locC.kecamatan.value,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )),
+                        Obx(() => CustomText(
+                              text:
+                                  '${locC.kabupaten.value}, ${locC.provinsi.value}',
+                              style: const TextStyle(fontSize: 14),
+                            )),
                       ],
                     ),
                   ],
                 ),
 
                 CustomSpacing(height: 25),
+
+                // ================= SEARCH =================
                 CustomTextfield(
-                  isNumber: false,
                   controller: controller.searchController,
-                  label: 'Cari tanaman kamu..',
+                  label: 'Cari tanaman kamu..', isNumber: false,
                 ),
 
                 CustomSpacing(height: 20),
+
+                // ================= CARD TEST =================
                 CustomCard(
                   title: "ngetes",
                   subtitle: "muncul kaga",
@@ -101,27 +78,33 @@ class MarketPage extends GetView<MarketController> {
                 ),
 
                 CustomSpacing(height: 20),
+
+                // ================= POPULAR =================
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomText(
                       text: "Popular Categories",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Spacer(),
-                    CustomText(
+                    const Spacer(),
+                    const CustomText(
                       text: "See all",
-                      style: TextStyle(fontSize: 12, color: Color(0xFF2A9134)),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF2A9134),
+                      ),
                     ),
                   ],
                 ),
+
                 CustomSpacing(height: 12),
+
                 Obx(() {
                   if (controller.isLoading.value) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 220,
                       child: Center(child: CircularProgressIndicator()),
                     );
@@ -133,10 +116,11 @@ class MarketPage extends GetView<MarketController> {
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.trendingCard.length,
                       itemBuilder: (context, index) {
+                        final item = controller.trendingCard[index];
                         return CustomCard(
-                          title: controller.trendingCard[index].title,
-                          subtitle: controller.trendingCard[index].subtitle,
-                          imageUrl: controller.trendingCard[index].imageUrl,
+                          title: item.title,
+                          subtitle: item.subtitle,
+                          imageUrl: item.imageUrl,
                           isExtendable: false,
                           isEcommerce: false,
                           isDescription: false,
@@ -148,52 +132,10 @@ class MarketPage extends GetView<MarketController> {
                     ),
                   );
                 }),
-                CustomSpacing(height: 20),
-                CustomText(
-                  text: "Mungkin kamu tertarik",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                ),
-                CustomSpacing(height: 12),
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return SizedBox(
-                      height: 220,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
 
-                  return SizedBox(
-                    height: 220,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.productCard.length,
-                      itemBuilder: (context, index) {
-                        return CustomCard(
-                          title: controller.productCard[index].title,
-                          subtitle: controller.productCard[index].subtitle,
-                          imageUrl: controller.productCard[index].imageUrl,
-                          rate: controller.productCard[index].rate,
-                          price: controller.productCard[index].price,
-                          isExtendable: false,
-                          isEcommerce: true,
-                          isDescription: true,
-                          textSize: 20,
-                          height: 240,
-                          width: 260,
-                          isImageLeft: false,
-                          onTap: () {
-                            Get.to(
-                              () => ProductPage(),
-                              arguments: controller.productCard[index],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                }),
                 CustomSpacing(height: 20),
 
+                // ================= GRID PRODUCT =================
                 Obx(() {
                   if (controller.isLoading.value) {
                     return const Padding(
@@ -208,14 +150,13 @@ class MarketPage extends GetView<MarketController> {
                     itemCount: controller.productCard.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 180 / 244,
-                        ),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 180 / 244,
+                    ),
                     itemBuilder: (context, index) {
                       final item = controller.productCard[index];
-
                       return CustomCard(
                         title: item.title,
                         subtitle: item.subtitle,
@@ -231,7 +172,7 @@ class MarketPage extends GetView<MarketController> {
                         onTap: () {
                           Get.to(
                             () => ProductPage(),
-                            arguments: controller.productCard[index],
+                            arguments: item,
                           );
                         },
                       );

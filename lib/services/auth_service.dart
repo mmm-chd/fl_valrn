@@ -90,11 +90,11 @@ class AuthService {
     }
 
     final response = await http.get(
-      Uri.parse('$baseUrl/profile'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      },
+      Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.PROFILE}'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    },
     );
 
     final body = jsonDecode(response.body);
@@ -109,4 +109,4 @@ class AuthService {
     }
   }
 }
-}
+
