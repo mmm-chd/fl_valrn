@@ -41,7 +41,6 @@ class MarketController extends GetxController{
     } catch (e) {
       print('ERROR FETCH PRODUCT: $e');
       Get.snackbar(
-        
         'Error', 
         'Gagal mengambil produk',
         snackPosition: SnackPosition.BOTTOM);

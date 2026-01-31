@@ -19,6 +19,14 @@ class ProfileController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    print('🔥 ProfileController INIT');
+    print('🔥 userC.id saat init = ${userC.id.value}');
+
+    final id = userC.id.value;
+    if (id != null) {
+      print('🔥 FETCH LANGSUNG DENGAN ID = $id');
+      fetchMyProducts(id);
+    }
     ever<int?>(userC.id, (id) {
       if (id != null) {
         fetchMyProducts(id);

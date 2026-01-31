@@ -25,6 +25,8 @@ class AuthController extends GetxController {
           email: profile['email'],
         );
 
+        print('✅ ID = ${userC.id.value}');
+
         Get.offAllNamed(AppRoutes.navbarPage);
       } else {
         loginController.passwordError.value =
