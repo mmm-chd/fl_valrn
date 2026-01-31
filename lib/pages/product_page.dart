@@ -24,11 +24,13 @@ class ProductPage extends GetView<MarketController> {
           children: [
             Obx(() {
               return CustomProductCard(
-                images: [item.imageUrl],
+                images: [
+                  item.imageUrl ??
+                      "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg",
+                ],
                 currentIndex: controller.currentIndex.value,
                 onPageChanged: controller.onPageChanged,
                 title: item.title,
-                // Format harga menggunakan controller
                 subtitle: controller.formatPrice(item.price),
                 onBack: () {
                   Get.back();
@@ -142,25 +144,12 @@ class ProductPage extends GetView<MarketController> {
                   const CustomSpacing(height: 10),
                   Divider(thickness: 2, color: Colors.grey[300]),
                   const CustomSpacing(height: 10),
-                  Row(
-                    children: [
-                      CustomText(
-                        text: "Informasi Penjual",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Spacer(),
-                      CustomText(
-                        text: "Detail penjual",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff2A9134),
-                        ),
-                      ),
-                    ],
+                  CustomText(
+                    text: "Informasi Penjual",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   CustomSpacing(height: 12),
                   Row(
@@ -250,7 +239,9 @@ class ProductPage extends GetView<MarketController> {
                   return CustomCard(
                     title: item.title,
                     subtitle: item.subtitle,
-                    imageUrl: item.imageUrl,
+                    imageUrl:
+                        item.imageUrl ??
+                        "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg",
                     price: controller.formatPrice(item.price),
                     isEcommerce: true,
                     isDescription: true,
