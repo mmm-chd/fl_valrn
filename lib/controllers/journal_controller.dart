@@ -16,6 +16,10 @@ class JournalController extends GetxController {
     try {
       isLoading.value = true;
       journals.value = await JournalService.fetchJournals();
+      pragma("Journals fetched: ${journals.length}");
+      for (var j in journals) {
+        print(" - ${j.title} | ${j.description}");
+      }
     } catch (e) {
       print('Error fetching journals: $e');
     } finally {

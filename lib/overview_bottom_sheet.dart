@@ -88,14 +88,13 @@ class OverviewBottomSheet {
 
         const CustomSpacing(height: 16),
 
-       ...c.journals.map(
-        (journal) => Column(
-          children: [
-            _fieldItem(journal.title, journal.description),
-            const CustomSpacing(height: 8),
-          ],
-        ),
-      ),
+       Obx(() {
+          if (c.isLoading.value) return CircularProgressIndicator();
+
+          return Column(
+            children: c.journals.map((journal) => _fieldItem(journal.title, journal.description)).toList(),
+          );
+        })
       ],
     );
   }

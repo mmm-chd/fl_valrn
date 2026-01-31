@@ -13,7 +13,7 @@ class JournalService {
       throw Exception('Token not found, please login');
     }
     final response = await http.get(
-      Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.JOURNALS}'),
+      Uri.parse('${ConstantApi.FULL_URL}${ConstantApi.API_VERSION}${ConstantApi.JOURNALS}'),
       headers: {
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
