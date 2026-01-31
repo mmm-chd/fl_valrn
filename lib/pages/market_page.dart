@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 class MarketPage extends GetView<MarketController> {
   MarketPage({super.key});
+
   final locC = Get.find<LocationController>();
 
   @override
