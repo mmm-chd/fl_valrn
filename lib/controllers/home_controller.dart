@@ -1,5 +1,3 @@
-import 'package:fl_valrn/configs/constant_api.dart';
-import 'package:fl_valrn/dummy_data/dummyArtikel.dart';
 import 'package:fl_valrn/dummy_data/dummyFields.dart';
 import 'package:fl_valrn/dummy_data/dummyTrending.dart';
 import 'package:fl_valrn/model/artikel_model.dart';
