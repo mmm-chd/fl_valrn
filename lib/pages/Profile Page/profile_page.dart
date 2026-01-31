@@ -72,43 +72,6 @@ class ProfilePage extends GetView<ProfileController> {
                           ),
                   ),
 
-                  // SETTINGS ICON
-                  Obx(
-                    () => controller.isMyProfile.value
-                        ? const SizedBox.shrink()
-                        : Positioned(
-                            top: 32,
-                            right: 16,
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              padding: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                color: Color(0xffEBEBEB).withOpacity(0.9),
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 6,
-                                    color: Colors.black26,
-                                  ),
-                                ],
-                              ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                iconSize: 28,
-                                icon: const Icon(
-                                  Icons.settings_rounded,
-                                  color: Color(0xff2A9134),
-                                ),
-                                onPressed: () {
-                                  Get.offAllNamed(AppRoutes.settingsPage);
-                                },
-                              ),
-                            ),
-                          ),
-                  ),
-
                   // Profile Picture - Positioned
                   Positioned(
                     bottom: -75,

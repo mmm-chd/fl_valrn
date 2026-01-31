@@ -19,4 +19,5 @@ class ConstantApi {
   static const String PROFILE='/profile';
   static const String PRODUCT='/products';
   static const String MYPRODUCT='/my-products/';
+  static const String JOURNALS='/journals';
 }
