@@ -12,24 +12,29 @@ class AuthController extends GetxController {
   final uiController = Get.find<UiController>();
 
   Future<void> login({required String email, required String password}) async {
+    if (!uiController.loginFormKey.currentState!.validate()) {
+      print('❌ Login validation failed');
+      return;
+    }
     try {
       isLoading.value = true;
-
+      uiController.loginGeneralError.value = '';
       final result = await UserService.login(email: email, password: password);
 
       if (result.token.isNotEmpty) {
         Get.offAllNamed(AppRoutes.navbarPage);
       } else {
-        uiController.loginError.value = result.message;
+        uiController.loginGeneralError.value = result.message;
       }
     } on SocketException {
-      uiController.loginError.value = 'No internet connection';
+      uiController.loginGeneralError.value = 'No internet connection';
     } on HttpException {
-      uiController.loginError.value = 'Server error, please try again';
+      uiController.loginGeneralError.value = 'Server error, please try again';
     } on FormatException {
-      uiController.loginError.value = 'Invalid response from server';
+      uiController.loginGeneralError.value = 'Invalid response from server';
     } catch (e) {
-      uiController.loginError.value = 'Please check your fill in';
+      uiController.loginGeneralError.value =
+          'Not Found, Please check your fill in';
     } finally {
       isLoading.value = false;
     }
@@ -37,18 +42,23 @@ class AuthController extends GetxController {
 
   Future<void> register({
     required String email,
-    required String number,
+    required String phone,
     required String firstName,
     required String lastname,
     required String password,
     required String confirmPassword,
   }) async {
+    if (!uiController.registerFormKey.currentState!.validate()) {
+      print('❌ Register validation failed');
+      return;
+    }
     try {
       isLoading.value = true;
+      uiController.registerGeneralError.value = '';
 
       final result = await UserService.register(
         email: email,
-        phone: number,
+        phone: phone,
         firstName: firstName,
         lastName: lastname,
         password: password,
@@ -64,9 +74,15 @@ class AuthController extends GetxController {
       } else {
         uiController.registerGeneralError.value = result.message;
       }
-    } catch (e) {
+    } on SocketException {
+      uiController.registerGeneralError.value = 'No internet connection';
+    } on HttpException {
       uiController.registerGeneralError.value =
-          'Unable to connect. Please try again.';
+          'Server error, please try again';
+    } on FormatException {
+      uiController.registerGeneralError.value = 'Invalid response from server';
+    } catch (e) {
+      uiController.registerGeneralError.value = 'Please check your fill in';
     } finally {
       isLoading.value = false;
     }

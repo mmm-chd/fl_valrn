@@ -132,260 +132,280 @@ class AuthPage extends GetView<UiController> {
     );
   }
 
-  Column _registerForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomText(
-          text: 'Email',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 8),
-        CustomTextfield(
-          textInputType: TextInputType.emailAddress,
-          label: 'Input email..',
-          controller: controller.emailController,
-          validator: controller.validateEmail,
-        ),
-        const CustomSpacing(height: 16.0),
-        CustomText(
-          text: 'Phone Number',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 8),
-        CustomTextfield(
-          textInputType: TextInputType.phone,
-          controller: controller.numberController,
-          label: 'Input phone number...',
-          validator: controller.validatePhoneNumber,
-        ),
-        const CustomSpacing(height: 16.0),
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'First Name',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                  const CustomSpacing(height: 8),
-                  CustomTextfield(
-                    isNumber: false,
-                    label: 'John',
-                    controller: controller.firstNameController,
-                    validator: controller.validateFirstName,
-                  ),
-                ],
-              ),
-            ),
-            const CustomSpacing(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'Last Name',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                  const CustomSpacing(height: 8),
-                  CustomTextfield(
-                    isNumber: false,
-                    label: 'Doe',
-                    controller: controller.lastNameController,
-                    validator: controller.validateLastName,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const CustomSpacing(height: 16.0),
-        CustomText(
-          text: 'Password',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 8),
-        Obx(
-          () => CustomTextfield(
-            isNumber: false,
-            label: 'Input password..',
-            obscureText: controller.isObsecurePass.value,
-            enableInteractiveSelection: false,
-            onTapSuffixIcon: controller.togglePassword,
-            useSuffixIcon: true,
-            suffixIcon: Icon(
-              controller.isObsecurePass.value
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-            ),
-            controller: controller.passwordController,
-            validator: controller.validatePassword,
+  Form _registerForm() {
+    return Form(
+      key: controller.registerFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: 'Email',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
-        ),
-        const CustomSpacing(height: 16.0),
-        CustomText(
-          text: 'Confirm Password',
-          textAlign: TextAlign.start,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
-        const CustomSpacing(height: 8),
-        Obx(
-          () => CustomTextfield(
-            isNumber: false,
-            label: 'Confirm password..',
-            obscureText: controller.isObsecureCPass.value,
-            enableInteractiveSelection: false,
-            onTapSuffixIcon: controller.toggleConfirmPassword,
-            useSuffixIcon: true,
-            suffixIcon: Icon(
-              controller.isObsecureCPass.value
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-            ),
-            controller: controller.confirmPasswordController,
-            validator: controller.validateConfirmPassword,
+          const CustomSpacing(height: 8),
+          CustomTextfield(
+            textInputType: TextInputType.emailAddress,
+            label: 'Input email..',
+            controller: controller.emailController,
+            validator: controller.validateEmail,
           ),
-        ),
-        const CustomSpacing(height: 52.0),
-        Obx(() {
-          if (controller.registerGeneralError.isEmpty) {
-            return const CustomSpacing();
-          }
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: CustomText(
-              text: controller.registerGeneralError.value,
-              style: const TextStyle(color: Colors.red, fontSize: 13),
-            ),
-          );
-        }),
-        Obx(
-          () => CustomButton(
-            onPressed: authController.isLoading.value
-                ? null
-                : () {
-                    authController.register(
-                      email: controller.emailController.text.trim(),
-                      number: controller.numberController.text.trim(),
-                      firstName: controller.firstNameController.text.trim(),
-                      lastname: controller.lastNameController.text.trim(),
-                      password: controller.passwordController.text.trim(),
-                      confirmPassword: controller.confirmPasswordController.text
-                          .trim(),
-                    );
-                  },
-            text: authController.isLoading.value ? 'Loading..' : 'Register',
-            backgroundColor: PColor.primGreen,
-            foregroundColor: Colors.white,
+          const CustomSpacing(height: 16.0),
+          CustomText(
+            text: 'Phone Number',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
-        ),
-      ],
-    );
-  }
-
-  Column _loginForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomText(
-              text: 'Email',
-              textAlign: TextAlign.start,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            const CustomSpacing(height: 10),
-            CustomTextfield(
-              isNumber: false,
-              label: 'Enter your email..',
-              controller: controller.emailController,
-              validator: controller.validateEmail,
-            ),
-            const CustomSpacing(height: 16.0),
-            CustomText(
-              text: 'Password',
-              textAlign: TextAlign.start,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            const CustomSpacing(height: 10),
-            Obx(
-              () => CustomTextfield(
-                isNumber: false,
-                label: 'Enter your password..',
-                obscureText: controller.isObsecurePass.value,
-                enableInteractiveSelection: false,
-                onTapSuffixIcon: controller.togglePassword,
-                useSuffixIcon: true,
-                suffixIcon: Icon(
-                  controller.isObsecurePass.value
-                      ? Icons.visibility_rounded
-                      : Icons.visibility_off_rounded,
-                ),
-                controller: controller.passwordController,
-                validator: controller.validatePassword,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Obx(
-                    () => CustomCheckbox(
-                      value: controller.isCheckedRememberMe.value,
-                      onChanged: (value) {
-                        controller.toggleRememberMe();
-                      },
-                      label: 'Remember me',
-                      padding: EdgeInsets.all(0),
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      borderColor: Colors.grey.shade600,
-                      labelStyle: TextStyle(color: Colors.grey.shade600),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: CustomText(
-                    text: 'Forgot Password?',
-                    style: TextStyle(color: PColor.primGreen),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const CustomSpacing(height: 72),
-        Obx(
-          () => Column(
+          const CustomSpacing(height: 8),
+          CustomTextfield(
+            textInputType: TextInputType.phone,
+            controller: controller.numberController,
+            label: 'Input phone number...',
+            prefixText: '+62 ',
+            validator: controller.validatePhoneNumber,
+          ),
+          const CustomSpacing(height: 16.0),
+          Row(
             children: [
-              CustomText(
-                text: controller.loginError.value,
-                style: TextStyle(color: Colors.red, fontSize: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: 'First Name',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const CustomSpacing(height: 8),
+                    CustomTextfield(
+                      isNumber: false,
+                      label: 'John',
+                      controller: controller.firstNameController,
+                      validator: controller.validateFirstName,
+                    ),
+                  ],
+                ),
               ),
-              CustomSpacing(height: 8),
-              CustomButton(
-                onPressed: () {
-                  authController.login(
-                    email: controller.emailController.text.trim(),
-                    password: controller.passwordController.text.trim(),
-                  );
-                },
-                text: authController.isLoading.value ? 'Loading..' : 'Log In',
-                backgroundColor: PColor.primGreen,
-                foregroundColor: Colors.white,
+              const CustomSpacing(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: 'Last Name',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const CustomSpacing(height: 8),
+                    CustomTextfield(
+                      isNumber: false,
+                      label: 'Doe',
+                      controller: controller.lastNameController,
+                      validator: controller.validateLastName,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-      ],
+          const CustomSpacing(height: 16.0),
+          CustomText(
+            text: 'Password',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          ),
+          const CustomSpacing(height: 8),
+          Obx(
+            () => CustomTextfield(
+              isNumber: false,
+              label: 'Input password..',
+              obscureText: controller.isObsecurePass.value,
+              enableInteractiveSelection: false,
+              onTapSuffixIcon: controller.togglePassword,
+              useSuffixIcon: true,
+              suffixIcon: Icon(
+                controller.isObsecurePass.value
+                    ? Icons.visibility_rounded
+                    : Icons.visibility_off_rounded,
+                color: Colors.grey,
+              ),
+              controller: controller.passwordController,
+              validator: controller.validatePassword,
+            ),
+          ),
+          const CustomSpacing(height: 16.0),
+          CustomText(
+            text: 'Confirm Password',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          ),
+          const CustomSpacing(height: 8),
+          Obx(
+            () => CustomTextfield(
+              isNumber: false,
+              label: 'Confirm password..',
+              obscureText: controller.isObsecureCPass.value,
+              enableInteractiveSelection: false,
+              onTapSuffixIcon: controller.toggleConfirmPassword,
+              useSuffixIcon: true,
+              suffixIcon: Icon(
+                controller.isObsecureCPass.value
+                    ? Icons.visibility_rounded
+                    : Icons.visibility_off_rounded,
+                color: Colors.grey,
+              ),
+              controller: controller.confirmPasswordController,
+              validator: controller.validateConfirmPassword,
+            ),
+          ),
+          const CustomSpacing(height: 52.0),
+          Obx(
+            () => Column(
+              children: [
+                CustomText(
+                  text: controller.registerGeneralError.value,
+                  style: const TextStyle(color: Colors.red, fontSize: 13),
+                ),
+                CustomSpacing(height: 8),
+                CustomButton(
+                  onPressed: authController.isLoading.value
+                      ? null
+                      : () {
+                          authController.register(
+                            email: controller.emailController.text.trim(),
+                            phone: controller.numberController.text.trim(),
+                            firstName: controller.firstNameController.text
+                                .trim(),
+                            lastname: controller.lastNameController.text.trim(),
+                            password: controller.passwordController.text.trim(),
+                            confirmPassword: controller
+                                .confirmPasswordController
+                                .text
+                                .trim(),
+                          );
+                        },
+                  text: authController.isLoading.value
+                      ? 'Loading..'
+                      : 'Register',
+                  backgroundColor: PColor.primGreen,
+                  foregroundColor: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Form _loginForm() {
+    return Form(
+      key: controller.loginFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: 'Email',
+                textAlign: TextAlign.start,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              ),
+              const CustomSpacing(height: 10),
+              CustomTextfield(
+                isNumber: false,
+                label: 'Enter your email..',
+                controller: controller.emailController,
+                validator: controller.validateEmail,
+              ),
+              const CustomSpacing(height: 16.0),
+              CustomText(
+                text: 'Password',
+                textAlign: TextAlign.start,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              ),
+              const CustomSpacing(height: 10),
+              Obx(
+                () => CustomTextfield(
+                  isNumber: false,
+                  label: 'Enter your password..',
+                  obscureText: controller.isObsecurePass.value,
+                  enableInteractiveSelection: false,
+                  onTapSuffixIcon: controller.togglePassword,
+                  useSuffixIcon: true,
+                  suffixIcon: Icon(
+                    controller.isObsecurePass.value
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    color: Colors.grey,
+                  ),
+                  controller: controller.passwordController,
+                  validator: controller.validatePassword,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Obx(
+                      () => CustomCheckbox(
+                        value: controller.isCheckedRememberMe.value,
+                        onChanged: (value) {
+                          controller.toggleRememberMe();
+                        },
+                        label: 'Remember me',
+                        padding: EdgeInsets.all(0),
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        borderColor: Colors.grey.shade600,
+                        labelStyle: TextStyle(color: Colors.grey.shade600),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: CustomText(
+                      text: 'Forgot Password?',
+                      style: TextStyle(color: PColor.primGreen),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const CustomSpacing(height: 72),
+          Obx(
+            () => Column(
+              children: [
+                CustomText(
+                  text: controller.loginGeneralError.value,
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+                CustomSpacing(height: 8),
+                CustomButton(
+                  onPressed: authController.isLoading.value
+                      ? null
+                      : () {
+                          authController.login(
+                            email: controller.emailController.text.trim(),
+                            password: controller.passwordController.text.trim(),
+                          );
+                        },
+                  text: authController.isLoading.value ? 'Loading..' : 'Log In',
+                  backgroundColor: PColor.primGreen,
+                  foregroundColor: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
