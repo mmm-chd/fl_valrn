@@ -107,35 +107,46 @@ class EditAccountPage extends GetView<ProfileController> {
               ),
               CustomSpacing(height: 32),
 
-              
               Obx(() {
                 if (c.isLoading.value) return CircularProgressIndicator();
-
+                final profile = controller.userSession.value;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FormLabel(label: "Nama Pertama*"),
-                    FormInputField(controller: c.nameC, hint: controller.profile.value?.name ?? '-',),
+                    FormInputField(controller: c.nameC, hint: profile.name),
                     CustomSpacing(height: 20),
 
                     FormLabel(label: "Email*"),
-                    FormInputField(controller: c.emailC, hint: controller.profile.value?.email ?? '-',),
+                    FormInputField(controller: c.emailC, hint: profile.email),
                     CustomSpacing(height: 20),
 
                     FormLabel(label: "Nomor Telepon*"),
-                    FormInputField(controller: c.phoneC, hint: controller.profile.value?.phone ?? '-',),
+                    FormInputField(
+                      controller: c.phoneC,
+                      hint: profile.phone ?? '',
+                    ),
                     CustomSpacing(height: 20),
 
                     FormLabel(label: "Facebook*"),
-                    FormInputField(controller: c.facebookC, hint: controller.profile.value?.facebook ?? '-',),
+                    FormInputField(
+                      controller: c.facebookC,
+                      hint: profile.facebook ?? '',
+                    ),
                     CustomSpacing(height: 20),
 
                     FormLabel(label: "Instagram*"),
-                    FormInputField(controller: c.instaC, hint: controller.profile.value?.insta ?? '-',),
+                    FormInputField(
+                      controller: c.instaC,
+                      hint: profile.instagram ?? '',
+                    ),
                     CustomSpacing(height: 20),
 
                     FormLabel(label: "Tentang Saya*"),
-                    FormInputField(controller: c.aboutC, hint: controller.profile.value?.about ?? '-',),
+                    FormInputField(
+                      controller: c.descC,
+                      hint: profile.description ?? '',
+                    ),
                     CustomSpacing(height: 20),
                   ],
                 );
@@ -145,9 +156,7 @@ class EditAccountPage extends GetView<ProfileController> {
                 text: "Simpan Perubahan",
                 backgroundColor: PColor.primGreen,
                 foregroundColor: Colors.white,
-                onPressed: () {
-                   c.updateProfile(id!);
-                },
+                onPressed: c.updateProfile,
               ),
               CustomSpacing(height: 12),
 

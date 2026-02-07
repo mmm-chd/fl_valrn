@@ -1,9 +1,6 @@
-import 'dart:convert';
 
 import 'package:fl_valrn/model/journal_model.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/journal_service.dart';
 
 class JournalController extends GetxController {

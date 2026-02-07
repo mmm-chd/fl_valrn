@@ -2,7 +2,7 @@ import 'package:fl_valrn/components/widgets/custom_bottomSheetFix.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginController extends GetxController {
+class UiController extends GetxController {
   // TEXT CONTROLLERS
   final emailController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -21,8 +21,9 @@ class LoginController extends GetxController {
   // ERRORS HANDLING
   final emailError = ''.obs;
   final passwordError = ''.obs;
+  final loginError = ''.obs;
 
-  final numberError = ''.obs;
+  final phoneNumberError = ''.obs;
   final firstNameError = ''.obs;
   final lastNameError = ''.obs;
   final confirmPasswordError = ''.obs;
@@ -30,7 +31,7 @@ class LoginController extends GetxController {
 
   void clearAllErrors() {
     emailError.value = '';
-    numberError.value = '';
+    phoneNumberError.value = '';
     passwordError.value = '';
     firstNameError.value = '';
     lastNameError.value = '';
@@ -38,82 +39,54 @@ class LoginController extends GetxController {
     registerGeneralError.value = '';
   }
 
-  void clearLoginErrors() {
-    emailError.value = '';
-    passwordError.value = '';
-  }
-
-  void clearRegisterErrors() {
-    emailError.value = '';
-    numberError.value = '';
-    firstNameError.value = '';
-    lastNameError.value = '';
-    passwordError.value = '';
-    confirmPasswordError.value = '';
-    registerGeneralError.value = '';
-  }
-
-  bool validateLogin() {
-    clearLoginErrors();
-    bool isValid = true;
-
-    if (emailController.text.isEmpty) {
-      emailError.value = 'Email is required';
-      isValid = false;
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Email is required";
     } else if (!GetUtils.isEmail(emailController.text)) {
-      emailError.value = 'Email format is invalid';
-      isValid = false;
+      return "Email is invalid";
     }
-
-    if (passwordController.text.isEmpty) {
-      passwordError.value = 'Password is required';
-      isValid = false;
-    }
-
-    return isValid;
+    return emailError.value;
   }
 
-  bool validateRegister() {
-    clearRegisterErrors();
-    bool isValid = true;
-
-    if (emailController.text.isEmpty) {
-      emailError.value = 'Email is required';
-      isValid = false;
-    } else if (!GetUtils.isEmail(emailController.text)) {
-      emailError.value = 'Email format is invalid';
-      isValid = false;
-    }
-
-    if (numberController.text.isEmpty) {
-      numberError.value = 'Phone number is required';
-      isValid = false;
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "First name is required";
     } else if (!GetUtils.isPhoneNumber(numberController.text)) {
-      numberError.value = 'Phone number is invalid';
-      isValid = false;
+      return 'Phone number is invalid';
     }
+    return phoneNumberError.value;
+  }
 
-    if (firstNameController.text.isEmpty) {
-      firstNameError.value = 'First name is required';
-      isValid = false;
+  String? validateFirstName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "First name is required";
     }
+    return firstNameError.value;
+  }
 
-    if (lastNameController.text.isEmpty) {
-      lastNameError.value = 'Last name is required';
-      isValid = false;
+  String? validateLastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Last name is required";
     }
+    return lastNameError.value;
+  }
 
-    if (passwordController.text.length < 6) {
-      passwordError.value = 'Password must be at least 6 characters';
-      isValid = false;
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Password is required";
+    } else if (passwordController.text.length < 6) {
+      return "Password must be at least 6 characters";
     }
+    return passwordError.value;
+  }
 
-    if (confirmPasswordController.text != passwordController.text) {
-      confirmPasswordError.value = 'Passwords do not match';
-      isValid = false;
+  String? validateConfirmPassword(String? value) {
+    if (value == null ||
+        value.isEmpty ||
+        passwordController.text != confirmPasswordController.text) {
+      return "Passwords do not match";
     }
-
-    return isValid;
+    return passwordError.value;
   }
 
   // TAB HANDLER
@@ -169,7 +142,7 @@ class LoginController extends GetxController {
     confirmPasswordController.clear();
   }
 
-  // DIALOG
+  // BOTTOM SHEET
   void _showLeaveSheet({required VoidCallback onConfirm, context}) {
     CustomBottomsheetfix.show(
       context,

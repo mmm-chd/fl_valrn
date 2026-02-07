@@ -1,6 +1,6 @@
 import 'package:fl_valrn/model/product_model.dart';
-import 'package:fl_valrn/model/profile_model.dart';
-import 'package:fl_valrn/services/auth_service.dart';
+import 'package:fl_valrn/model/profile/user_session_model.dart';
+import 'package:fl_valrn/services/user_service.dart';
 import 'package:fl_valrn/services/market_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,20 +14,17 @@ class ProfileController extends GetxController {
   final facebookController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  // Password Controllers
-  final oldPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
   // Observable states
   var isLoading = false.obs;
   var isUpdating = false.obs;
   var isChangingPassword = false.obs;
   var hasError = false.obs;
   var errorMessage = ''.obs;
+  final isExpandInstagram = false.obs;
+  final isExpandFacebook = false.obs;
+  final isExpandPhone = false.obs;
 
-  // Profile data
-  Rx<ProfileModel?> profile = Rx<ProfileModel?>(null);
+  var userSession = UserSession.empty().obs;
 
   // Products data
   var products = <ProductItem>[].obs;
@@ -49,9 +46,6 @@ class ProfileController extends GetxController {
     instagramController.dispose();
     facebookController.dispose();
     descriptionController.dispose();
-    oldPasswordController.dispose();
-    newPasswordController.dispose();
-    confirmPasswordController.dispose();
     super.onClose();
   }
 
@@ -65,11 +59,12 @@ class ProfileController extends GetxController {
       print('🔄 Fetching profile...');
 
       // Menggunakan AuthService.getProfileModel()
-      final result = await AuthService.getProfileModel();
-      profile.value = result;
+      final result = await UserService.profile();
+
+      userSession.value = UserSession.fromProfileModel(result.user);
 
       // Populate text controllers with profile data
-      _populateControllers(result);
+      _populateControllers();
 
       print('✅ Profile loaded successfully');
     } catch (e) {
@@ -95,192 +90,33 @@ class ProfileController extends GetxController {
 
       print('🔄 Fetching user products...');
 
-      // Get all products
       final allProducts = await MarketService.getProducts();
 
-      // Filter products by current user ID
-      if (profile.value != null) {
+      if (userSession.value.isLoggedIn) {
         final userProducts = allProducts
-            .where((product) => product.userId == profile.value!.id)
+            .where((product) => product.userId == userSession.value.id)
             .toList();
 
         products.assignAll(userProducts);
-        print('✅ Found ${userProducts.length} products for user');
       } else {
         products.clear();
       }
     } catch (e) {
       print('❌ ERROR FETCH USER PRODUCTS: $e');
-      // Don't show error snackbar for products, just log it
     } finally {
       isLoadingProducts.value = false;
     }
   }
 
   /// Populate text controllers with profile data
-  void _populateControllers(ProfileModel profileData) {
-    nameController.text = profileData.name;
-    emailController.text = profileData.email;
-    phoneController.text = profileData.phone ?? '';
-    instagramController.text = profileData.instagram ?? '';
-    facebookController.text = profileData.facebook ?? '';
-    descriptionController.text = profileData.description ?? '';
-  }
-
-  /// Update profile
-  Future<void> updateProfile() async {
-    try {
-      // Validation
-      if (nameController.text.trim().isEmpty) {
-        Get.snackbar(
-          'Peringatan',
-          'Nama tidak boleh kosong',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      if (emailController.text.trim().isEmpty) {
-        Get.snackbar(
-          'Peringatan',
-          'Email tidak boleh kosong',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      // Email validation
-      if (!GetUtils.isEmail(emailController.text.trim())) {
-        Get.snackbar(
-          'Peringatan',
-          'Format email tidak valid',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      isUpdating.value = true;
-
-      print('🔄 Updating profile...');
-
-      // Menggunakan AuthService.updateProfile()
-      final result = await AuthService.updateProfile(
-        name: nameController.text.trim(),
-        email: emailController.text.trim(),
-        phone: phoneController.text.trim().isNotEmpty
-            ? phoneController.text.trim()
-            : null,
-        instagram: instagramController.text.trim().isNotEmpty
-            ? instagramController.text.trim()
-            : null,
-        facebook: facebookController.text.trim().isNotEmpty
-            ? facebookController.text.trim()
-            : null,
-        description: descriptionController.text.trim().isNotEmpty
-            ? descriptionController.text.trim()
-            : null,
-      );
-
-      profile.value = result;
-
-      print('✅ Profile updated successfully');
-
-      Get.snackbar(
-        'Berhasil',
-        'Profil berhasil diperbarui',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFF2A9134),
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      print('❌ ERROR UPDATE PROFILE: $e');
-
-      Get.snackbar(
-        'Error',
-        'Gagal memperbarui profil: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isUpdating.value = false;
-    }
-  }
-
-  /// Change password
-  Future<void> changePassword() async {
-    try {
-      // Validation
-      if (oldPasswordController.text.trim().isEmpty) {
-        Get.snackbar(
-          'Peringatan',
-          'Password lama tidak boleh kosong',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      if (newPasswordController.text.trim().isEmpty) {
-        Get.snackbar(
-          'Peringatan',
-          'Password baru tidak boleh kosong',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      if (newPasswordController.text.length < 8) {
-        Get.snackbar(
-          'Peringatan',
-          'Password baru minimal 8 karakter',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      if (newPasswordController.text != confirmPasswordController.text) {
-        Get.snackbar(
-          'Peringatan',
-          'Konfirmasi password tidak sesuai',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
-      }
-
-      isChangingPassword.value = true;
-
-      print('🔄 Changing password...');
-
-      // Menggunakan AuthService.changePassword()
-      await AuthService.changePassword(
-        oldPassword: oldPasswordController.text.trim(),
-        newPassword: newPasswordController.text.trim(),
-        confirmPassword: confirmPasswordController.text.trim(),
-      );
-
-      // Clear password fields
-      oldPasswordController.clear();
-      newPasswordController.clear();
-      confirmPasswordController.clear();
-
-      print('✅ Password changed successfully');
-
-      Get.snackbar(
-        'Berhasil',
-        'Password berhasil diubah',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color(0xFF2A9134),
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      print('❌ ERROR CHANGE PASSWORD: $e');
-
-      Get.snackbar(
-        'Error',
-        e.toString().replaceAll('Exception: ', ''),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isChangingPassword.value = false;
-    }
+  void _populateControllers() {
+    final profile = userSession.value;
+    nameController.text = profile.name;
+    emailController.text = profile.email;
+    phoneController.text = profile.phone ?? '-';
+    instagramController.text = profile.instagram ?? '-';
+    facebookController.text = profile.facebook ?? '-';
+    descriptionController.text = profile.description ?? '-';
   }
 
   /// Logout
@@ -308,16 +144,12 @@ class ProfileController extends GetxController {
         print('🔄 Logging out...');
 
         // Menggunakan AuthService.logout()
-        await AuthService.logout();
+        await UserService.logout();
 
         print('✅ Logged out successfully');
-
+        userSession.value = UserSession.empty();
         // Clear profile data
-        profile.value = null;
         products.clear();
-
-        // Navigate to login page
-        // Get.offAllNamed('/login'); // Uncomment dan sesuaikan route
       }
     } catch (e) {
       print('❌ ERROR LOGOUT: $e');
@@ -335,22 +167,27 @@ class ProfileController extends GetxController {
     await Future.wait([fetchProfile(), fetchUserProducts()]);
   }
 
-  /// Reset form to original profile data
-  void resetForm() {
-    if (profile.value != null) {
-      _populateControllers(profile.value!);
-    }
-  }
-
   /// Check if there are unsaved changes
   bool hasUnsavedChanges() {
-    if (profile.value == null) return false;
+    if (!userSession.value.isLoggedIn) return false;
+    final profile = userSession.value;
+    return nameController.text != profile.name ||
+        emailController.text != profile.email ||
+        phoneController.text != (profile.phone ?? '') ||
+        instagramController.text != (profile.instagram ?? '') ||
+        facebookController.text != (profile.facebook ?? '') ||
+        descriptionController.text != (profile.description ?? '');
+  }
 
-    return nameController.text != profile.value!.name ||
-        emailController.text != profile.value!.email ||
-        phoneController.text != (profile.value!.phone ?? '') ||
-        instagramController.text != (profile.value!.instagram ?? '') ||
-        facebookController.text != (profile.value!.facebook ?? '') ||
-        descriptionController.text != (profile.value!.description ?? '');
+  void clickExpandFacebook() {
+    isExpandFacebook.value = !isExpandFacebook.value;
+  }
+
+  void clickExpandInstagram() {
+    isExpandInstagram.value = !isExpandInstagram.value;
+  }
+
+  void clickExpandPhone() {
+    isExpandPhone.value = !isExpandPhone.value;
   }
 }

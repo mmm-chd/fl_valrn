@@ -67,7 +67,7 @@ class MyproductPage extends GetView<ProductController> {
                 CustomTextfield(
                   isNumber: false, 
                   controller: controller.searchProduct,
-                  variant: TextFieldVariant.underline,
+                  // variant: TextFieldVariant.underline,
                 ),
 
                 Row(

@@ -1,6 +1,6 @@
 import 'package:fl_valrn/configs/routes.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
-import 'package:fl_valrn/services/auth_service.dart';
+import 'package:fl_valrn/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,18 +46,17 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
 
       print('🔍 Checking login status...');
 
-      final isLoggedIn = await AuthService.isLoggedIn();
+      final isLoggedIn = await UserService.isLoggedIn();
 
       print('📊 Is Logged In: $isLoggedIn');
 
       if (isLoggedIn) {
         try {
-          await AuthService.getProfile();
           print('✅ Token valid, navigating to navbar...');
           Get.offAllNamed(AppRoutes.navbarPage);
         } catch (e) {
           print('⚠️ Token invalid: $e');
-          await AuthService.clearStorage();
+          await UserService.clearStorage();
           Get.offAllNamed(AppRoutes.authPage);
         }
       } else {

@@ -1,5 +1,3 @@
-// lib/pages/profile_page.dart
-
 import 'package:fl_valrn/components/navbar/custom_navBarSafePadding.dart';
 import 'package:fl_valrn/components/widgets/custom_card.dart';
 import 'package:fl_valrn/components/widgets/custom_spacing.dart';
@@ -12,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class ProfilePage extends GetView<ProfileController> {
                 );
               }
 
-              final profile = controller.profile.value!;
+              final profile = controller.userSession.value;
 
               return Column(
                 children: [
@@ -136,29 +134,6 @@ class ProfilePage extends GetView<ProfileController> {
                     ),
                   ),
 
-                  // Role Badge (jika admin)
-                  if (profile.isAdmin) ...[
-                    const CustomSpacing(height: 8),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xff2A9134),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Text(
-                        'ADMIN',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-
                   const CustomSpacing(height: 20),
 
                   Divider(color: Colors.grey.shade300, thickness: 1, height: 1),
@@ -183,14 +158,14 @@ class ProfilePage extends GetView<ProfileController> {
                               profile.description ??
                               'Belum ada deskripsi. Tambahkan deskripsi Anda di pengaturan.',
                           style: TextStyle(
-                            color: profile.hasDescription
+                            color: profile.description.isNull
                                 ? Color(0xFF424242)
                                 : Color(0xFF9E9E9E),
                             fontSize: 14,
                             height: 1.4,
-                            fontStyle: profile.hasDescription
-                                ? FontStyle.normal
-                                : FontStyle.italic,
+                            fontStyle: profile.description.isNull
+                                ? FontStyle.italic
+                                : FontStyle.normal,
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -217,35 +192,47 @@ class ProfilePage extends GetView<ProfileController> {
                         const SizedBox(height: 12),
 
                         // Instagram
-                        _buildInfoRow(
-                          icon: Icons.camera_alt_outlined,
-                          label: 'Instagram',
-                          value: profile.instagram ?? '-',
-                          valueColor: profile.hasInstagram
-                              ? Colors.green
-                              : Colors.grey,
+                        Obx(
+                          () => _buildInfoRow(
+                            isExpanded: controller.isExpandInstagram.value,
+                            onTap: controller.clickExpandInstagram,
+                            icon: Icons.camera_alt_outlined,
+                            label: 'Instagram',
+                            value: profile.instagram ?? '-',
+                            valueColor: (profile.instagram?.isNotEmpty ?? false)
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
                         ),
                         const SizedBox(height: 12),
 
                         // Telephone
-                        _buildInfoRow(
-                          icon: Icons.phone_outlined,
-                          label: 'Telephone',
-                          value: profile.phone ?? '-',
-                          valueColor: profile.hasPhone
-                              ? Colors.green
-                              : Colors.grey,
+                        Obx(
+                          () => _buildInfoRow(
+                            isExpanded: controller.isExpandPhone.value,
+                            onTap: controller.clickExpandPhone,
+                            icon: Icons.phone_outlined,
+                            label: 'Telephone',
+                            value: profile.phone ?? '-',
+                            valueColor: (profile.phone?.isNotEmpty ?? false)
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
                         ),
                         const SizedBox(height: 12),
 
                         // Facebook
-                        _buildInfoRow(
-                          icon: Icons.facebook_outlined,
-                          label: 'Facebook',
-                          value: profile.facebook ?? '-',
-                          valueColor: profile.hasFacebook
-                              ? Colors.green
-                              : Colors.grey,
+                        Obx(
+                          () => _buildInfoRow(
+                            isExpanded: controller.isExpandFacebook.value,
+                            onTap: controller.clickExpandFacebook,
+                            icon: Icons.facebook_outlined,
+                            label: 'Facebook',
+                            value: profile.facebook ?? '',
+                            valueColor: (profile.facebook?.isNotEmpty ?? false)
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
                         ),
                       ],
                     ),
@@ -359,23 +346,37 @@ Widget _buildInfoRow({
   required String label,
   required String value,
   required Color valueColor,
+  required bool isExpanded,
+  required VoidCallback onTap,
 }) {
   return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Icon(icon, color: Colors.grey.shade400, size: 24),
-      const SizedBox(width: 12),
       Expanded(
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+        flex: 1,
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.grey.shade400, size: 24),
+            const CustomSpacing(width: 12),
+            CustomText(
+              text: label,
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+            ),
+          ],
         ),
       ),
-      CustomText(
-        text: value,
-        style: TextStyle(
-          color: valueColor,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+      Flexible(
+        child: GestureDetector(
+          onTap: onTap,
+          child: CustomText(
+            text: value,
+            maxLines: isExpanded ? null : 1,
+            style: TextStyle(
+              color: valueColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
       ),
     ],
