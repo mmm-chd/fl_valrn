@@ -63,11 +63,10 @@ class ProductPage extends GetView<MarketController> {
                     children: [
                       Expanded(
                         child: CustomTextfield(
-                          isNumber: false,
                           controller: controller.chatController,
                           hint: "Apa ini masih ada?",
                           label: "Apa ini masih ada?",
-                          variant: TextFieldVariant.underline,
+                          // variant: TextFieldVariant.underline,
                         ),
                       ),
                       const CustomSpacing(height: 10, width: 10),

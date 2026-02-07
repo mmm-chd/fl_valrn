@@ -8,7 +8,10 @@ class ConstantApi {
   // AUTH
   static const String LOGIN = '/login';
   static const String REGISTER = '/register';
+  static const String UPDATE_PROFILE = '/profile';
   static const String LOGOUT = '/logout';
+  static const String SEND_OTP = '/password/send-otp';
+  static const String RESET_PASSWORD = '/password/reset-password';
 
   // PLANT
   static const String API_GROUP_PLANT = '/plant';

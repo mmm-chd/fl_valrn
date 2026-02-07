@@ -1,5 +1,5 @@
 import 'package:fl_valrn/controllers/user_controller.dart';
-import 'package:fl_valrn/services/profile_service.dart';
+import 'package:fl_valrn/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,7 @@ class EditAccountController extends GetxController {
   final phoneC = TextEditingController();
   final facebookC = TextEditingController();
   final instaC = TextEditingController();
-  final aboutC = TextEditingController();
+  final descC = TextEditingController();
 
   var isLoading = false.obs;
   final userC = Get.find<UserController>();
@@ -26,35 +26,36 @@ class EditAccountController extends GetxController {
     }
   }
 
-  Future<void> getprofile(int userId) async{
+  Future<void> getprofile(int userId) async {
     try {
-      isLoading(true); 
+      isLoading(true);
 
-      final profileData = await ProfileService.getProfile(userId);
-      nameC.text = profileData?.name ?? '';
-      emailC.text = profileData?.email ?? '';
-      phoneC.text = profileData?.phone ?? '';
-      facebookC.text = profileData?.facebook ?? '';
-      instaC.text = profileData?.insta ?? '';
-      aboutC.text = profileData?.about ?? '';
+      final profileData = await UserService.profile();
+      final data = profileData.user;
+      nameC.text = data.name;
+      emailC.text = data.email;
+      phoneC.text = data.phone;
+      facebookC.text = data.facebook;
+      instaC.text = data.instagram;
+      descC.text = data.description ?? '';
     } catch (e) {
-        print("Failed to load profile: $e");
+      print("Failed to load profile: $e");
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> updateProfile(int userId) async {
+  Future<void> updateProfile() async {
     try {
       isLoading(true);
-      await ProfileService.updateProfile(userId, {
-        'name': nameC.text,
-        'email': emailC.text,
-        'phone': phoneC.text,
-        'facebook': facebookC.text,
-        'insta': instaC.text,
-        'about': aboutC.text,
-      });
+      await UserService.updateProfile(
+        name: nameC.text.toString().trim(),
+        email: emailC.text.toString().trim(),
+        description: descC.text.toString(),
+        phone: phoneC.text.toString().trim(),
+        instagram: instaC.text.toString(),
+        facebook: facebookC.text.toString(),
+      );
       Get.snackbar('Success', 'Profile berhasil diperbarui');
     } catch (e) {
       print("Failed to update profile: $e");
@@ -63,5 +64,4 @@ class EditAccountController extends GetxController {
       isLoading(false);
     }
   }
-
 }

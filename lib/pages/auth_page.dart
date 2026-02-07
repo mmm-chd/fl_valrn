@@ -5,13 +5,13 @@ import 'package:fl_valrn/components/widgets/custom_tabBar.dart';
 import 'package:fl_valrn/components/widgets/custom_text.dart';
 import 'package:fl_valrn/components/widgets/custom_textField.dart';
 import 'package:fl_valrn/configs/themes_color.dart';
-import 'package:fl_valrn/controllers/auth_controller.dart';
-import 'package:fl_valrn/controllers/login_controller.dart';
+import 'package:fl_valrn/controllers/auth/auth_controller.dart';
+import 'package:fl_valrn/controllers/auth/ui_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class AuthPage extends GetView<LoginController> {
+class AuthPage extends GetView<UiController> {
   AuthPage({super.key});
   final authController = Get.find<AuthController>();
 
@@ -143,18 +143,11 @@ class AuthPage extends GetView<LoginController> {
         ),
         const CustomSpacing(height: 8),
         CustomTextfield(
-          isNumber: false,
+          textInputType: TextInputType.emailAddress,
           label: 'Input email..',
           controller: controller.emailController,
-          onChanged: (_) => controller.emailError.value = '',
+          validator: controller.validateEmail,
         ),
-        Obx(() {
-          if (controller.emailError.isEmpty) return const CustomSpacing();
-          return CustomText(
-            text: controller.emailError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
         const CustomSpacing(height: 16.0),
         CustomText(
           text: 'Phone Number',
@@ -163,18 +156,11 @@ class AuthPage extends GetView<LoginController> {
         ),
         const CustomSpacing(height: 8),
         CustomTextfield(
-          isNumber: true,
+          textInputType: TextInputType.phone,
           controller: controller.numberController,
           label: 'Input phone number...',
-          prefixText: "+62 ",
+          validator: controller.validatePhoneNumber,
         ),
-        Obx(() {
-          if (controller.numberError.isEmpty) return const CustomSpacing();
-          return CustomText(
-            text: controller.numberError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
         const CustomSpacing(height: 16.0),
         Row(
           children: [
@@ -192,16 +178,8 @@ class AuthPage extends GetView<LoginController> {
                     isNumber: false,
                     label: 'John',
                     controller: controller.firstNameController,
-                    onChanged: (_) => controller.firstNameError.value = '',
+                    validator: controller.validateFirstName,
                   ),
-                  Obx(() {
-                    if (controller.firstNameError.isEmpty)
-                      return const CustomSpacing();
-                    return CustomText(
-                      text: controller.firstNameError.value,
-                      style: const TextStyle(color: Colors.red, fontSize: 12),
-                    );
-                  }),
                 ],
               ),
             ),
@@ -220,16 +198,8 @@ class AuthPage extends GetView<LoginController> {
                     isNumber: false,
                     label: 'Doe',
                     controller: controller.lastNameController,
-                    onChanged: (_) => controller.lastNameError.value = '',
+                    validator: controller.validateLastName,
                   ),
-                  Obx(() {
-                    if (controller.lastNameError.isEmpty)
-                      return const CustomSpacing();
-                    return CustomText(
-                      text: controller.lastNameError.value,
-                      style: const TextStyle(color: Colors.red, fontSize: 12),
-                    );
-                  }),
                 ],
               ),
             ),
@@ -256,16 +226,9 @@ class AuthPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.passwordController,
-            onChanged: (_) => controller.passwordError.value = '',
+            validator: controller.validatePassword,
           ),
         ),
-        Obx(() {
-          if (controller.passwordError.isEmpty) return const CustomSpacing();
-          return CustomText(
-            text: controller.passwordError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
         const CustomSpacing(height: 16.0),
         CustomText(
           text: 'Confirm Password',
@@ -287,17 +250,9 @@ class AuthPage extends GetView<LoginController> {
                   : Icons.visibility_off_rounded,
             ),
             controller: controller.confirmPasswordController,
-            onChanged: (_) => controller.confirmPasswordError.value = '',
+            validator: controller.validateConfirmPassword,
           ),
         ),
-        Obx(() {
-          if (controller.confirmPasswordError.isEmpty)
-            return const CustomSpacing();
-          return CustomText(
-            text: controller.confirmPasswordError.value,
-            style: const TextStyle(color: Colors.red, fontSize: 12),
-          );
-        }),
         const CustomSpacing(height: 52.0),
         Obx(() {
           if (controller.registerGeneralError.isEmpty) {
@@ -316,7 +271,6 @@ class AuthPage extends GetView<LoginController> {
             onPressed: authController.isLoading.value
                 ? null
                 : () {
-                    if (!controller.validateRegister()) return;
                     authController.register(
                       email: controller.emailController.text.trim(),
                       number: controller.numberController.text.trim(),
@@ -353,15 +307,8 @@ class AuthPage extends GetView<LoginController> {
               isNumber: false,
               label: 'Enter your email..',
               controller: controller.emailController,
-              onChanged: (_) => controller.emailError.value = '',
+              validator: controller.validateEmail,
             ),
-            Obx(() {
-              if (controller.emailError.isEmpty) return const CustomSpacing();
-              return CustomText(
-                text: controller.emailError.value,
-                style: const TextStyle(color: Colors.red, fontSize: 12),
-              );
-            }),
             const CustomSpacing(height: 16.0),
             CustomText(
               text: 'Password',
@@ -383,17 +330,9 @@ class AuthPage extends GetView<LoginController> {
                       : Icons.visibility_off_rounded,
                 ),
                 controller: controller.passwordController,
-                onChanged: (_) => controller.passwordError.value = '',
+                validator: controller.validatePassword,
               ),
             ),
-            Obx(() {
-              if (controller.passwordError.isEmpty)
-                return const CustomSpacing();
-              return CustomText(
-                text: controller.passwordError.value,
-                style: const TextStyle(color: Colors.red, fontSize: 12),
-              );
-            }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -423,19 +362,27 @@ class AuthPage extends GetView<LoginController> {
             ),
           ],
         ),
-        const CustomSpacing(height: 84),
+        const CustomSpacing(height: 72),
         Obx(
-          () => CustomButton(
-            onPressed: () {
-              if (!controller.validateLogin()) return;
-              authController.login(
-                email: controller.emailController.text.trim(),
-                password: controller.passwordController.text.trim(),
-              );
-            },
-            text: controller.isLoading.value ? 'Loading..' : 'Log In',
-            backgroundColor: PColor.primGreen,
-            foregroundColor: Colors.white,
+          () => Column(
+            children: [
+              CustomText(
+                text: controller.loginError.value,
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+              CustomSpacing(height: 8),
+              CustomButton(
+                onPressed: () {
+                  authController.login(
+                    email: controller.emailController.text.trim(),
+                    password: controller.passwordController.text.trim(),
+                  );
+                },
+                text: authController.isLoading.value ? 'Loading..' : 'Log In',
+                backgroundColor: PColor.primGreen,
+                foregroundColor: Colors.white,
+              ),
+            ],
           ),
         ),
       ],

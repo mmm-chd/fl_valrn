@@ -7,7 +7,6 @@ import 'package:fl_valrn/services/article_service.dart';
 import 'package:fl_valrn/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
   final searchController = TextEditingController();
@@ -23,7 +22,6 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     fetchTrendings();
     fetchFields();
     fetchArtikel();
