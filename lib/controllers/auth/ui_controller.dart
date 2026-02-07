@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UiController extends GetxController {
+  final loginFormKey = GlobalKey<FormState>();
+  final registerFormKey = GlobalKey<FormState>();
   // TEXT CONTROLLERS
   final emailController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -21,7 +23,7 @@ class UiController extends GetxController {
   // ERRORS HANDLING
   final emailError = ''.obs;
   final passwordError = ''.obs;
-  final loginError = ''.obs;
+  final loginGeneralError = ''.obs;
 
   final phoneNumberError = ''.obs;
   final firstNameError = ''.obs;
@@ -45,7 +47,7 @@ class UiController extends GetxController {
     } else if (!GetUtils.isEmail(emailController.text)) {
       return "Email is invalid";
     }
-    return emailError.value;
+    return null;
   }
 
   String? validatePhoneNumber(String? value) {
@@ -54,21 +56,21 @@ class UiController extends GetxController {
     } else if (!GetUtils.isPhoneNumber(numberController.text)) {
       return 'Phone number is invalid';
     }
-    return phoneNumberError.value;
+    return null;
   }
 
   String? validateFirstName(String? value) {
     if (value == null || value.isEmpty) {
       return "First name is required";
     }
-    return firstNameError.value;
+    return null;
   }
 
   String? validateLastName(String? value) {
     if (value == null || value.isEmpty) {
       return "Last name is required";
     }
-    return lastNameError.value;
+    return null;
   }
 
   String? validatePassword(String? value) {
@@ -77,7 +79,7 @@ class UiController extends GetxController {
     } else if (passwordController.text.length < 6) {
       return "Password must be at least 6 characters";
     }
-    return passwordError.value;
+    return null;
   }
 
   String? validateConfirmPassword(String? value) {
@@ -86,7 +88,7 @@ class UiController extends GetxController {
         passwordController.text != confirmPasswordController.text) {
       return "Passwords do not match";
     }
-    return passwordError.value;
+    return null;
   }
 
   // TAB HANDLER

@@ -68,15 +68,14 @@ class UserService {
           'password_confirmation': confirmPassword,
         }),
       );
-      if (result.statusCode == 200) {
-        final body = registerModelFromJson(result.body);
-        print(body.message);
-        return body;
-      } else {
-        final body = registerModelFromJson(result.body);
+      final body = registerModelFromJson(result.body);
+      if (result.statusCode < 200 || result.statusCode >= 300) {
         print(body.message);
         throw Exception(body.message);
       }
+      print(result.statusCode);
+      print(body.message);
+      return body;
     } catch (e) {
       print('❌ Error in register: $e');
       rethrow;

@@ -51,11 +51,11 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    name: json["name"],
-    email: json["email"],
-    phone: json["phone"],
-    instagram: json["instagram"],
-    facebook: json["facebook"],
+    name: safeString(json["name"]),
+    email: safeString(json["email"]),
+    phone: safeString(json["phone"]),
+    instagram: safeString(json["instagram"]),
+    facebook: safeString(json["facebook"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     createdAt: DateTime.parse(json["created_at"]),
     id: json["id"],
@@ -71,4 +71,10 @@ class User {
     "created_at": createdAt.toIso8601String(),
     "id": id,
   };
+}
+
+String safeString(dynamic value, {String fallback = '-'}) {
+  if (value == null) return fallback;
+  if (value is String && value.trim().isEmpty) return fallback;
+  return value.toString();
 }
